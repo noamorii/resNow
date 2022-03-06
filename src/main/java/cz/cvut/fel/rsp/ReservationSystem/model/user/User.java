@@ -7,6 +7,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "reservation_system_user")
 public class User extends AbstractEntity {
 
     @NotNull

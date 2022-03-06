@@ -2,20 +2,19 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots;
 
 import com.sun.istack.NotNull;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.time.LocalTime;
 
 @Entity
 public class Interval extends ReservationSlot{
 
     @NotNull
-    @Temporal(TemporalType.TIME)
+    @Column(name = "start_time")
     private LocalTime start;
 
     @NotNull
-    @Temporal(TemporalType.TIME)
+    @Column(name = "end_time")
     private LocalTime end;
 
     public LocalTime getEnd() {

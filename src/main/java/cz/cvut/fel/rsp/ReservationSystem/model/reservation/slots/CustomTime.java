@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots;
 
 import com.sun.istack.NotNull;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -13,9 +14,11 @@ public class CustomTime extends ReservationSlot{
     private Duration timeBetweenReservations;
 
     @NotNull
+    @Column(name ="start_time")
     private LocalTime start;
 
     @NotNull
+    @Column(name = "end_time")
     private LocalTime end;
 
     public Duration getTimeBetweenReservations() {

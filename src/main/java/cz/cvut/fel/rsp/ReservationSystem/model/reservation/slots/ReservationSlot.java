@@ -3,9 +3,8 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots;
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * ALl reservationSlots are going to be generated in the DB after creating an Event.
@@ -18,9 +17,23 @@ import javax.persistence.InheritanceType;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class ReservationSlot extends AbstractEntity {
+public abstract class ReservationSlot implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_slot_generator")
+    @SequenceGenerator(name = "reservation_slot_generator",sequenceName = "reservation_slot_id_seq")
+    private Integer id;
+
     @NotNull
     private Integer price;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getPrice() {
         return price;

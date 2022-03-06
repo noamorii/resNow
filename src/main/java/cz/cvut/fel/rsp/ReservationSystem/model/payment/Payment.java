@@ -15,7 +15,6 @@ public abstract class Payment extends AbstractEntity {
     private Integer amount;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateTimePaid;
 
     @NotNull

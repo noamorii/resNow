@@ -16,23 +16,22 @@ public class Event extends AbstractEntity {
     private String name;
 
     @NotNull
-    @Temporal(TemporalType.TIME)
+    @Column(name = "from_time")
     private LocalTime from;
 
     @NotNull
-    @Temporal(TemporalType.TIME)
+    @Column(name = "to_time")
     private LocalTime to;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     private LocalDate repeatUntil;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private DayOfWeek day;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private Repetition repetition;
 
     public String getName() {
