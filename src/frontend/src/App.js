@@ -10,6 +10,7 @@ const Welcome = () => {
     const fetchMessage = () =>{
         axios.get("http://localhost:8080/").then(res =>{
             setMessage(res.data);
+            console.log(res);
         })
     }
 
