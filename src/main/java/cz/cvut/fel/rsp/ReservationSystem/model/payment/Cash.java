@@ -7,5 +7,4 @@ import javax.persistence.Entity;
 @DiscriminatorValue("CASH")
 public class Cash extends Payment{
 
-    private int amount;
 }
