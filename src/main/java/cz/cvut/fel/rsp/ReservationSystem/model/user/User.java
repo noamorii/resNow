@@ -3,8 +3,10 @@ package cz.cvut.fel.rsp.ReservationSystem.model.user;
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "reservation_system_user")
@@ -33,6 +35,9 @@ public class User extends AbstractEntity {
 
     @OneToOne(mappedBy = "user")
     private PaymentDetails paymentDetails;
+
+    @ManyToMany
+    private List<ReservationSystem> manages;
 
     public String getUsername() {
         return username;

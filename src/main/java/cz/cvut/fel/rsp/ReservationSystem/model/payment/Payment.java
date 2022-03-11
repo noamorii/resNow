@@ -8,9 +8,14 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "payment_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class Payment extends AbstractEntity {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Payment{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_participant_generator")
+    @SequenceGenerator(name = "course_participant_generator",sequenceName = "course_participant_id_seq")
+    private Integer id;
+
     @NotNull
     private Integer amount;
 
@@ -21,6 +26,14 @@ public abstract class Payment extends AbstractEntity {
     @OneToOne
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getAmount() {
         return amount;

@@ -4,7 +4,7 @@ import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
 import cz.cvut.fel.rsp.ReservationSystem.model.payment.Payment;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
-import cz.cvut.fel.rsp.ReservationSystem.model.user.ReservationSystemCustomer;
+import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -16,8 +16,8 @@ public class Reservation extends AbstractEntity {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private ReservationSystemCustomer customer;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToOne(mappedBy = "reservation")
     private Payment payment; // null if not paid
@@ -27,12 +27,12 @@ public class Reservation extends AbstractEntity {
     @JoinColumn(name = "reservationslot_id")
     private ReservationSlot reservationSlot;
 
-    public ReservationSystemCustomer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(ReservationSystemCustomer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Payment getPayment() {
