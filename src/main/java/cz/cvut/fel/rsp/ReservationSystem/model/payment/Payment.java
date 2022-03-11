@@ -3,12 +3,15 @@ package cz.cvut.fel.rsp.ReservationSystem.model.payment;
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Getter @Setter
 public abstract class Payment{
 
     @Id
@@ -26,36 +29,4 @@ public abstract class Payment{
     @OneToOne
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public LocalDateTime getDateTimePaid() {
-        return dateTimePaid;
-    }
-
-    public void setDateTimePaid(LocalDateTime dateTimePaid) {
-        this.dateTimePaid = dateTimePaid;
-    }
-
-    public Reservation getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
-    }
 }

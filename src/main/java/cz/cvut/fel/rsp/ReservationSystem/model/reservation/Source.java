@@ -2,6 +2,9 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation;
 
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -9,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Source extends AbstractEntity {
     @NotNull
     private String name;
@@ -26,44 +30,4 @@ public class Source extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "reservationSystem_id")
     private ReservationSystem reservationSystem;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public ReservationSystem getReservationSystem() {
-        return reservationSystem;
-    }
-
-    public void setReservationSystem(ReservationSystem reservationSystem) {
-        this.reservationSystem = reservationSystem;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 }

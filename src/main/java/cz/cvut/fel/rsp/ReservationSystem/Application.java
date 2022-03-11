@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.ReservationSystem;
 
+import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
