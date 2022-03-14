@@ -30,4 +30,7 @@ public class Reservation extends AbstractEntity {
     @OneToOne
     @JoinColumn(name = "reservationslot_id")
     private ReservationSlot reservationSlot;
+
+    @NotNull
+    private boolean cancelled;
 }

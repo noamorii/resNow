@@ -1,26 +1,28 @@
 package cz.cvut.fel.rsp.ReservationSystem.model.reservation;
 
+import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
-import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
-import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import java.util.List;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
-public class ReservationSystem extends AbstractEntity {
-
+public class Category extends AbstractEntity {
+    @NotNull
     private String name;
 
-    @ManyToMany
-    private List<User> managers;
+    @ManyToOne
+    @JoinColumn(name = "source_id")
+    @NotNull
+    private Source source;
 
-    @OneToMany
-    private List<Feedback> feedback;
+    @ManyToMany
+    private List<Event> events;
 }

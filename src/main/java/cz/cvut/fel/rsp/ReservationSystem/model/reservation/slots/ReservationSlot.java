@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots;
 
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
+import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,4 +30,6 @@ public abstract class ReservationSlot implements Serializable {
 
     @NotNull
     private Integer price;
+
+    public abstract void visit(ReservationService reservationService);
 }

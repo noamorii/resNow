@@ -6,10 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
@@ -30,4 +28,8 @@ public class Source extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "reservationSystem_id")
     private ReservationSystem reservationSystem;
+
+    @NotNull
+    @OneToMany (mappedBy = "source")
+    private List<Category> categories;
 }

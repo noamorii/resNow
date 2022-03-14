@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots;
 
 import com.sun.istack.NotNull;
+import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,4 +15,9 @@ public class FixedLengthCustomTime extends CustomTime{
 
     @NotNull
     private Duration fixedLength;
+
+    @Override
+    public void visit(ReservationService reservationService) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 }
