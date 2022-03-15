@@ -4,6 +4,8 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 
+import java.util.List;
+
 public interface CategoryService{
     public void createCategory(String categoryName, Source source);
 
@@ -14,4 +16,6 @@ public interface CategoryService{
     public void removeEventFromCategory(Event event, Category category);
 
     public void update(Category category);
+
+    public void remove(Category toRemove, Category moveEventsTo);
 }

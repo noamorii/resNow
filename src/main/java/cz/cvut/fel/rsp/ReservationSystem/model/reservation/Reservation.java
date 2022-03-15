@@ -33,4 +33,6 @@ public class Reservation extends AbstractEntity {
 
     @NotNull
     private boolean cancelled;
+
+    private String additionalInfo;
 }

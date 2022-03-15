@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
@@ -40,6 +39,7 @@ public class Event extends AbstractEntity {
     private Repetition repetition;
 
     @NotNull
-    @ManyToMany
-    private List<Category> categories;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
