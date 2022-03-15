@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Service
@@ -47,12 +48,26 @@ public class SourceServiceImpl implements SourceService {
     }
 
     @Override
-    public void removeAddress() {
-        throw new UnsupportedOperationException();
+    @Transactional
+    public void removeAddress(Source source) {
+        try {
+            Source sourceToChange = dao.getById(source.getId());
+            sourceToChange.setAddress(null);
+            dao.save(sourceToChange);
+        }catch (Exception e){
+            throw new NoSuchElementException();
+        }
     }
 
     @Override
+    @Transactional
     public void addAddress(Source source, Address address) {
-        throw new UnsupportedOperationException();
+        try {
+            Source sourceToChange = dao.getById(source.getId());
+            sourceToChange.setAddress(address);
+            dao.save(sourceToChange);
+        }catch (Exception e){
+            throw new NoSuchElementException();
+        }
     }
 }

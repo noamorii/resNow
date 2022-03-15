@@ -7,7 +7,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 public interface SourceService{
     public void createSource(Source source, ReservationSystem reservationSystem);
 
-    public void removeAddress();
+    public void removeAddress(Source source);
 
     public void addAddress(Source source, Address address);
 }
