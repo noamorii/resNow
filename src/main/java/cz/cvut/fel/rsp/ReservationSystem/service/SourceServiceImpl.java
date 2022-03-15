@@ -1,7 +1,10 @@
 package cz.cvut.fel.rsp.ReservationSystem.service;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
+import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,13 +13,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class SourceService {
-
-
+public class SourceServiceImpl implements SourceService {
     private final SourceRepository dao;
 
     @Autowired
-    public SourceService(SourceRepository dao) {
+    public SourceServiceImpl(SourceRepository dao) {
         this.dao = dao;
     }
 
@@ -26,7 +27,7 @@ public class SourceService {
     }
 
     @Transactional(readOnly = true)
-    public Source getById(Long id) {
+    public Source find(Integer id) {
         return dao.getById(id);
     }
 
@@ -36,7 +37,22 @@ public class SourceService {
     }
 
     @Transactional
-    public boolean exists(Long id) {
+    public boolean exists(Integer id) {
         return dao.existsById(id);
+    }
+
+    @Override
+    public void createSource(Source source, ReservationSystem reservationSystem) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void removeAddress() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void addAddress(Source source, Address address) {
+        throw new UnsupportedOperationException();
     }
 }

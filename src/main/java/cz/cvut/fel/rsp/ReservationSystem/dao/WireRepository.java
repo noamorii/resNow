@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WireRepository extends JpaRepository<Wire, Long> {
+public interface WireRepository extends JpaRepository<Wire, Integer> {
 }

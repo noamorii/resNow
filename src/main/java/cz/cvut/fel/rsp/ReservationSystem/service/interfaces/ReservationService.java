@@ -1,11 +1,20 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.interfaces;
 
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 
-public interface ReservationService {
+import java.time.LocalTime;
+import java.util.List;
+
+public interface ReservationService{
     public void createReservation(User user, ReservationSlot reservationSlot);
 
-    public void deleteReservation(Reservation reservation);
+    public void cancelReservation(Reservation reservation);
+
+    public List<Reservation> findAllCanceled(ReservationSystem reservationSystem, LocalTime from, LocalTime to);
+
+    public List<Reservation> findAllCanceled(Source source, LocalTime from, LocalTime to);
 }
