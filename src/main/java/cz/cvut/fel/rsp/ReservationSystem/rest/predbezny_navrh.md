@@ -3,7 +3,9 @@ Base url: api/v1/
 API sources:
 User
 - /me
-- /{username}/reservations?type="past/upcoming/unpaid"
+- /{username}"
+- /{username}/reservations?from="xx"&to="xx"
+- + SECURITY
 
 Reservation system
 - /systems
