@@ -48,6 +48,7 @@ public class SourceServiceImpl implements SourceService {
     }
 
     @Override
+    @Transactional
     public void removeAddress(Source source) {
         try {
             Source sourceToChange = dao.getById(source.getId());
@@ -59,6 +60,7 @@ public class SourceServiceImpl implements SourceService {
     }
 
     @Override
+    @Transactional
     public void addAddress(Source source, Address address) {
         try {
             Source sourceToChange = dao.getById(source.getId());
