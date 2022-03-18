@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.ReservationSystem.model.reservation;
 
+import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
 import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
@@ -16,6 +17,7 @@ import java.util.List;
 @Getter @Setter @NoArgsConstructor
 public class ReservationSystem extends AbstractEntity {
 
+    @NotNull
     private String name;
 
     @ManyToMany
