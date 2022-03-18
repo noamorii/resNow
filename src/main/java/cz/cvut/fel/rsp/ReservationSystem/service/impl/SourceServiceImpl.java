@@ -1,4 +1,4 @@
-package cz.cvut.fel.rsp.ReservationSystem.service;
+package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
