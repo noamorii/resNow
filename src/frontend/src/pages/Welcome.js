@@ -7,6 +7,7 @@ const Welcome = () => {
     useEffect(() => {
         axios.get('http://localhost:8080/welcome').then(res => {
             console.log(res.data)
+            console.log(process.env.NODE_ENV);
         })
     }, [])
 
