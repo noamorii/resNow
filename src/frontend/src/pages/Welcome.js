@@ -1,11 +1,12 @@
 import logo from "../rynary.png";
 import axios from "axios";
+import { baseUrl } from '../config/const'
 import {useEffect} from "react";
 
 const Welcome = () => {
 
     useEffect(() => {
-        axios.get('http://localhost:8080/welcome').then(res => {
+        axios.get(`${baseUrl}/welcome`).then(res => {
             console.log(res.data)
             console.log(process.env.NODE_ENV);
         })
