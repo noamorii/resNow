@@ -7,7 +7,8 @@ heroku:
     - git --version
   script:
     - git remote set-url heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/reservenow.git
-    - git push -f heroku main
+    - git branch -r
+    - git push -f heroku master
   environment:
     name: production
     url: https://reservenow.herokuapp.com/
