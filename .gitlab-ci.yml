@@ -7,8 +7,8 @@ heroku:
     - git --version
   script:
     - git remote rm heroku
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/reservenow.git
+    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/rynary.git
     - git push heroku HEAD:main
   environment:
     name: production
-    url: https://reservenow.herokuapp.com/
+    url: https://rynary.herokuapp.com/
