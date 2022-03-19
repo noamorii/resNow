@@ -6,7 +6,6 @@ heroku:
     - apk update && apk add git
     - git --version
   script:
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/reservenow.git
     - git branch -r
   environment:
     name: production
