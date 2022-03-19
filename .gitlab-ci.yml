@@ -6,7 +6,7 @@ heroku:
     - apk update && apk add git
     - git --version
   script:
-    - git push -f heroku master
+    - git push -f heroku main
   environment:
     name: production
     url: https://reservenow.herokuapp.com/
