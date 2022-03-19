@@ -1,8 +1,8 @@
 stages: # List of stages for jobs, and their order of execution
-  - deploy
+  - main
 
 deploy-job: # This job runs in the deploy stage.
-  stage: deploy
+  stage: main
   script:
     - echo "Deploying application..."
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/reservenow.git
@@ -13,4 +13,4 @@ deploy-job: # This job runs in the deploy stage.
     name: production
     url: https://reservenow.herokuapp.com/
   only:
-    - master
+    - main
