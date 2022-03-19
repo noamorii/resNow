@@ -1,7 +1,7 @@
 heroku:
   stage: deploy
   only:
-    - master
+    - main
   script:
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/<Your heroku app name>.git
-    - git push -f heroku master
+    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/reservenow.git
+    - git push -f heroku main
