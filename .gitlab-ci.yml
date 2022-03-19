@@ -1,16 +1,7 @@
-stages:
-  - main
-
-deploy-job:
-  stage: main
-  script:
-    - echo "Deploying application..."
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/reservenow.git
-    - git push heroku master
-    - echo "Deployed to Production Server https://reservenow.herokuapp.com/"
-    - echo "Application successfully deployed."
-  environment:
-    name: production
-    url: https://reservenow.herokuapp.com/
+heroku:
+  stage: deploy
   only:
     - main
+  script:
+    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/reservenow.git
+    - git push -f heroku main
