@@ -7,6 +7,8 @@ heroku:
     - git --version
   script:
     - git branch -r
+    - heroku git:remote -a reservenow
+    - git branch -r
   environment:
     name: production
     url: https://reservenow.herokuapp.com/
