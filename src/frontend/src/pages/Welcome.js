@@ -1,6 +1,6 @@
 import logo from "../rynary.png";
 import axios from "axios";
-import { baseUrl } from '../config/const'
+import {baseUrl} from '../config/const'
 import {useEffect} from "react";
 import {Link} from "react-router-dom";
 
@@ -13,14 +13,11 @@ const Welcome = () => {
         })
     }, [])
 
-    return (
-        <div className={'container'}>
+    return (<div className={'container'}>
             <img src={logo}/>
             <h2>Vítejte, brzy pro Vás vypustíme naší aplikaci</h2>
-            <p>Více <a href='/about'>zde</a></p>
-            <Link to={'about'}>zde</Link>
-        </div>
-    );
+            <p>Více <Link to={'about'}>zde</Link></p>
+        </div>);
 }
 
 export default Welcome
