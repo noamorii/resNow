@@ -8,8 +8,8 @@ const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Welcome/>}/>
-                <Route path="https://rynary.herokuapp.com/about" element={<AboutUs/>}/>
+                <Route exact  path="/" element={<Welcome/>}/>
+                <Route exact  path="/about" element={<AboutUs/>}/>
             </Routes>
         </BrowserRouter>
     )
