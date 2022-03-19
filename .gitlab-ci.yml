@@ -7,9 +7,6 @@ heroku:
     - git --version
   script:
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/reservenow.git
-    - git branch -r
-    - git add .
-    - git commit -m'deploy'
     - git push -f heroku master
   environment:
     name: production
