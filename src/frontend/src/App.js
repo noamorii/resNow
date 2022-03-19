@@ -9,7 +9,7 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Welcome/>}/>
-                <Route path="/about" element={<AboutUs/>}/>
+                <Route path="https://rynary.herokuapp.com/about" element={<AboutUs/>}/>
             </Routes>
         </BrowserRouter>
     )
