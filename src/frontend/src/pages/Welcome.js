@@ -1,4 +1,4 @@
-import logo from "../rynary.png";
+import logo from "../assets/resnow1.png";
 import axios from "axios";
 import {baseUrl} from '../config/const'
 import {useEffect} from "react";
@@ -13,11 +13,13 @@ const Welcome = () => {
         })
     }, [])
 
-    return (<div className={'container'}>
+    return (
+        <div className={'container'}>
             <img src={logo}/>
             <h2>Vítejte, brzy pro Vás vypustíme naší aplikaci</h2>
             <p>Více <Link to={'about'}>zde</Link></p>
-        </div>);
+        </div>
+    );
 }
 
 export default Welcome

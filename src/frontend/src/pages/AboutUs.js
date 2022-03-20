@@ -1,3 +1,5 @@
+import { Button } from '../components/index'
+
 const AboutUs = () => {
 
     document.querySelector('body').classList.add('black-ground')
