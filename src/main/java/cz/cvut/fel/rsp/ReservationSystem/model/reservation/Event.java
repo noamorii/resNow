@@ -32,6 +32,7 @@ public class Event extends AbstractEntity {
 
     @NotNull
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "dayName")
     private DayOfWeek day;
 
     @NotNull

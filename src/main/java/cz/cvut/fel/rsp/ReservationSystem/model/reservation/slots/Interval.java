@@ -8,10 +8,12 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalTime;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
+@Table(name = "intervalSlot") // Interval is reserved in H2
 public class Interval extends ReservationSlot{
 
     @NotNull
