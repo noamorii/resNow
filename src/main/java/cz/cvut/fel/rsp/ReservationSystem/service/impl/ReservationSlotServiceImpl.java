@@ -15,6 +15,22 @@ import java.util.Objects;
 public class ReservationSlotServiceImpl implements ReservationSlotService {
     @Override
     public void generateReservationSlots(Event event) {
+        event.getEventType().visit(event, this);
+    }
+
+    @Override
+    public void generateIntervals(Event event) {
+
+    }
+
+    @Override
+    public void generateSeats(Event event) {
+
+    }
+
+    @Override
+    public void generateCustomTime(Event event) {
+
     }
 
     @Override
