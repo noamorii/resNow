@@ -83,7 +83,7 @@ const Welcome = () => {
                 </svg>
 
             </div>
-            <h2>Vítejte, brzy pro Vás vypustíme naší aplikaci</h2>
+            <h2>Vítejte, brzy pro Vás spustíme naší aplikaci</h2>
             <p>Více <Link to={'about'}>zde</Link></p>
         </div>
     );
