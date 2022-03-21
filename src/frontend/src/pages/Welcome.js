@@ -1,4 +1,3 @@
-import logo from "../assets/resnow1.png";
 import axios from "axios";
 import {baseUrl} from '../config/const'
 import {useEffect} from "react";
@@ -7,7 +6,7 @@ import {Link} from "react-router-dom";
 const Welcome = () => {
 
     useEffect(() => {
-        document.querySelector('body').classList.remove('black-ground');
+        document.querySelector('body').className = 'linear-ground';
         axios.get(`${baseUrl}/welcome`).then(res => {
             console.log(res.data)
             console.log(process.env.NODE_ENV);
@@ -85,6 +84,7 @@ const Welcome = () => {
             </div>
             <h2>Vítejte, brzy pro Vás spustíme naší aplikaci</h2>
             <p>Více <Link to={'about'}>zde</Link></p>
+            <p>BETA <Link to={'beta'}>verze</Link></p>
         </div>
     );
 }
