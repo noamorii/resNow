@@ -9,7 +9,7 @@ import Nabvar from "./parts/Header/Nabvar";
 const App = () => {
     return (
         <BrowserRouter>
-            <Nabvar/>
+            {/*<Nabvar/>*/}
             <Routes>
                 <Route exact  path="/" element={<Welcome/>}/>
                 <Route exact  path="/beta" element={<IndexPage/>}/>
