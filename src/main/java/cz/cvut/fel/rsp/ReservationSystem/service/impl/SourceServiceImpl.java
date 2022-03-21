@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.SourceService;
@@ -9,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class SourceServiceImpl implements SourceService {
@@ -43,8 +42,16 @@ public class SourceServiceImpl implements SourceService {
     }
 
     @Override
+    @Transactional
     public void createSource(Source source, ReservationSystem reservationSystem) {
-        throw new UnsupportedOperationException();
+        source.setReservationSystem(reservationSystem);
+
+        Category initialCategory = new Category();
+        initialCategory.setName("Main events");
+        initialCategory.setSource(source);
+        source.setCategories(Arrays.asList(initialCategory));
+
+        dao.save(source);
     }
 
     @Override

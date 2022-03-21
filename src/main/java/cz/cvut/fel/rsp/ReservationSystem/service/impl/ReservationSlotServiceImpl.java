@@ -1,16 +1,20 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
+import cz.cvut.fel.rsp.ReservationSystem.exception.EventException;
+import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSlotService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
+@Service
 public class ReservationSlotServiceImpl implements ReservationSlotService {
     @Override
     public void generateReservationSlots(Event event) {
-
     }
 
     @Override

@@ -143,12 +143,13 @@ public class Generator {
     public static Event generateEventWithoutRepetition(Category category){
         Event event = new Event();
         event.setName("event" + randomInt());
-        event.setFrom(LocalTime.now());
-        event.setTo(LocalTime.MAX);
+        event.setFromTime(LocalTime.now());
+        event.setToTime(LocalTime.MAX);
         event.setRepeatUntil(LocalDate.MAX);
         event.setDay(DayOfWeek.of(RAND.nextInt(7) + 1));
         event.setRepetition(Repetition.NONE);
         event.setCategory(generateCategory());
+        event.setStartDate(LocalDate.of(2023, 10, 10));
         return event;
     }
 

@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation;
 
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
+import cz.cvut.fel.rsp.ReservationSystem.model.enums.EventType;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,13 +22,15 @@ public class Event extends AbstractEntity {
 
     @NotNull
     @Column(name = "from_time")
-    private LocalTime from;
+    private LocalTime fromTime;
 
     @NotNull
     @Column(name = "to_time")
-    private LocalTime to;
+    private LocalTime toTime;
 
     @NotNull
+    private LocalDate startDate;
+
     private LocalDate repeatUntil;
 
     @NotNull
@@ -43,4 +46,8 @@ public class Event extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @Enumerated(value = EnumType.STRING)
+    @NotNull
+    private EventType eventType;
 }
