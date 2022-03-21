@@ -2,7 +2,7 @@ body {
     background: linear-gradient(240.47deg, rgba(247, 251, 255, 0.76) 4.75%, rgba(205, 230, 255, 0.38) 96.6%);;
 }
 
-.black-ground{
+.black-ground {
     background: black;
 }
 
@@ -39,11 +39,57 @@ img {
     }
 }
 
-.presentation-container{
+.presentation-container {
     text-align: center;
 }
 
-iframe{
+iframe {
     width: 180vh;
     height: 100vh;
+}
+
+#logo-container:hover #logo-upper {
+    animation-name: logo-upper-animate;
+    animation-duration: 2s;
+}
+
+#logo-container:hover #logo-bottom {
+    animation-name: logo-bottom-animate;
+    animation-duration: 2s;
+}
+
+#logo-container{
+    width: 25vh;
+    height: 25vh;
+    text-align: center;
+    background: #006cff;
+    border-radius: 3vh;
+}
+
+#mid-o-logo{
+    transform: translate(15vh, 9vh);
+}
+
+@keyframes logo-bottom-animate {
+    0% {
+        transform: matrix(1, 0, 0, 1, 0, 0);
+    }
+    50% {
+        transform: matrix(1, -0.05, -0.05, 1, 0, 0);
+    }
+    100% {
+        transform: matrix(1, 0, 0, 1, 0, 0);
+    }
+}
+
+@keyframes logo-upper-animate {
+    0% {
+        transform: matrix(1, 0, 0, 1, 0, 0);
+    }
+    50% {
+        transform: matrix(1, 0.05, 0.05, 1, 0, 0);
+    }
+    100% {
+        transform: matrix(1, 0, 0, 1, 0, 0);
+    }
 }
