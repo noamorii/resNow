@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
 
 @DataJpaTest
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class GeneralRepositoryTest {
     @Autowired
     private EntityManager em;
