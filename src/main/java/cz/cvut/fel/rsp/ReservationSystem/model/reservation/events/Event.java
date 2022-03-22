@@ -26,17 +26,21 @@ public abstract class Event {
     @NotNull
     private String name;
 
+    // Time on the clock, when the event is starting.
     @NotNull
     @Column(name = "from_time")
     private LocalTime fromTime;
 
+    // Time on the clock, when the event is ending.
     @NotNull
     @Column(name = "to_time")
     private LocalTime toTime;
 
+    // Date, when the event takes place for the first time.
     @NotNull
     private LocalDate startDate;
 
+    // Date, until which, the timeslots should be generated.
     private LocalDate repeatUntil;
 
     @NotNull
