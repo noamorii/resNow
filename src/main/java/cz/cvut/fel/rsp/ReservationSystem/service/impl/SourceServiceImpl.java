@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
+import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
@@ -21,11 +22,6 @@ public class SourceServiceImpl implements SourceService {
         this.dao = dao;
     }
 
-    @Transactional
-    public boolean exists(Integer id) {
-        return dao.existsById(id);
-    }
-
     @Override
     @Transactional
     public void createSource(Source source, ReservationSystem reservationSystem) {
@@ -42,24 +38,21 @@ public class SourceServiceImpl implements SourceService {
     @Override
     @Transactional
     public void removeAddress(Source source) {
-        try {
-            Source sourceToChange = dao.getById(source.getId());
-            sourceToChange.setAddress(null);
-            dao.save(sourceToChange);
-        }catch (Exception e){
-            throw new NoSuchElementException();
+        if (source.getAddress()!=null){
+            source.setAddress(null);
+            dao.save(source);
         }
     }
 
     @Override
     @Transactional
     public void addAddress(Source source, Address address) {
-        try {
-            Source sourceToChange = dao.getById(source.getId());
-            sourceToChange.setAddress(address);
-            dao.save(sourceToChange);
-        }catch (Exception e){
-            throw new NoSuchElementException();
+        if (source.getAddress()== null){
+            source.setAddress(address);
+            dao.save(source);
+        }
+        else{
+            throw new ReservationSystemException("Source already has address");
         }
     }
 }
