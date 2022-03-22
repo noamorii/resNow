@@ -145,7 +145,7 @@ public class Generator {
         event.setTimeBetweenIntervals(Duration.ofHours(1));
         event.setName("event" + randomInt());
         event.setFromTime(LocalTime.now());
-        event.setToTime(LocalTime.MAX);
+        event.setToTime(LocalTime.now().plusHours(4));
         event.setRepeatUntil(LocalDate.MAX);
         event.setDay(DayOfWeek.of(RAND.nextInt(7) + 1));
         event.setRepetition(Repetition.NONE);
