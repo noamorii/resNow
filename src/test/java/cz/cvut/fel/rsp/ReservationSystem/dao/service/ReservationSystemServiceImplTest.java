@@ -7,88 +7,73 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.ReservationSystemServiceImpl;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import java.util.List;
-
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class ReservationSystemServiceImplTest {
+
     @Autowired
     private ReservationSystemServiceImpl reservationSystemService;
 
     @Autowired
     private ReservationSystemRepository reservationSystemRepository;
 
-    @PersistenceContext
-    private EntityManager em;
+    private User owner, employee;
+    private ReservationSystem reservationSystem;
+
+    @BeforeEach
+    public void init() {
+        owner = Generator.generateSystemOwner();
+        employee = Generator.generateEmployeeUser();
+        reservationSystem = new ReservationSystem();
+        reservationSystem.setName("Test system");
+    }
 
     @Test
-    public void createReservationSystem_createCorrectSystem_systemCreated(){
-        User user = Generator.generateSystemOwner();
-        ReservationSystem reservationSystem = new ReservationSystem();
-        reservationSystem.setName("Test system");
+    public void createReservationSystem_createCorrectSystem_systemCreated() {
+        reservationSystemService.createReservationSystem(owner, reservationSystem);
+        ReservationSystem result = reservationSystemRepository.findById(reservationSystem.getId()).orElse(null);
 
-        reservationSystemService.createReservationSystem(user, reservationSystem);
-
-        ReservationSystem result = reservationSystemRepository.findById(reservationSystem.getId()).get();
         Assertions.assertNotNull(result);
     }
 
     @Test
-    public void createReservationSystem_createCorrectSystem_systemHasOneManager(){
-        User user = Generator.generateSystemOwner();
-        ReservationSystem reservationSystem = new ReservationSystem();
-        reservationSystem.setName("Test system");
-
-        reservationSystemService.createReservationSystem(user, reservationSystem);
-
-        ReservationSystem result = reservationSystemRepository.findById(reservationSystem.getId()).get();
-        Assertions.assertTrue(result.getManagers().contains(user));
-    }
-
-    @Test
-    public void createReservationSystem_createSystemByRegularUser_exceptionThrown(){
-        User user = Generator.generateRegularUser();
-        ReservationSystem reservationSystem = new ReservationSystem();
-        reservationSystem.setName("Test system");
-
-
-        Assertions.assertThrows(ReservationSystemException.class,
-                () -> reservationSystemService.createReservationSystem(user, reservationSystem));
-    }
-
-    @Test
-    public void addManager_addEmployeUser_employeeAdded(){
-        User owner = Generator.generateSystemOwner();
-        User employee = Generator.generateEmployeeUser();
-        ReservationSystem reservationSystem = new ReservationSystem();
-        reservationSystem.setName("Test system");
+    public void createReservationSystem_createCorrectSystem_systemHasOneManager() {
         reservationSystemService.createReservationSystem(owner, reservationSystem);
+        ReservationSystem result = reservationSystemRepository.findById(reservationSystem.getId()).orElse(null);
 
+        Assertions.assertNotNull(result);
+        Assertions.assertTrue(result.getManagers().contains(owner));
+    }
+
+    @Test
+    public void createReservationSystem_createSystemByEmployeeUser_exceptionThrown() {
+        Assertions.assertThrows(ReservationSystemException.class,
+                () -> reservationSystemService.createReservationSystem(employee, reservationSystem));
+    }
+
+    @Test
+    public void addManager_addEmployeeUser_employeeAdded() {
+        reservationSystemService.createReservationSystem(owner, reservationSystem);
         reservationSystemService.addManager(employee, reservationSystem);
 
-        List<User> result = reservationSystemRepository.findById(reservationSystem.getId()).get().getManagers();
-        Assertions.assertTrue(result.contains(employee));
-        Assertions.assertTrue(result.contains(owner));
+        ReservationSystem system = reservationSystemRepository.findById(reservationSystem.getId()).orElse(null);
+
+        Assertions.assertNotNull(system);
+        Assertions.assertTrue(system.getManagers().contains(employee));
+        Assertions.assertTrue(system.getManagers().contains(owner));
     }
 
     @Test
-    public void addManager_addEmployeeTwice_exceptionThrown(){
-        User owner = Generator.generateSystemOwner();
-        User employee = Generator.generateEmployeeUser();
-        ReservationSystem reservationSystem = new ReservationSystem();
-        reservationSystem.setName("Test system");
+    public void addManager_addEmployeeTwice_exceptionThrown() {
         reservationSystemService.createReservationSystem(owner, reservationSystem);
-
         reservationSystemService.addManager(employee, reservationSystem);
 
         Assertions.assertThrows(ReservationSystemException.class,
