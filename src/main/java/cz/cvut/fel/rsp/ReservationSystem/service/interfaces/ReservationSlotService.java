@@ -10,13 +10,13 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface ReservationSlotService{
-    public void generateReservationSlots(Event event);
+    public void generateTimeSlots(Event event);
 
-    public void generateReservationSlots(IntervalEvent event);
+    public void generateIntervalSlots(IntervalEvent event);
 
-    public void generateSeats(SeatEvent event);
+    public void generateSeatSlots(SeatEvent event);
 
-    public void generateCustomTime(CustomTimeEvent event);
+    public void generateCustomTimeSlots(CustomTimeEvent event);
 
     public List<ReservationSlot> findAll(Event event);
 

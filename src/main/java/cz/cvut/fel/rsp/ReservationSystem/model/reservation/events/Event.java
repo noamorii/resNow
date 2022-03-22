@@ -3,7 +3,7 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation.events;
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
-import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
+import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSlotService;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,4 +54,6 @@ public abstract class Event {
     private Category category;
 
     public abstract void visit(ReservationSlotService reservationSlotService);
+
+    public abstract void visit(EventService eventService);
 }

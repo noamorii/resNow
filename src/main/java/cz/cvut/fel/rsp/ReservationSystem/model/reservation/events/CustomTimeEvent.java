@@ -1,7 +1,7 @@
 package cz.cvut.fel.rsp.ReservationSystem.model.reservation.events;
 
 import com.sun.istack.NotNull;
-import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
+import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSlotService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +21,11 @@ public class CustomTimeEvent extends Event{
 
     @Override
     public void visit(ReservationSlotService reservationSlotService) {
-        reservationSlotService.generateReservationSlots(this);
+        reservationSlotService.generateCustomTimeSlots(this);
+    }
+
+    @Override
+    public void visit(EventService eventService) {
+        eventService.validateSpecificEvent(this);
     }
 }

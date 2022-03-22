@@ -4,7 +4,10 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
 import cz.cvut.fel.rsp.ReservationSystem.exception.EventException;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,11 +38,24 @@ public class EventServiceImpl implements EventService {
         }
 
         eventRepository.save(event);
-        reservationSlotService.generateReservationSlots(event);
+        reservationSlotService.generateTimeSlots(event);
     }
 
+    public void validateSpecificEvent(IntervalEvent intervalEvent){
+        // TODO
+    }
 
-    public void validateEventCreation(Event event){
+    public void validateSpecificEvent(CustomTimeEvent customTimeEvent){
+        // TODO
+    }
+
+    public void validateSpecificEvent(SeatEvent seatEvent){
+        if (seatEvent.getSeatAmount() <= 0){
+            throw new EventException("Seat amount cannot be negative or zero");
+        }
+    }
+
+    private void validateEventCreation(Event event){
         if (!event.getRepetition().equals(Repetition.NONE)){
             if (Objects.isNull(event.getRepeatUntil())){
                 throw new EventException("The ending date has to be specified, if the event repeats.");
@@ -57,6 +73,8 @@ public class EventServiceImpl implements EventService {
         if (event.getName().length() == 0){
             throw new EventException("The event name cannot be an empty string");
         }
+
+        event.visit(this);
     }
 
     @Override
