@@ -52,7 +52,22 @@ public class SourceServiceImpl implements SourceService {
             dao.save(source);
         }
         else{
-            throw new ReservationSystemException("Source already has address");
+            throw new ReservationSystemException("Source already has address " + source.getAddress());
         }
+    }
+
+    @Transactional
+    public void addCategory(Source source, Category category){
+        if (source.getCategories().contains(category)){
+            throw new ReservationSystemException("Source already has category with this name " + category.getName());
+        }
+
+        source.getCategories().add(category);
+        dao.save(source);
+    }
+
+    @Transactional
+    public boolean exists(Source source){
+        return dao.existsById(source.getId());
     }
 }
