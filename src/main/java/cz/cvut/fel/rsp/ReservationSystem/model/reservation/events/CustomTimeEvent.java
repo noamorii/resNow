@@ -16,7 +16,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 public class CustomTimeEvent extends Event{
-
     @NotNull
     private Duration minimalReservationTime;
 

@@ -76,8 +76,8 @@ public class Generator {
         customTime.setPrice(randomInt());
         customTime.setStart(LocalTime.now());
         customTime.setEnd(LocalTime.MAX);
-        Duration duration = Duration.between(LocalTime.now(),LocalTime.MAX);
-        customTime.setTimeBetweenReservations(duration);
+        // Duration duration = Duration.between(LocalTime.now(),LocalTime.MAX);
+        // customTime.setTimeBetweenReservations(duration);
         return customTime;
     }
 
@@ -94,9 +94,9 @@ public class Generator {
         fixedLengthCustomTime.setPrice(randomInt());
         fixedLengthCustomTime.setStart(LocalTime.now());
         fixedLengthCustomTime.setEnd(LocalTime.MAX);
-        Duration duration = Duration.between(LocalTime.now(),LocalTime.MAX);
-        fixedLengthCustomTime.setTimeBetweenReservations(duration);
-        fixedLengthCustomTime.setFixedLength(duration);
+        // Duration duration = Duration.between(LocalTime.now(),LocalTime.MAX);
+        // fixedLengthCustomTime.setTimeBetweenReservations(duration);
+        // fixedLengthCustomTime.setFixedLength(duration);
         return fixedLengthCustomTime;
     }
 

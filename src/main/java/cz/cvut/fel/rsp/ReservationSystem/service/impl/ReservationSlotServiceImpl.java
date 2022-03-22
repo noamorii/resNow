@@ -1,11 +1,14 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
+import cz.cvut.fel.rsp.ReservationSystem.dao.CustomTimeRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.IntervalRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.SeatRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.CustomTime;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.Interval;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.Seat;
@@ -14,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -24,6 +28,10 @@ import java.util.List;
 public class ReservationSlotServiceImpl implements ReservationSlotService {
 
     private final SeatRepository seatRepository;
+
+    private final CustomTimeRepository customTimeRepository;
+
+    private final IntervalRepository intervalRepository;
 
     @Override
     public void generateTimeSlots(Event event) {
@@ -43,7 +51,19 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
 
     @Override
     public void generateIntervalSlots(IntervalEvent event, LocalDate date) {
+        Duration intervalDuration = event.getIntervalDuration();
+        Duration timeBetween = event.getTimeBetweenIntervals();
+        LocalTime currentTime = event.getFromTime();
 
+        while (currentTime.isBefore(event.getToTime())){
+            Interval interval = new Interval();
+            interval.setDate(date);
+            interval.setStart(currentTime);
+            interval.setEnd(currentTime.plusSeconds(intervalDuration.getSeconds()));
+            interval.setPrice(100); // TODO price
+            currentTime = currentTime.plusSeconds(intervalDuration.getSeconds() + timeBetween.getSeconds());
+            intervalRepository.save(interval);
+        }
     }
 
     @Override
@@ -61,7 +81,13 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
 
     @Override
     public void generateCustomTimeSlots(CustomTimeEvent event, LocalDate date) {
-
+        CustomTime customTimeSlot = new CustomTime();
+        customTimeSlot.setEvent(event);
+        customTimeSlot.setDate(date);
+        customTimeSlot.setEnd(event.getToTime());
+        customTimeSlot.setPrice(100); // TODO hardcoded price
+        customTimeSlot.setMainSlot(true);
+        customTimeRepository.save(customTimeSlot);
     }
 
 
