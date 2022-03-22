@@ -3,6 +3,7 @@ package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 import cz.cvut.fel.rsp.ReservationSystem.dao.CategoryRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
+import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
@@ -40,7 +41,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void addEventToCategory(Event event, Category category) {
+        if (category.getEvents().contains(event)){
+            throw new ReservationSystemException("Category " + category.getName() + " already has event " + event.getName());
+        }
 
+        category.getEvents().add(event);
+        event.setCategory(category);
+        eventDao.save(event);
+        dao.save(category);
     }
 
     @Override
