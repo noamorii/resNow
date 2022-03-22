@@ -21,21 +21,6 @@ public class SourceServiceImpl implements SourceService {
         this.dao = dao;
     }
 
-    @Transactional(readOnly = true)
-    public List<Source> findAll() {
-        return dao.findAll();
-    }
-
-    @Transactional(readOnly = true)
-    public Source find(Integer id) {
-        return dao.getById(id);
-    }
-
-    @Transactional
-    public void flush() {
-        dao.flush();
-    }
-
     @Transactional
     public boolean exists(Integer id) {
         return dao.existsById(id);
