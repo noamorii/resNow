@@ -10,9 +10,8 @@ import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-
-//todo add data check
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -32,14 +31,11 @@ public class CategoryServiceImpl implements CategoryService {
     public void createCategory(String categoryName, Source source) {
         Category category = new Category();
         category.setName(categoryName);
+        List<Event> events = new ArrayList<>();
+        category.setEvents(events);
         source.getCategories().add(category);
         dao.save(category);
         sourceDao.save(source);
-    }
-
-    @Override
-    public void removeCategory(Category category) {
-
     }
 
     @Override
@@ -57,7 +53,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
-    //todo
     @Override
     public void remove(Category toRemove, Category moveEventsTo) {
 
