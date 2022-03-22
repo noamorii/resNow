@@ -57,7 +57,7 @@ public abstract class Event {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public abstract void visit(ReservationSlotService reservationSlotService);
+    public abstract void visit(ReservationSlotService reservationSlotService, LocalDate date);
 
     public abstract void visit(EventService eventService);
 }

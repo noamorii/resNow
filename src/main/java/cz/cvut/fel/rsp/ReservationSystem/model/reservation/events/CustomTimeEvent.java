@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import java.time.Duration;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -20,8 +21,8 @@ public class CustomTimeEvent extends Event{
     private Duration minimalReservationTime;
 
     @Override
-    public void visit(ReservationSlotService reservationSlotService) {
-        reservationSlotService.generateCustomTimeSlots(this);
+    public void visit(ReservationSlotService reservationSlotService, LocalDate date) {
+        reservationSlotService.generateCustomTimeSlots(this, date);
     }
 
     @Override

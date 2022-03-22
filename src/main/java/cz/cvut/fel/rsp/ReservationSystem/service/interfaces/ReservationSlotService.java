@@ -6,17 +6,30 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 public interface ReservationSlotService{
+    /**
+     * Generates all time slots for an event.
+     */
     public void generateTimeSlots(Event event);
 
-    public void generateIntervalSlots(IntervalEvent event);
+    /**
+     * Generates intervals on a given day.
+     */
+    public void generateIntervalSlots(IntervalEvent event, LocalDate date);
 
-    public void generateSeatSlots(SeatEvent event);
+    /**
+     * Generates seats on a given day.
+     */
+    public void generateSeatSlots(SeatEvent event, LocalDate date);
 
-    public void generateCustomTimeSlots(CustomTimeEvent event);
+    /**
+     * Generates customtimeslots on a given day.
+     */
+    public void generateCustomTimeSlots(CustomTimeEvent event, LocalDate date);
 
     public List<ReservationSlot> findAll(Event event);
 

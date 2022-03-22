@@ -27,45 +27,43 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
 
     @Override
     public void generateTimeSlots(Event event) {
-        event.visit(this);
-    }
-
-    @Override
-    public void generateIntervalSlots(IntervalEvent event) {
-
-    }
-
-    @Override
-    public void generateSeatSlots(SeatEvent event) {
-        int seatAmount = event.getSeatAmount();
         Repetition repetition = event.getRepetition();
         LocalDate currentDate = event.getStartDate();
         LocalDate endDate = event.getRepeatUntil();
 
         while (repetition.equals(Repetition.NONE) || currentDate.isAfter(endDate)){
-            for (int i = 0; i < seatAmount; i++){
-                Seat seat = new Seat();
-                seat.setPrice(100); // TODO hardcoded price
-                seat.setDate(currentDate);
-                seat.setSeatIdentifier(String.valueOf(i));
-                seat.setEvent(event);
-                seatRepository.save(seat);
-            }
+            // Calls one of the methods, that generate the timeslots on one day. E. g. generateIntervalTimeSlots
+            event.visit(this, currentDate);
 
             if (repetition.equals(Repetition.NONE)) break;
 
-            currentDate = incrementByRepetition(currentDate, repetition);
+            currentDate = repetition.add(currentDate);
         }
     }
 
     @Override
-    public void generateCustomTimeSlots(CustomTimeEvent event) {
+    public void generateIntervalSlots(IntervalEvent event, LocalDate date) {
 
     }
 
-    private LocalDate incrementByRepetition(LocalDate date, Repetition repetition){
-        return null;
+    @Override
+    public void generateSeatSlots(SeatEvent event, LocalDate date) {
+        int seatAmount = event.getSeatAmount();
+        for (int i = 0; i < seatAmount; i++){
+            Seat seat = new Seat();
+            seat.setPrice(100); // TODO hardcoded price
+            seat.setDate(date);
+            seat.setSeatIdentifier(String.valueOf(i));
+            seat.setEvent(event);
+            seatRepository.save(seat);
+        }
     }
+
+    @Override
+    public void generateCustomTimeSlots(CustomTimeEvent event, LocalDate date) {
+
+    }
+
 
     @Override
     public List<ReservationSlot> findAll(Event event) {

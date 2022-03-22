@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import java.time.Duration;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -22,8 +23,8 @@ public class IntervalEvent extends Event{
     private Duration timeBetweenIntervals;
 
     @Override
-    public void visit(ReservationSlotService reservationSlotService) {
-        reservationSlotService.generateIntervalSlots(this);
+    public void visit(ReservationSlotService reservationSlotService, LocalDate date) {
+        reservationSlotService.generateIntervalSlots(this, date);
     }
 
     @Override
