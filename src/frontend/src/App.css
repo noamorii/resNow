@@ -11,14 +11,14 @@ body {
     background: linear-gradient(240.47deg, rgba(247, 251, 255, 0.76) 4.75%, rgba(205, 230, 255, 0.38) 96.6%);;
 }
 
-#logo-container h2 {
+.container h2 {
     font-family: 'Sora', sans-serif;
     margin-top: 20vh;
     animation-name: render;
     animation-duration: 2s;
 }
 
-#logo-container p {
+.container p {
     animation-name: render;
     animation-duration: 4s;
 }
@@ -141,6 +141,10 @@ iframe {
     color: #0D6EFD;
     margin-left: 2vh;
     margin-right: 2vh;
+}
+
+#top-nav a:hover{
+    border-bottom: 2px solid #0D6EFD;
 }
 
 #top-nav > span > span > a:nth-of-type(2) {
