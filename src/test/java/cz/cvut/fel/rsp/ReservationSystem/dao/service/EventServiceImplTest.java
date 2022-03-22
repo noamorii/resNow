@@ -4,7 +4,7 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.CategoryRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.testutil.Generator;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.EventServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class EventServiceImplTest {
     void createEvent_createNoRepetitionEventWithIntervals_eventCreated() {
         Category category = Generator.generateCategory();
         categoryRepository.save(category);
-        Event event = Generator.generateEventWithoutRepetition(Generator.generateCategory());
+        Event event = Generator.generateIntervalEventWithoutRepetition(Generator.generateCategory());
 
         eventService.createEvent(event, category);
 

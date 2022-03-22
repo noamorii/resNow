@@ -4,16 +4,15 @@ import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
 import cz.cvut.fel.rsp.ReservationSystem.model.payment.Cash;
-import cz.cvut.fel.rsp.ReservationSystem.model.payment.Payment;
 import cz.cvut.fel.rsp.ReservationSystem.model.payment.Wire;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.*;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.*;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.PaymentDetails;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 
 import java.time.*;
-import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.Random;
 import java.util.List;
 
@@ -140,8 +139,10 @@ public class Generator {
     }
 
     // TODO others repetition - udelat x metod nebo si to kazdy v testech prenastavi podle potreby?
-    public static Event generateEventWithoutRepetition(Category category){
-        Event event = new Event();
+    public static Event generateIntervalEventWithoutRepetition(Category category){
+        IntervalEvent event = new IntervalEvent();
+        event.setIntervalDuration(Duration.ofHours(1));
+        event.setTimeBetweenIntervals(Duration.ofHours(1));
         event.setName("event" + randomInt());
         event.setFromTime(LocalTime.now());
         event.setToTime(LocalTime.MAX);

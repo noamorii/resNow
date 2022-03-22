@@ -4,7 +4,7 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.CategoryRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

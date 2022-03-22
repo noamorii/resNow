@@ -1,6 +1,9 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.interfaces;
 
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 
 import java.time.LocalTime;
@@ -9,11 +12,11 @@ import java.util.List;
 public interface ReservationSlotService{
     public void generateReservationSlots(Event event);
 
-    public void generateIntervals(Event event);
+    public void generateReservationSlots(IntervalEvent event);
 
-    public void generateSeats(Event event);
+    public void generateSeats(SeatEvent event);
 
-    public void generateCustomTime(Event event);
+    public void generateCustomTime(CustomTimeEvent event);
 
     public List<ReservationSlot> findAll(Event event);
 
