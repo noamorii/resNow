@@ -14,10 +14,6 @@ import java.time.LocalTime;
 @Entity
 @Getter @Setter @NoArgsConstructor
 public class CustomTime extends ReservationSlot{
-
-    @NotNull
-    private Duration timeBetweenReservations;
-
     @NotNull
     @Column(name ="start_time")
     private LocalTime start;
@@ -25,6 +21,9 @@ public class CustomTime extends ReservationSlot{
     @NotNull
     @Column(name = "end_time")
     private LocalTime end;
+
+    @NotNull
+    private boolean mainSlot; // Determines whether this is the first slot, that will get split after a reservation is made.
 
     @Override
     public void visit(ReservationService reservationService) {

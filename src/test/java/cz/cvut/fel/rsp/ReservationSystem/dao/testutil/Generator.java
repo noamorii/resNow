@@ -4,16 +4,15 @@ import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
 import cz.cvut.fel.rsp.ReservationSystem.model.payment.Cash;
-import cz.cvut.fel.rsp.ReservationSystem.model.payment.Payment;
 import cz.cvut.fel.rsp.ReservationSystem.model.payment.Wire;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.*;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.*;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.PaymentDetails;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 
 import java.time.*;
-import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.Random;
 import java.util.List;
 
@@ -77,8 +76,8 @@ public class Generator {
         customTime.setPrice(randomInt());
         customTime.setStart(LocalTime.now());
         customTime.setEnd(LocalTime.MAX);
-        Duration duration = Duration.between(LocalTime.now(),LocalTime.MAX);
-        customTime.setTimeBetweenReservations(duration);
+        // Duration duration = Duration.between(LocalTime.now(),LocalTime.MAX);
+        // customTime.setTimeBetweenReservations(duration);
         return customTime;
     }
 
@@ -95,9 +94,9 @@ public class Generator {
         fixedLengthCustomTime.setPrice(randomInt());
         fixedLengthCustomTime.setStart(LocalTime.now());
         fixedLengthCustomTime.setEnd(LocalTime.MAX);
-        Duration duration = Duration.between(LocalTime.now(),LocalTime.MAX);
-        fixedLengthCustomTime.setTimeBetweenReservations(duration);
-        fixedLengthCustomTime.setFixedLength(duration);
+        // Duration duration = Duration.between(LocalTime.now(),LocalTime.MAX);
+        // fixedLengthCustomTime.setTimeBetweenReservations(duration);
+        // fixedLengthCustomTime.setFixedLength(duration);
         return fixedLengthCustomTime;
     }
 
@@ -140,15 +139,18 @@ public class Generator {
     }
 
     // TODO others repetition - udelat x metod nebo si to kazdy v testech prenastavi podle potreby?
-    public static Event generateEventWithoutRepetition(Category category){
-        Event event = new Event();
+    public static Event generateIntervalEventWithoutRepetition(Category category){
+        IntervalEvent event = new IntervalEvent();
+        event.setIntervalDuration(Duration.ofHours(1));
+        event.setTimeBetweenIntervals(Duration.ofHours(1));
         event.setName("event" + randomInt());
-        event.setFrom(LocalTime.now());
-        event.setTo(LocalTime.MAX);
+        event.setFromTime(LocalTime.now());
+        event.setToTime(LocalTime.now().plusHours(4));
         event.setRepeatUntil(LocalDate.MAX);
         event.setDay(DayOfWeek.of(RAND.nextInt(7) + 1));
         event.setRepetition(Repetition.NONE);
         event.setCategory(generateCategory());
+        event.setStartDate(LocalDate.of(2023, 10, 10));
         return event;
     }
 

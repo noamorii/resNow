@@ -3,16 +3,16 @@ package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 import cz.cvut.fel.rsp.ReservationSystem.dao.CategoryRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
+import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-
-//todo add data check
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -32,39 +32,35 @@ public class CategoryServiceImpl implements CategoryService {
     public void createCategory(String categoryName, Source source) {
         Category category = new Category();
         category.setName(categoryName);
+        List<Event> events = new ArrayList<>();
+        category.setEvents(events);
         source.getCategories().add(category);
         dao.save(category);
         sourceDao.save(source);
     }
 
     @Override
-    public void removeCategory(Category category) {
-        dao.delete(category);
-    }
-
-    @Override
     public void addEventToCategory(Event event, Category category) {
+        if (category.getEvents().contains(event)){
+            throw new ReservationSystemException("Category " + category.getName() + " already has event " + event.getName());
+        }
+
         category.getEvents().add(event);
+        event.setCategory(category);
+        eventDao.save(event);
         dao.save(category);
     }
 
     @Override
     public void removeEventFromCategory(Event event, Category category) {
-        List<Event> events = category.getEvents();
-        events.remove(event);
-        dao.save(category);
+
     }
 
     @Override
     public void update(Category category) {
-        Category oldCategory = dao.getById(category.getId());
-        oldCategory.setName(category.getName());
-        oldCategory.setEvents(category.getEvents());
-        oldCategory.setSource(category.getSource());
-        dao.save(oldCategory);
+
     }
 
-    //todo
     @Override
     public void remove(Category toRemove, Category moveEventsTo) {
 

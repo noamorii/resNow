@@ -1,13 +1,14 @@
 package cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots;
 
 import com.sun.istack.NotNull;
-import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * ALl reservationSlots are going to be generated in the DB after creating an Event.
@@ -30,6 +31,15 @@ public abstract class ReservationSlot implements Serializable {
 
     @NotNull
     private Integer price;
+
+    @NotNull
+    @Column(name = "slot_date")
+    private LocalDate date;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
 
     public abstract void visit(ReservationService reservationService);
 }

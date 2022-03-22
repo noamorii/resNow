@@ -30,6 +30,6 @@ public class Source extends AbstractEntity {
     private ReservationSystem reservationSystem;
 
     @NotNull
-    @OneToMany (mappedBy = "source")
+    @OneToMany (mappedBy = "source", cascade = CascadeType.ALL)
     private List<Category> categories;
 }
