@@ -39,29 +39,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void removeCategory(Category category) {
-        dao.delete(category);
+
     }
 
     @Override
     public void addEventToCategory(Event event, Category category) {
-        category.getEvents().add(event);
-        dao.save(category);
+
     }
 
     @Override
     public void removeEventFromCategory(Event event, Category category) {
-        List<Event> events = category.getEvents();
-        events.remove(event);
-        dao.save(category);
+
     }
 
     @Override
     public void update(Category category) {
-        Category oldCategory = dao.getById(category.getId());
-        oldCategory.setName(category.getName());
-        oldCategory.setEvents(category.getEvents());
-        oldCategory.setSource(category.getSource());
-        dao.save(oldCategory);
+
     }
 
     //todo
