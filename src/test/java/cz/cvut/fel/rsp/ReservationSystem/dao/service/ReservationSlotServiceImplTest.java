@@ -49,4 +49,29 @@ public class ReservationSlotServiceImplTest {
         Assertions.assertEquals(15, seatRepository.findAll().size());
         Assertions.assertEquals(seatEvent.getStartDate(), seatRepository.findAll().get(0).getDate());
     }
+
+    @Test
+    void generateTimeSlots_seatEventWithRepetition_seatsGenerated() {
+        Category category = Generator.generateCategory();
+        categoryRepository.save(category);
+
+        SeatEvent seatEvent = Generator.generateSeatEventWithoutRepetition();
+        seatEvent.setRepetition(Repetition.DAILY);
+        seatEvent.setStartDate(LocalDate.of(2023, 10, 10));
+        seatEvent.setRepeatUntil(LocalDate.of(2023, 10, 13));
+        seatEvent.setSeatAmount(5);
+
+        eventService.createEvent(seatEvent, category);
+
+        Assertions.assertEquals(5 * 4, seatRepository.findAll().size());
+
+        for (int i = 0; i < 4; i++) { // control each date for each seat
+            for (int j = 0; j < 5; j++) {
+                Assertions.assertEquals (
+                        LocalDate.of(2023, 10, 10 + i),
+                        seatRepository.findAll().get(5 * i + j).getDate()
+                );
+            }
+        }
+    }
 }

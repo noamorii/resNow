@@ -39,7 +39,7 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
         LocalDate currentDate = event.getStartDate();
         LocalDate endDate = event.getRepeatUntil();
 
-        while (repetition.equals(Repetition.NONE) || currentDate.isAfter(endDate)){
+        while (repetition.equals(Repetition.NONE) || !currentDate.isAfter(endDate)){
             // Calls one of the methods, that generate the timeslots on one day. E. g. generateIntervalTimeSlots
             event.visit(this, currentDate);
 
