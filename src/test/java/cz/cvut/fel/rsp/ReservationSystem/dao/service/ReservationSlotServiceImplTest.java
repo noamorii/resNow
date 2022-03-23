@@ -2,10 +2,12 @@ package cz.cvut.fel.rsp.ReservationSystem.dao.service;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.CategoryRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.IntervalRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.SeatRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.testutil.Generator;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.EventServiceImpl;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.ReservationSlotServiceImpl;
@@ -18,9 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @SpringBootTest
 @Transactional
@@ -35,6 +35,9 @@ public class ReservationSlotServiceImplTest {
 
     @Autowired
     private SeatRepository seatRepository;
+
+    @Autowired
+    private IntervalRepository intervalRepository;
 
     @Test
     void generateTimeSlots_seatEventWithoutRepetition_seatsGenerated() {
@@ -51,7 +54,7 @@ public class ReservationSlotServiceImplTest {
     }
 
     @Test
-    void generateTimeSlots_seatEventWithRepetition_seatsGenerated() {
+    void generateTimeSlots_seatEventWithDaysRepetition_seatsGenerated() {
         Category category = Generator.generateCategory();
         categoryRepository.save(category);
 
@@ -70,6 +73,43 @@ public class ReservationSlotServiceImplTest {
                 Assertions.assertEquals (
                         LocalDate.of(2023, 10, 10 + i),
                         seatRepository.findAll().get(5 * i + j).getDate()
+                );
+            }
+        }
+    }
+
+    @Test
+    public void generateTimeSlots_IntervalsEventWithoutRepetition_intervalsGenerated() {
+        Category category = Generator.generateCategory();
+        categoryRepository.save(category);
+
+        Event event = Generator.generateIntervalEventWithoutRepetition();
+
+        eventService.createEvent(event, category);
+
+        Assertions.assertEquals(2, intervalRepository.findAll().size()); // not sure how it works
+        Assertions.assertEquals(event.getStartDate(), intervalRepository.findAll().get(0).getDate());
+    }
+
+    @Test
+    public void generateTimeSlots_IntervalsEventWithDaysRepetition_intervalsGenerated() {
+        Category category = Generator.generateCategory();
+        categoryRepository.save(category);
+
+        Event event = Generator.generateIntervalEventWithoutRepetition();
+        event.setRepetition(Repetition.DAILY);
+        event.setStartDate(LocalDate.of(2023, 10, 10));
+        event.setRepeatUntil(LocalDate.of(2023, 10, 13));
+
+        eventService.createEvent(event, category);
+
+        Assertions.assertEquals(2 * 4, intervalRepository.findAll().size()); // not sure how it works (2 intervals?)
+
+        for (int i = 0; i < 4; i++) { // control each date for each interval
+            for (int j = 0; j < 2; j++) {
+                Assertions.assertEquals (
+                        LocalDate.of(2023, 10, 10 + i),
+                        intervalRepository.findAll().get(2 * i + j).getDate()
                 );
             }
         }
