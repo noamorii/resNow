@@ -29,13 +29,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void createCategory(String categoryName, Source source) {
-        Category category = new Category();
-        category.setName(categoryName);
+    public void createCategory(Category category, Source source) {
         List<Event> events = new ArrayList<>();
         category.setEvents(events);
-        source.getCategories().add(category);
         dao.save(category);
+        source.getCategories().add(category);
         sourceDao.save(source);
     }
 

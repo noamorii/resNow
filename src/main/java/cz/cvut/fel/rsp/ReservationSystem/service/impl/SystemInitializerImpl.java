@@ -99,15 +99,15 @@ public class SystemInitializerImpl implements SystemInitializer {
         source.setCategories(Collections.singletonList(category));
         sourceDao.save(source);
 
-        Event event = new Event();
-        event.setName("Event");
-        event.setFrom(LocalTime.now());
-        event.setTo(LocalTime.MAX);
-        event.setRepeatUntil(LocalDate.MAX);
-        event.setDay(DayOfWeek.of(1));
-        event.setRepetition(Repetition.NONE);
-        event.setCategory(category);
-        eventDao.save(event);
+//        Event event = new Event();
+//        event.setName("Event");
+//        event.setFrom(LocalTime.now());
+//        event.setTo(LocalTime.MAX);
+//        event.setRepeatUntil(LocalDate.MAX);
+//        event.setDay(DayOfWeek.of(1));
+//        event.setRepetition(Repetition.NONE);
+//        event.setCategory(category);
+//        eventDao.save(event);
 
         Interval interval = new Interval();
         interval.setPrice(1337);

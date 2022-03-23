@@ -5,7 +5,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 
 public interface CategoryService{
-    public void createCategory(String categoryName, Source source);
+    public void createCategory(Category category, Source source);
 
     public void addEventToCategory(Event event, Category category);
 

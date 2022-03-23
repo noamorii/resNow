@@ -154,14 +154,13 @@ public class Generator {
         return event;
     }
 
-    public static Source generateSource(ReservationSystem reservationSystem, Address address, List<Category> categories){
+    public static Source generateSource(ReservationSystem reservationSystem, Address address){
         Source source = new Source();
         source.setName("source" + randomInt());
         source.setDescription("sourceDescription" + randomInt());
         source.setAddress(address);
         source.setActive(true);
         source.setReservationSystem(reservationSystem);
-        source.setCategories(categories);
         return source;
     }
 

@@ -40,7 +40,7 @@ public class SourceServiceImpl implements SourceService {
 
         categoryRepository.save(initialCategory);
 
-        source.setCategories(Arrays.asList(initialCategory));
+        source.setCategories(new ArrayList<>(Collections.singletonList(initialCategory)));
 
         dao.save(source);
     }
