@@ -8,6 +8,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.payment.Wire;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.*;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.*;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.PaymentDetails;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
@@ -139,7 +140,7 @@ public class Generator {
     }
 
     // TODO others repetition - udelat x metod nebo si to kazdy v testech prenastavi podle potreby?
-    public static Event generateIntervalEventWithoutRepetition(Category category){
+    public static Event generateIntervalEventWithoutRepetition(){
         IntervalEvent event = new IntervalEvent();
         event.setIntervalDuration(Duration.ofHours(1));
         event.setTimeBetweenIntervals(Duration.ofHours(1));
@@ -149,7 +150,25 @@ public class Generator {
         event.setRepeatUntil(LocalDate.MAX);
         event.setDay(DayOfWeek.of(RAND.nextInt(7) + 1));
         event.setRepetition(Repetition.NONE);
-        event.setCategory(generateCategory());
+        event.setStartDate(LocalDate.of(2023, 10, 10));
+        return event;
+    }
+
+    public static Event generateIntervalEventWithRepetition() {
+        Event event = generateIntervalEventWithoutRepetition();
+        event.setRepetition(Repetition.DAILY);
+        return event;
+    }
+
+    public static SeatEvent generateSeatEventWithoutRepetition() {
+        SeatEvent event = new SeatEvent();
+        event.setSeatAmount(15);
+        event.setName("event" + randomInt());
+        event.setFromTime(LocalTime.now());
+        event.setToTime(LocalTime.now().plusHours(4));
+        event.setRepeatUntil(LocalDate.MAX);
+        event.setDay(DayOfWeek.of(RAND.nextInt(7) + 1));
+        event.setRepetition(Repetition.NONE);
         event.setStartDate(LocalDate.of(2023, 10, 10));
         return event;
     }

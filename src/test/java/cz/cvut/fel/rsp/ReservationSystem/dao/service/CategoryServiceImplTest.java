@@ -79,13 +79,13 @@ public class CategoryServiceImplTest {
 
         Category category1 = Generator.generateCategory();
         categoryService.createCategory(category1, source);
-        Event event1 = Generator.generateIntervalEventWithoutRepetition(Generator.generateCategory());
+        Event event1 = Generator.generateIntervalEventWithoutRepetition();
         eventService.createEvent(event1, category1);
         Assertions.assertEquals(category1, event1.getCategory());
 
         Category category2 = Generator.generateCategory();
         categoryService.createCategory(category2, source);
-        Event event2 = Generator.generateIntervalEventWithoutRepetition(Generator.generateCategory());
+        Event event2 = Generator.generateIntervalEventWithoutRepetition();
         eventService.createEvent(event2, category2);
         Assertions.assertEquals(category2, event2.getCategory());
 
@@ -93,6 +93,8 @@ public class CategoryServiceImplTest {
 
         Assertions.assertTrue(category2.getEvents().contains(event1));
         Assertions.assertTrue(category2.getEvents().contains(event2));
+        Assertions.assertEquals(2, category2.getEvents().size());
+
         Assertions.assertEquals(category2, event1.getCategory());
     }
 
@@ -102,7 +104,7 @@ public class CategoryServiceImplTest {
         Category category = Generator.generateCategory();
         categoryService.createCategory(category, source);
 
-        Event event = Generator.generateIntervalEventWithoutRepetition(Generator.generateCategory());
+        Event event = Generator.generateIntervalEventWithoutRepetition();
         eventService.createEvent(event, category);
 
         Assertions.assertThrows(ReservationSystemException.class,

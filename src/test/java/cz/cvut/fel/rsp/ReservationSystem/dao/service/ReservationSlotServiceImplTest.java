@@ -1,10 +1,16 @@
 package cz.cvut.fel.rsp.ReservationSystem.dao.service;
 
+import cz.cvut.fel.rsp.ReservationSystem.dao.CategoryRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.SeatRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.testutil.Generator;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
+import cz.cvut.fel.rsp.ReservationSystem.service.impl.EventServiceImpl;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.ReservationSlotServiceImpl;
+import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,26 +28,25 @@ import java.time.LocalTime;
 public class ReservationSlotServiceImplTest {
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventService eventService;
 
     @Autowired
-    private ReservationSlotServiceImpl reservationSlotService;
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private SeatRepository seatRepository;
 
     @Test
     void generateTimeSlots_seatEventWithoutRepetition_seatsGenerated() {
-        SeatEvent seatEvent = new SeatEvent();
-        seatEvent.setSeatAmount(100);
-        seatEvent.setCategory(Mockito.mock(Category.class)); // mocking here might cause problems
-        seatEvent.setFromTime(LocalTime.NOON);
-        seatEvent.setToTime(LocalTime.MIDNIGHT);
-        seatEvent.setStartDate(LocalDate.of(2025, 10, 10));
-        seatEvent.setRepetition(Repetition.NONE);
-        seatEvent.setName("Ellen Allien balcony");
-        seatEvent.setDay(DayOfWeek.FRIDAY);
-        eventRepository.save(seatEvent);
+        Category category = Generator.generateCategory();
+        categoryRepository.save(category);
 
-        reservationSlotService.generateTimeSlots(seatEvent);
+        SeatEvent seatEvent = Generator.generateSeatEventWithoutRepetition();
+        seatEvent.setSeatAmount(15);
 
-        throw new UnsupportedOperationException(); // TODO finish test
+        eventService.createEvent(seatEvent, category); // <- reservationSlotService.generateTimeSlots(seatEvent) in it
+
+        Assertions.assertEquals(15, seatRepository.findAll().size());
+        Assertions.assertEquals(seatEvent.getStartDate(), seatRepository.findAll().get(0).getDate());
     }
 }
