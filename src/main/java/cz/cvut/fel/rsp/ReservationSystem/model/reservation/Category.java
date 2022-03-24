@@ -16,10 +16,9 @@ public class Category extends AbstractEntity {
     @NotNull
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "source_id")
+    @ManyToMany
     @NotNull
-    private Source source;
+    private List<Source> sources;
 
     @OneToMany(mappedBy = "category")
     private List<Event> events;
