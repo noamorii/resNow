@@ -126,6 +126,8 @@ public class SourceServiceImplTest {
         Category newCategory = Generator.generateCategory();
         Source source = Generator.generateSource(null, null);
         Event event = Generator.generateIntervalEventWithoutRepetition();
+        sourceService.createSource(source, null);
+        categoryService.createCategory(newCategory, source);
         categoryService.addEventToCategory(event, newCategory);
         categoryService.update(newCategory);
 

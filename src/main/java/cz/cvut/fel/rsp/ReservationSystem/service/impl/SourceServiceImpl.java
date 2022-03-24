@@ -37,7 +37,7 @@ public class SourceServiceImpl implements SourceService {
         Category initialCategory = new Category();
         initialCategory.setName("Main events");
         initialCategory.setSource(source);
-
+        initialCategory.setEvents(new ArrayList<>());
         categoryRepository.save(initialCategory);
 
         source.setCategories(new ArrayList<>(Collections.singletonList(initialCategory)));
@@ -90,10 +90,10 @@ public class SourceServiceImpl implements SourceService {
         Category helperCategory = null;
         for (Category category1: source.getCategories()) {
             if (category1.getName().equals("Main events")){
-                helperCategory = category1;
+                helperCategory = categoryRepository.getById(category1.getId());
+                break;
             }
         }
-
         helperCategory.getEvents().addAll(category.getEvents());
         categoryRepository.save(helperCategory);
         for (Event event: category.getEvents()) {
