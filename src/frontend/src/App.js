@@ -12,7 +12,7 @@ const App = () => {
         <BrowserRouter>
             {/*<Nabvar/>*/}
             <Routes>
-                <Route exact  path="/" element={<Welcome/>}/>
+                <Route exact  path="/ " element={<Welcome/>}/>
                 <Route exact  path="/beta" element={<IndexPage/>}/>
                 <Route exact  path="/about" element={<AboutUs/>}/>
             </Routes>
