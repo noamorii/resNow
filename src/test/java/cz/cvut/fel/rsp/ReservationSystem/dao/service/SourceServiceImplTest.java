@@ -2,10 +2,10 @@ package cz.cvut.fel.rsp.ReservationSystem.dao.service;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.CategoryRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
-import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationSystemRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.testutil.Generator;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
@@ -35,9 +35,6 @@ public class SourceServiceImplTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private EventRepository eventRepository;
 
     @Test
     void createSource_createRegularSource_sourceCreated() {
@@ -131,12 +128,9 @@ public class SourceServiceImplTest {
     void removeCategory_removeSomeCategory_removesPickedCategory(){
         Category newCategory = Generator.generateCategory();
         Source source = Generator.generateSource(null, null);
-        Event event = Generator.generateIntervalEventWithoutRepetition();
 
         sourceService.createSource(source, null);
         categoryService.createCategory(newCategory, source);
-//        categoryService.addEventToCategory(event, newCategory);
-//        categoryService.update(newCategory);
 
         Source result = sourceRepository.findById(source.getId()).get();
         Assertions.assertEquals(result.getCategories().size(), 2);
@@ -175,5 +169,62 @@ public class SourceServiceImplTest {
 
         boolean isEventCategoryChanged = result.getCategories().contains(mainCategory);
         Assertions.assertTrue(isEventCategoryChanged);
+    }
+
+    @Test
+    void exists_existsExistedSource_returnTrue(){
+        Source source = Generator.generateSource(null, null);
+        sourceService.createSource(source, null);
+
+        boolean exists = sourceService.exists(source);
+        Assertions.assertTrue(exists);
+    }
+
+    @Test
+    void exists_notPersistedSource_returnFalse(){
+        Source source = Generator.generateSource(null, null);
+        source.setId(1);
+
+        boolean exists = sourceService.exists(source);
+        Assertions.assertFalse(exists);
+    }
+
+    @Test
+    void removeAddress_removeAddress_SourceChangedAddressToNull(){
+        Source source = Generator.generateSource(null, null);
+        sourceService.createSource(source, null);
+
+        sourceService.removeAddress(source);
+        Source result = sourceRepository.findById(source.getId()).get();
+
+        Address resultAddress = result.getAddress();
+        Assertions.assertNull(resultAddress);
+    }
+
+    @Test
+    void addAddress_addNewAddress_SourceHasNewAddress(){
+        Source source = Generator.generateSource(null, null);
+        source.setAddress(null);
+        sourceService.createSource(source, null);
+
+        Address address = Generator.generateAddress();
+        sourceService.addAddress(source, address);
+
+        Source result = sourceRepository.findById(source.getId()).get();
+        Address resultAddress = result.getAddress();
+
+        Assertions.assertEquals(resultAddress, address);
+    }
+
+    @Test
+    void addAddress_addNewAddressToSourceWithAddress_returnReservationSystemException(){
+        Source source = Generator.generateSource(null, null);
+        Address originAddress = Generator.generateAddress();
+        source.setAddress(originAddress);
+        sourceService.createSource(source, null);
+
+        Address address = Generator.generateAddress();
+
+        Assertions.assertThrows(ReservationSystemException.class, () -> sourceService.addAddress(source, address));
     }
 }
