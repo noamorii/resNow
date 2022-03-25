@@ -173,6 +173,7 @@ public class Generator {
         return event;
     }
 
+    // Nenastavuje id
     public static Source generateSource(ReservationSystem reservationSystem, Address address){
         Source source = new Source();
         source.setName("source" + randomInt());
