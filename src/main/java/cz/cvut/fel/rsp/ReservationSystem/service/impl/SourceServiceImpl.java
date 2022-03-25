@@ -36,7 +36,7 @@ public class SourceServiceImpl implements SourceService {
 
         Category initialCategory = new Category();
         initialCategory.setName("Main events");
-        initialCategory.setSource(source);
+        initialCategory.setSources(Arrays.asList(source));
         initialCategory.setEvents(new ArrayList<>());
         categoryRepository.save(initialCategory);
 
@@ -73,7 +73,7 @@ public class SourceServiceImpl implements SourceService {
         }
 
         source.getCategories().add(category);
-        category.setSource(source);
+        category.setSources(Arrays.asList(source));
         categoryRepository.save(category);
         dao.save(source);
     }
