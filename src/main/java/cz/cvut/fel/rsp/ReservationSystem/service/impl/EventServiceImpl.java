@@ -13,8 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -31,7 +30,7 @@ public class EventServiceImpl implements EventService {
         event.setCategory(category);
 
         if (Objects.isNull(category.getEvents())) {
-            category.setEvents(Arrays.asList(event));
+            category.setEvents(new ArrayList<>(Collections.singletonList(event)));
         }
         else{
             category.getEvents().add(event);

@@ -99,8 +99,7 @@ public class CategoryServiceImplTest {
     }
 
     @Test
-    public void addEvent_addExistingEvent_ExceptionTrowed() {
-
+    public void addEvent_addExistingEvent_ExceptionThrowed() {
         Category category = Generator.generateCategory();
         categoryService.createCategory(category, source);
 
@@ -109,6 +108,24 @@ public class CategoryServiceImplTest {
 
         Assertions.assertThrows(ReservationSystemException.class,
                 () -> categoryService.addEventToCategory(event, category));
+    }
+
+    @Test
+    public void addEvent_addNewEvent_EventIsAddedToCategory(){
+        Category originalCategory = Generator.generateCategory();
+        categoryService.createCategory(originalCategory, source);
+        Category category = Generator.generateCategory();
+        categoryService.createCategory(category, source);
+
+        Event event = Generator.generateIntervalEventWithoutRepetition();
+        eventService.createEvent(event, originalCategory);
+
+        categoryService.addEventToCategory(event, category);
+
+        Category result = categoryRepository.getById(category.getId());
+
+        Assertions.assertTrue(result.getEvents().contains(event));
+
     }
 
 }
