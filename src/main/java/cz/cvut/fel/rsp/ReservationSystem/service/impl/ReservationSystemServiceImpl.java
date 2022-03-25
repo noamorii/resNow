@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
+import cz.cvut.fel.rsp.ReservationSystem.dao.PaymentDetailsRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationSystemRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
@@ -19,8 +20,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Transactional
 public class ReservationSystemServiceImpl implements ReservationSystemService {
-    private final ReservationSystemRepository reservationSystemRepository;
 
+    private final ReservationSystemRepository reservationSystemRepository;
+    private final PaymentDetailsRepository paymentDetailsRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -53,6 +55,7 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
         managers.add(user);
         userManages.add(reservationSystem);
         userRepository.save(user);
+        paymentDetailsRepository.save(user.getPaymentDetails());
         reservationSystemRepository.save(reservationSystem);
     }
 }
