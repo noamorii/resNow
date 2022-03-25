@@ -73,8 +73,13 @@ public class SourceServiceImplTest {
     void addCategory_addNewCategory_sourceHasNewCategory() {
         Category newCategory = Generator.generateCategory();
         Source source = Generator.generateSource(null, null);
+        Source originalSource = Generator.generateSource(null, null);
+
 
         sourceService.createSource(source, null);
+        sourceService.createSource(originalSource, null);
+        categoryService.createCategory(newCategory, originalSource);
+
         sourceService.addCategory(source, newCategory);
 
         Source result = sourceRepository.findById(source.getId()).get();
@@ -86,10 +91,11 @@ public class SourceServiceImplTest {
     @Test
     void addCategory_addPickedCategory_returnReservationSystemException(){
         Category newCategory = Generator.generateCategory();
-        Source source = Generator.generateSource(null, null);
+        ReservationSystem reservationSystem = Generator.generateReservationSystem(null, null);
+        Source source = Generator.generateSource(reservationSystem, null);
 
         sourceService.createSource(source, null);
-        sourceService.addCategory(source, newCategory);
+        categoryService.createCategory(newCategory, source);
 
         Source result = sourceRepository.findById(source.getId()).get();
 
@@ -123,31 +129,51 @@ public class SourceServiceImplTest {
 
     @Test
     void removeCategory_removeSomeCategory_removesPickedCategory(){
-//        Category newCategory = Generator.generateCategory();
-//        Source source = Generator.generateSource(null, null);
-//        Event event = Generator.generateIntervalEventWithoutRepetition();
-//        sourceService.createSource(source, null);
-//        categoryService.createCategory(newCategory, source);
+        Category newCategory = Generator.generateCategory();
+        Source source = Generator.generateSource(null, null);
+        Event event = Generator.generateIntervalEventWithoutRepetition();
+
+        sourceService.createSource(source, null);
+        categoryService.createCategory(newCategory, source);
 //        categoryService.addEventToCategory(event, newCategory);
 //        categoryService.update(newCategory);
-//
-//        sourceService.createSource(source, null);
-//        sourceService.addCategory(source, newCategory);
-//
-//        Source result = sourceRepository.findById(source.getId()).get();
-//        Assertions.assertEquals(result.getCategories().size(), 2);
-//
-//        Category categoryToRemove = categoryRepository.getById(newCategory.getId());
-//
-//        sourceService.removeCategory(result, categoryToRemove);
-//        result = sourceRepository.findById(source.getId()).get();
 
-//        boolean isRemovedCategoryIn = result.getCategories().contains(newCategory);
-//        Assertions.assertFalse(isRemovedCategoryIn);
+        Source result = sourceRepository.findById(source.getId()).get();
+        Assertions.assertEquals(result.getCategories().size(), 2);
+
+        Category categoryToRemove = categoryRepository.getById(newCategory.getId());
+        sourceService.removeCategory(result, categoryToRemove);
+        result = sourceRepository.findById(source.getId()).get();
+
+        boolean isRemovedCategoryIn = result.getCategories().contains(newCategory);
+        Assertions.assertFalse(isRemovedCategoryIn);
     }
 
     @Test
     void removeCategory_removeSomeCategoryWithEvents_eventsChangeCategoryToMainCategory(){
+        Category newCategory = Generator.generateCategory();
+        Source source = Generator.generateSource(null, null);
+        Event event = Generator.generateIntervalEventWithoutRepetition();
 
+        sourceService.createSource(source, null);
+        categoryService.createCategory(newCategory, source);
+        categoryService.addEventToCategory(event, newCategory);
+        categoryService.update(newCategory);
+
+        Source result = sourceRepository.findById(source.getId()).get();
+        Assertions.assertEquals(result.getCategories().size(), 2);
+
+        Category categoryToRemove = categoryRepository.getById(newCategory.getId());
+        sourceService.removeCategory(result, categoryToRemove);
+        result = sourceRepository.findById(source.getId()).get();
+
+        Category mainCategory = result.getCategories().get(0);
+        Event resultEvent = mainCategory.getEvents().get(0);
+
+        boolean isRemovedCategoryIn = result.getCategories().contains(newCategory);
+        Assertions.assertFalse(isRemovedCategoryIn);
+
+        boolean isEventCategoryChanged = result.getCategories().contains(mainCategory);
+        Assertions.assertTrue(isEventCategoryChanged);
     }
 }
