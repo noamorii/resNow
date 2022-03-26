@@ -1,0 +1,94 @@
+.container h2 {
+  font-family: 'Sora', sans-serif;
+  margin-top: 20vh;
+  animation-name: render;
+  animation-duration: 2s;
+}
+
+.container p {
+  animation-name: render;
+  animation-duration: 4s;
+}
+
+.logoContainer img {
+  width: 25vh;
+}
+
+.container {
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20vh;
+}
+
+@keyframes render {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+.presentationContainer {
+  text-align: center;
+}
+
+iframe {
+  margin-top: 7vh;
+  width: 145vh;
+  height: 86vh;
+}
+
+.logoContainer:hover #logo-upper {
+  animation-name: logo-upper-animate;
+  animation-duration: 2s;
+}
+
+.logoContainer:hover #logo-bottom {
+  animation-name: logo-bottom-animate;
+  animation-duration: 2s;
+}
+
+.logoContainer {
+  width: 25vh;
+  height: 25vh;
+  text-align: center;
+  background: #006cff;
+  border-radius: 3vh;
+}
+
+#mid-o-logo {
+  transform: translate(15vh, 9vh);
+}
+
+@keyframes logo-bottom-animate {
+  0% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  25% {
+    transform: matrix(1, 0, 0, 1, 0, 12);
+  }
+  50% {
+    transform: matrix(1, 0, 0, 1, 0, -15);
+  }
+  100% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+}
+
+@keyframes logo-upper-animate {
+  0% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  25% {
+    transform: matrix(1, 0, 0, 1, 0, -12);
+  }
+  50% {
+    transform: matrix(1, 0, 0, 1, 0, 15);
+  }
+  100% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+}

@@ -1,20 +1,18 @@
-import './App.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import AboutUs from "./pages/AboutUs";
-import Welcome from "./pages/Welcome";
-import IndexPage from "./pages/IndexPage";
-import Nabvar from "./parts/Header/Nabvar";
+import AboutUs from "./pages/global/welcome-page/AboutUs";
+import Welcome from "./pages/global/welcome-page/Welcome";
+import {DocumentationPage, IndexPage} from "./pages";
 
 
 const App = () => {
     return (
         <BrowserRouter>
-            {/*<Nabvar/>*/}
             <Routes>
                 <Route exact  path="/" element={<Welcome/>}/>
                 <Route exact  path="/beta" element={<IndexPage/>}/>
                 <Route exact  path="/about" element={<AboutUs/>}/>
+                <Route exact  path="/fe-template-documentation" element={<DocumentationPage/>}/>
             </Routes>
         </BrowserRouter>
     )
