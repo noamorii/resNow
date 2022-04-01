@@ -61,7 +61,7 @@ body {
 
 //INPUTS
 .input-primary {
-    width: 50vh;
+    width: 40vh;
     height: 5vh;
 
     border: none;
@@ -69,7 +69,27 @@ body {
 
     text-indent: 2vh;
 
+    &.lg{
+        width: 50vh;
+        height: 6vh;
+        border-radius: 2vh;
+    }
+
+    &.sm{
+        width: 30vh;
+        height: 4vh;
+        border-radius: 1.3vh;
+    }
+
     &:focus{
         outline: 0.4vh solid #306DF5;
+    }
+
+    &.error{
+        outline: 0.4vh solid #f53030;
+    }
+
+    &.correct{
+        outline: 0.4vh solid #17c428;
     }
 }
