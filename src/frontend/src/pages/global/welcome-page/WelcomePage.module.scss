@@ -41,14 +41,18 @@ iframe {
   height: 86vh;
 }
 
-.logoContainer:hover #logo-upper {
+.activeUp {
   animation-name: logo-upper-animate;
   animation-duration: 2s;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform-origin: 47% 62%;
 }
 
-.logoContainer:hover #logo-bottom {
+.activeBottom {
   animation-name: logo-bottom-animate;
   animation-duration: 2s;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform-origin: 47% 80%;
 }
 
 .logoContainer {
@@ -73,8 +77,17 @@ iframe {
   50% {
     transform: matrix(1, 0, 0, 1, 0, -15);
   }
-  100% {
+  75% {
     transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  75%{
+    transform: rotate(0);
+  }
+  85% {
+    transform: rotate(390deg);
+  }
+  100%{
+    transform: rotate(360deg);
   }
 }
 
@@ -88,7 +101,16 @@ iframe {
   50% {
     transform: matrix(1, 0, 0, 1, 0, 15);
   }
-  100% {
+  75%{
     transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  75%{
+    transform: rotate(0);
+  }
+  85% {
+    transform: rotate(-390deg);
+  }
+  100%{
+    transform: rotate(-360deg);
   }
 }
