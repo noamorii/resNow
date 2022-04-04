@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.PaymentDetailsRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.PaymentDetails;
@@ -9,6 +10,7 @@ import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,11 +18,13 @@ public class UserServiceImpl implements UserService {
 
     private final PaymentDetailsRepository paymentDetailsRepository;
     private final UserRepository userRepository;
+    private final ReservationRepository reservationRepository;
 
     @Autowired
-    public UserServiceImpl(PaymentDetailsRepository paymentDetailsRepository, UserRepository userRepository) {
+    public UserServiceImpl(PaymentDetailsRepository paymentDetailsRepository, UserRepository userRepository, ReservationRepository reservationRepository) {
         this.paymentDetailsRepository = paymentDetailsRepository;
         this.userRepository = userRepository;
+        this.reservationRepository = reservationRepository;
     }
 
 
@@ -53,6 +57,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Reservation> findUnpaidReservations(User user) {
-        return null;
+        List<Reservation> reservations = reservationRepository.findAllUsersReservations(user);
+        List<Reservation> result = new ArrayList<>();
+        for (Reservation reservation: reservations) {
+            if (reservation.getPayment() == null){
+                result.add(reservation);
+            }
+        }
+        return result;
     }
 }
