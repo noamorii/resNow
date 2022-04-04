@@ -26,7 +26,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addPaymentDetails(User user, PaymentDetails paymentDetails) {
-
+        paymentDetails.setUser(user);
+        user.setPaymentDetails(paymentDetails);
+        userRepository.save(user);
+        paymentDetailsRepository.save(paymentDetails);
     }
 
     @Override
