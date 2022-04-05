@@ -35,4 +35,15 @@ public class FeedbackServiceImpl implements FeedbackService {
         dao.save(feedback);
         reservationSystemDao.save(reservationSystem);
     }
+
+    @Override
+    public void deleteFeedback(ReservationSystem reservationSystem, Feedback feedback) {
+        dao.delete(feedback);
+        if (reservationSystem.getFeedback().contains(feedback)) {
+            reservationSystem.getFeedback().remove(feedback);
+            reservationSystemDao.save(reservationSystem);
+        } else {
+            throw new FeedbackException("This is not feedback of this reservation system.");
+        }
+    }
 }

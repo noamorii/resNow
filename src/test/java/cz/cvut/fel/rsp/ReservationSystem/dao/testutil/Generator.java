@@ -208,7 +208,7 @@ public class Generator {
 //        return categories;
 //    }
 
-    private static Feedback generateFeedback(){
+    public static Feedback generateFeedback(){
         Feedback feedback = new Feedback();
         feedback.setMessage("feedback" + randomInt());
         return feedback;
