@@ -71,8 +71,8 @@ public class EventServiceImplTest {
     @Test
     void createEvent_createInvalidFromAndToTimeRepetitionEventWithIntervals_ExceptionTrowed() {
         Event event = Generator.generateIntervalEventWithoutRepetition();
-        event.setFromTime(LocalTime.now().plusHours(4));
-        event.setToTime(LocalTime.now());
+        event.setFromTime(LocalTime.of(4,0));
+        event.setToTime(LocalTime.of(1,0));
 
         Assertions.assertThrows(EventException.class, () -> eventService.createEvent(event, category));
     }
