@@ -114,7 +114,7 @@ public class Generator {
 
     public static Cash generateCash(Reservation reservation){
         Cash cash = new Cash();
-        cash.setAmount(reservation.getPayment().getAmount());
+        cash.setAmount(reservation.getReservationSlot().getPrice());
         cash.setDateTimePaid(LocalDateTime.now());
         cash.setReservation(reservation);
         cash.setFoo("foo" + randomInt());
@@ -145,8 +145,8 @@ public class Generator {
         event.setIntervalDuration(Duration.ofHours(1));
         event.setTimeBetweenIntervals(Duration.ofHours(1));
         event.setName("event" + randomInt());
-        event.setFromTime(LocalTime.now());
-        event.setToTime(LocalTime.now().plusHours(4));
+        event.setFromTime(LocalTime.of(1,0));
+        event.setToTime(LocalTime.of(4,0));
         event.setRepeatUntil(LocalDate.MAX);
         event.setDay(DayOfWeek.of(RAND.nextInt(7) + 1));
         event.setRepetition(Repetition.NONE);
@@ -164,8 +164,8 @@ public class Generator {
         SeatEvent event = new SeatEvent();
         event.setSeatAmount(15);
         event.setName("event" + randomInt());
-        event.setFromTime(LocalTime.now());
-        event.setToTime(LocalTime.now().plusHours(4));
+        event.setFromTime(LocalTime.of(1,0));
+        event.setToTime(LocalTime.of(4,0));
         event.setRepeatUntil(LocalDate.MAX);
         event.setDay(DayOfWeek.of(RAND.nextInt(7) + 1));
         event.setRepetition(Repetition.NONE);
