@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.CustomTimeRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.IntervalRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationSlotRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.SeatRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
@@ -32,6 +33,8 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
     private final CustomTimeRepository customTimeRepository;
 
     private final IntervalRepository intervalRepository;
+
+    private final ReservationSlotRepository reservationSlotRepository;
 
     @Override
     public void generateTimeSlots(Event event) {
@@ -93,31 +96,31 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
 
     @Override
     public List<ReservationSlot> findAll(Event event) {
-        return null;
+        return reservationSlotRepository.findByEventId(event.getId());
     }
 
     @Override
-    public List<ReservationSlot> findAll(Event event, LocalTime from, LocalTime to) {
-        return null;
+    public List<ReservationSlot> findAll(Event event, LocalDate from, LocalDate to) {
+        return reservationSlotRepository.findByEventId(event.getId(), from, to);
     }
 
     @Override
     public List<ReservationSlot> findAllReserved(Event event) {
-        return null;
+        return reservationSlotRepository.findReservedByEventId(event.getId());
     }
 
     @Override
-    public List<ReservationSlot> findAllReserved(Event event, LocalTime from, LocalTime to) {
-        return null;
+    public List<ReservationSlot> findAllReserved(Event event, LocalDate from, LocalDate to) {
+        return reservationSlotRepository.findReservedByEventId(event.getId(), from, to);
     }
 
     @Override
     public List<ReservationSlot> findAllFree(Event event) {
-        return null;
+        return reservationSlotRepository.findFreeByEventId(event.getId());
     }
 
     @Override
-    public List<ReservationSlot> findAllFree(Event event, LocalTime from, LocalTime to) {
-        return null;
+    public List<ReservationSlot> findAllFree(Event event, LocalDate from, LocalDate to) {
+        return reservationSlotRepository.findFreeByEventId(event.getId(), from, to);
     }
 }

@@ -8,6 +8,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
+import cz.cvut.fel.rsp.ReservationSystem.service.impl.ReservationSlotServiceImpl;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,11 +19,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class ReservationSlotServiceImplTest {
+
+    @Autowired
+    private ReservationSlotServiceImpl reservationSlotService;
 
     @Autowired
     private EventService eventService;
@@ -106,5 +111,71 @@ public class ReservationSlotServiceImplTest {
                 );
             }
         }
+    }
+
+    @Test
+    public void findAll_seatEventsWithoutRepetition_allReservationSlotsFound(){
+        SeatEvent seatEvent = Generator.generateSeatEventWithoutRepetition();
+        seatEvent.setStartDate(LocalDate.of(2023, 10, 10));
+        seatEvent.setRepeatUntil(LocalDate.of(2023, 10, 13));
+        seatEvent.setSeatAmount(5);
+
+        eventService.createEvent(seatEvent, category);
+
+        Assertions.assertEquals(5, reservationSlotService.findAll(seatEvent).size());
+    }
+
+    @Test
+    public void findAllFree_seatEventsWithoutRepetition_allFreeReservationSlotsFound(){
+        SeatEvent seatEvent = Generator.generateSeatEventWithoutRepetition();
+        seatEvent.setStartDate(LocalDate.of(2023, 10, 10));
+        seatEvent.setRepeatUntil(LocalDate.of(2023, 10, 13));
+        seatEvent.setSeatAmount(5);
+
+        eventService.createEvent(seatEvent, category);
+
+        Assertions.assertEquals(5, reservationSlotService.findAllFree(seatEvent).size());
+    }
+
+    @Test
+    public void findAllFree_seatEventsWithoutRepetitionInYear2025_noReservationSlotsFound(){
+        SeatEvent seatEvent = Generator.generateSeatEventWithoutRepetition();
+        seatEvent.setStartDate(LocalDate.of(2023, 10, 10));
+        seatEvent.setRepeatUntil(LocalDate.of(2023, 10, 13));
+        seatEvent.setSeatAmount(5);
+        LocalDate queryStart = LocalDate.of(2025, 10, 10);
+        LocalDate queryEnd = LocalDate.of(2025, 11, 11);
+
+
+        eventService.createEvent(seatEvent, category);
+
+        Assertions.assertEquals(0, reservationSlotService.findAllFree(seatEvent, queryStart, queryEnd).size());
+    }
+
+    @Test
+    public void findAllFree_seatEventsWithoutRepetitionIn2023_allReservationSlotsFound(){
+        SeatEvent seatEvent = Generator.generateSeatEventWithoutRepetition();
+        seatEvent.setStartDate(LocalDate.of(2023, 10, 10));
+        seatEvent.setRepeatUntil(LocalDate.of(2023, 10, 13));
+        seatEvent.setSeatAmount(5);
+        LocalDate queryStart = LocalDate.of(2023, 10, 10);
+        LocalDate queryEnd = LocalDate.of(2023, 10, 13);
+
+
+        eventService.createEvent(seatEvent, category);
+
+        Assertions.assertEquals(5, reservationSlotService.findAllFree(seatEvent, queryStart, queryEnd).size());
+    }
+
+    @Test
+    public void findAllReserved_seatEventsWithoutRepetition_noReservationSlotsFound(){
+        SeatEvent seatEvent = Generator.generateSeatEventWithoutRepetition();
+        seatEvent.setStartDate(LocalDate.of(2023, 10, 10));
+        seatEvent.setRepeatUntil(LocalDate.of(2023, 10, 13));
+        seatEvent.setSeatAmount(5);
+
+        eventService.createEvent(seatEvent, category);
+
+        Assertions.assertEquals(0, reservationSlotService.findAllReserved(seatEvent).size());
     }
 }
