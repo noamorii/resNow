@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.ReservationSystem.dao.service;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationSystemRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.testutil.Generator;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
@@ -25,13 +26,19 @@ public class ReservationSystemServiceImplTest {
     @Autowired
     private ReservationSystemRepository reservationSystemRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private User owner, employee;
+
     private ReservationSystem reservationSystem;
 
     @BeforeEach
     public void init() {
         owner = Generator.generateSystemOwner();
         employee = Generator.generateEmployeeUser();
+        userRepository.save(owner);
+        userRepository.save(employee);
         reservationSystem = new ReservationSystem();
         reservationSystem.setName("Test system");
     }

@@ -54,8 +54,7 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
 
         managers.add(user);
         userManages.add(reservationSystem);
-        userRepository.save(user);
-        paymentDetailsRepository.save(user.getPaymentDetails());
         reservationSystemRepository.save(reservationSystem);
+        userRepository.save(user);
     }
 }

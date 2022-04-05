@@ -1,133 +1,104 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
-import cz.cvut.fel.rsp.ReservationSystem.dao.*;
+import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.*;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.Interval;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.PaymentDetails;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
-import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.CategoryService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.SystemInitializer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
-@Service
+@Component
+@RequiredArgsConstructor
 public class SystemInitializerImpl implements SystemInitializer {
 
     private final ReservationSystemServiceImpl reservationSystemService;
-    private final CategoryRepository catDao;
-    private final EventRepository eventDao;
-    private final SourceRepository sourceDao;
-    private final IntervalRepository intervalDao;
-    private final ReservationRepository reservationDao;
 
-    @Autowired
-    public SystemInitializerImpl(ReservationSystemServiceImpl reservationSystemService,
-                                 CategoryRepository catDao, EventRepository eventDao, SourceRepository sourceDao, IntervalRepository intervalDao, ReservationRepository reservationDao) {
-        this.reservationSystemService = reservationSystemService;
-        this.catDao = catDao;
-        this.eventDao = eventDao;
-        this.sourceDao = sourceDao;
-        this.intervalDao = intervalDao;
-        this.reservationDao = reservationDao;
-    }
+    private final SourceServiceImpl sourceService;
 
-    // change as soon as services appear
+    private final EventServiceImpl eventService;
+
+    private final UserRepository userRepository; // TODO change for user service later
+
+    private final Environment environment;
 
     @Override
+    @PostConstruct
     public void initSystem() {
+        if (Arrays.asList(environment.getActiveProfiles()).contains("testprofile")) {
+            return;
+        }
 
+        User systemOwner = generateOwner();
+        ReservationSystem reservationSystem = generateReservationSystem(systemOwner);
+        Source source = generateSource(reservationSystem);
+        Event seatEvent = generateSeatEvent(source);
+    }
+
+    private Event generateSeatEvent(Source source){
+        SeatEvent event = new SeatEvent();
+        event.setName("Freies Bier");
+        event.setDay(DayOfWeek.FRIDAY);
+        event.setRepetition(Repetition.NONE);
+        event.setFromTime(LocalTime.of(10, 0));
+        event.setToTime(LocalTime.of(20, 0));
+        event.setStartDate(LocalDate.now());
+        event.setSeatAmount(100);
+
+        eventService.createEvent(event, source.getCategories().get(0));
+
+        return event;
+    }
+
+    private Source generateSource(ReservationSystem reservationSystem){
+        Source source = new Source();
+        source.setActive(true);
+        source.setName("Berliner Laden");
+        source.setDescription("Laden bei Kotti");
+
+        sourceService.createSource(source, reservationSystem);
+
+        return source;
+    }
+
+    private ReservationSystem generateReservationSystem(User owner){
         ReservationSystem reservationSystem = new ReservationSystem();
-        reservationSystem.setName("ReserveNow");
-
-        User owner = new User();
-        owner.setUsername("Owner");
-        owner.setFirstName("Name");
-        owner.setLastName("LastName");
-        owner.setPassword("owner");
-        owner.setEmail("owner@reservationSystem.cz");
-        owner.setUserType(UserType.SYSTEM_OWNER);
-        owner.setPaymentDetails(createPaymentDetails(owner, "OwnerCreditCardNumber"));
+        reservationSystem.setName("Aldi");
 
         reservationSystemService.createReservationSystem(owner, reservationSystem);
 
-        User employee = new User();
-        employee.setUsername("Employee");
-        employee.setFirstName("E_Name");
-        employee.setLastName("E_LastName");
-        employee.setPassword("employee");
-        employee.setEmail("employee@reservationSystem.cz");
-        employee.setUserType(UserType.SYSTEM_EMPLOYEE);
-        employee.setPaymentDetails(createPaymentDetails(employee, "EmployeeCreditCardNumber"));
-
-        reservationSystemService.addManager(employee, reservationSystem);
-
-        User regular = new User();
-        regular.setUsername("Regular");
-        regular.setFirstName("R_Name");
-        regular.setLastName("R_LastName");
-        regular.setPassword("regular");
-        regular.setEmail("regular@reservationSystem.cz");
-        regular.setUserType(UserType.REGULAR_USER);
-        regular.setPaymentDetails(createPaymentDetails(regular, "RegularCreditCardNumber"));
-
-
-        Category category = new Category();
-        category.setName("Category");
-        catDao.save(category);
-
-        Address address = new Address();
-        address.setCity("city");
-        address.setStreet("street");
-        address.setHouseNumber("house");
-        address.setHouseNumber("postalNumber");
-
-        Source source = new Source();
-        source.setName("Source");
-        source.setDescription("sourceDescription");
-        source.setAddress(address);
-        source.setActive(true);
-        source.setReservationSystem(reservationSystem);
-        source.setCategories(Collections.singletonList(category));
-        sourceDao.save(source);
-
-//        Event event = new Event();
-//        event.setName("Event");
-//        event.setFrom(LocalTime.now());
-//        event.setTo(LocalTime.MAX);
-//        event.setRepeatUntil(LocalDate.MAX);
-//        event.setDay(DayOfWeek.of(1));
-//        event.setRepetition(Repetition.NONE);
-//        event.setCategory(category);
-//        eventDao.save(event);
-
-        Interval interval = new Interval();
-        interval.setPrice(1337);
-        interval.setStart(LocalTime.now());
-        interval.setEnd(LocalTime.MAX);
-        intervalDao.save(interval);
-
-        Reservation reservation = new Reservation();
-        reservation.setUser(regular);
-        reservation.setReservationSlot(interval);
-        reservation.setCancelled(false);
-        reservation.setAdditionalInfo("additionalInfo");
-        reservationDao.save(reservation);
-
+        return reservationSystem;
     }
 
-    private PaymentDetails createPaymentDetails(User user, String cardNumber) {
-        PaymentDetails paymentDetails = new PaymentDetails();
-        paymentDetails.setUser(user);
-        paymentDetails.setCreditCardNumber(cardNumber);
-        return paymentDetails;
+    private User generateOwner(){
+        User user = new User();
+        user.setEmail("owner@rynary.com");
+        user.setUsername("BertHert");
+        user.setFirstName("Herbert");
+        user.setLastName("Adenauer");
+        user.setUserType(UserType.SYSTEM_OWNER);
+        user.setPassword("password"); // TODO
+
+        userRepository.save(user);
+
+        return user;
     }
 }
