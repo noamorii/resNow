@@ -57,4 +57,14 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
         reservationSystemRepository.save(reservationSystem);
         userRepository.save(user);
     }
+
+    @Override
+    public List<ReservationSystem> findAll() {
+        return reservationSystemRepository.findAll();
+    }
+
+    @Override
+    public ReservationSystem find(Integer id) {
+        return reservationSystemRepository.getById(id);
+    }
 }

@@ -18,13 +18,16 @@ import java.util.*;
 
 @Service
 public class SourceServiceImpl implements SourceService {
-    private final SourceRepository dao;
+
+    private final SourceRepository sourceRepository;
+
     private final CategoryRepository categoryRepository;
+
     private final EventRepository eventRepository;
 
     @Autowired
-    public SourceServiceImpl(SourceRepository dao, CategoryRepository categoryRepository, EventRepository eventRepository) {
-        this.dao = dao;
+    public SourceServiceImpl(SourceRepository sourceRepository, CategoryRepository categoryRepository, EventRepository eventRepository) {
+        this.sourceRepository = sourceRepository;
         this.categoryRepository = categoryRepository;
         this.eventRepository = eventRepository;
     }
@@ -42,7 +45,7 @@ public class SourceServiceImpl implements SourceService {
 
         source.setCategories(new ArrayList<>(Collections.singletonList(initialCategory)));
 
-        dao.save(source);
+        sourceRepository.save(source);
     }
 
     @Override
@@ -50,7 +53,7 @@ public class SourceServiceImpl implements SourceService {
     public void removeAddress(Source source) {
         if (source.getAddress()!=null){
             source.setAddress(null);
-            dao.save(source);
+            sourceRepository.save(source);
         }
     }
 
@@ -59,7 +62,7 @@ public class SourceServiceImpl implements SourceService {
     public void addAddress(Source source, Address address) {
         if (source.getAddress()== null){
             source.setAddress(address);
-            dao.save(source);
+            sourceRepository.save(source);
         }
         else{
             throw new ReservationSystemException("Source already has address " + source.getAddress());
@@ -76,7 +79,7 @@ public class SourceServiceImpl implements SourceService {
 //        category.setSources(source);
         category.getSources().add(source);
         categoryRepository.save(category);
-        dao.save(source);
+        sourceRepository.save(source);
     }
 
     @Transactional
@@ -102,11 +105,16 @@ public class SourceServiceImpl implements SourceService {
             eventRepository.save(event);
         }
         source.getCategories().remove(category);
-        dao.save(source);
+        sourceRepository.save(source);
+    }
+
+    @Override
+    public List<Source> findSources(ReservationSystem reservationSystem) {
+        return sourceRepository.findByReservationSystem(reservationSystem);
     }
 
     @Transactional
     public boolean exists(Source source){
-        return dao.existsById(source.getId());
+        return sourceRepository.existsById(source.getId());
     }
 }
