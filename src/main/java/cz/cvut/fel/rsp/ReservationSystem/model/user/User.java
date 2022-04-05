@@ -37,7 +37,7 @@ public class User extends AbstractEntity {
     @NotNull
     private UserType userType;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private PaymentDetails paymentDetails;
 
     @ManyToMany

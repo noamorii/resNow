@@ -66,7 +66,8 @@ public class EventServiceImpl implements EventService {
         }
 
         if (event.getFromTime().isAfter(event.getToTime())){
-            throw new EventException("The starting time of the event is after the ending time");
+            throw new EventException("The starting time of the event is after the ending time. Start time: "
+                    + event.getFromTime().toString() + " End time: " + event.getToTime().toString());
         }
 
         if (event.getName().length() == 0){
