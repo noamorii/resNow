@@ -33,13 +33,13 @@ public interface ReservationSlotService{
 
     public List<ReservationSlot> findAll(Event event);
 
-    public List<ReservationSlot> findAll(Event event, LocalTime from, LocalTime to);
+    public List<ReservationSlot> findAll(Event event, LocalDate from, LocalDate to);
 
     public List<ReservationSlot> findAllReserved(Event event);
 
-    public List<ReservationSlot> findAllReserved(Event event, LocalTime from, LocalTime to);
+    public List<ReservationSlot> findAllReserved(Event event, LocalDate from, LocalDate to);
 
     public List<ReservationSlot> findAllFree(Event event);
 
-    public List<ReservationSlot> findAllFree(Event event, LocalTime from, LocalTime to);
+    public List<ReservationSlot> findAllFree(Event event, LocalDate from, LocalDate to);
 }
