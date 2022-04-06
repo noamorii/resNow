@@ -9,14 +9,16 @@ import styles from './WelcomePage.module.scss'
 const Welcome = () => {
 
     const [isActiveLogo, setIsLogoActive] = useState(false);
+    const [data, setData] = useState('');
 
-    useEffect(() => {
-        document.querySelector('body').className = 'linear-ground';
-        axios.get(`${baseUrl}/welcome`).then(res => {
-            console.log(res.data)
-            console.log(process.env.NODE_ENV);
-        })
-    }, [])
+    // useEffect(() => {
+    //     document.querySelector('body').className = 'linear-ground';
+    //     axios.get(`${baseUrl}/systems/1/`)
+    //         .then(res => res.data.id)
+    //         .then((result) => {
+    //             console.log(process.env.NODE_ENV);
+    //         })
+    // }, [])
 
     const animateLogo = () => {
         if (!isActiveLogo) {

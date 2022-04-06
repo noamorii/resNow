@@ -11,13 +11,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@RestController
 public class Application {
-
-	@GetMapping("/welcome")
-	public String welcome(){
-		return "Welcome";
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
