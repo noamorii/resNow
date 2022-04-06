@@ -13,4 +13,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("select p from Reservation p where p.user = ?1")
     List<Reservation> findAllUsersReservations(User user);
+
 }
