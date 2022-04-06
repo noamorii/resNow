@@ -10,6 +10,7 @@ import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +48,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Reservation> findUpcomingReservations(User user) {
-        return null;
+        List<Reservation> reservations = reservationRepository.findAllUsersReservations(user);
+        List<Reservation> result = new ArrayList<>();
+        LocalDate thisDate = LocalDate.now();
+        for (Reservation reservation : reservations){
+            if (thisDate.isBefore(reservation.getReservationSlot().getDate())){
+                result.add(reservation);
+            }
+        }
+        return result;
     }
 
     @Override
     public List<Reservation> findPastReservations(User user) {
-        return null;
+        List<Reservation> reservations = reservationRepository.findAllUsersReservations(user);
+        List<Reservation> result = new ArrayList<>();
+        LocalDate thisDate = LocalDate.now();
+        for (Reservation reservation : reservations) {
+            if (thisDate.isAfter(reservation.getReservationSlot().getDate())){
+                result.add(reservation);
+            }
+        }
+
+        return result;
     }
 
     @Override
