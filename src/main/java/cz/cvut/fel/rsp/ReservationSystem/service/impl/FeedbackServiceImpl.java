@@ -9,8 +9,6 @@ import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
 
@@ -22,6 +20,8 @@ public class FeedbackServiceImpl implements FeedbackService {
         this.dao = dao;
         this.reservationSystemDao = reservationSystemDao;
     }
+
+    //show all feedbacks is implemented in reservationSystemServiceImpl !!!
 
     @Override
     public void createFeedback(Feedback feedback, ReservationSystem reservationSystem) {

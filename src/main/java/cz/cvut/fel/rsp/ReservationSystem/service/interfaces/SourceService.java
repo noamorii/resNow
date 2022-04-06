@@ -12,6 +12,4 @@ public interface SourceService{
     public void removeAddress(Source source);
 
     public void addAddress(Source source, Address address);
-
-    public List<Source> findSources(ReservationSystem reservationSystem);
 }

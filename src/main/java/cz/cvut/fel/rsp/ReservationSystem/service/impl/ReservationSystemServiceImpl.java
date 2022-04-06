@@ -2,10 +2,13 @@ package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.PaymentDetailsRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationSystemRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
+import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSystemService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +25,8 @@ import java.util.Objects;
 public class ReservationSystemServiceImpl implements ReservationSystemService {
 
     private final ReservationSystemRepository reservationSystemRepository;
-    private final PaymentDetailsRepository paymentDetailsRepository;
     private final UserRepository userRepository;
+    private final SourceRepository sourceRepository;
 
     @Override
     public void createReservationSystem(User user, ReservationSystem reservationSystem) {
@@ -31,6 +34,8 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
             throw new ReservationSystemException("User creating a system must have a system owner account.");
         }
         addManager(user, reservationSystem);
+        List<Feedback> feedbacks = new ArrayList<>();
+        reservationSystem.setFeedback(feedbacks);
         reservationSystemRepository.save(reservationSystem);
     }
 
@@ -66,5 +71,9 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
     @Override
     public ReservationSystem find(Integer id) {
         return reservationSystemRepository.getById(id);
+    }
+
+    public List<Source> getSources(ReservationSystem reservationSystem){
+        return sourceRepository.findAllSourcesOfReservationSystem(reservationSystem);
     }
 }
