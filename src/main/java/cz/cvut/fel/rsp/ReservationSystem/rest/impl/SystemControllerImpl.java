@@ -53,7 +53,7 @@ public class SystemControllerImpl implements SystemController {
     public List<SourceDTO> getSources(@PathVariable Integer systemId) {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
 
-        return sourceService.findSources(reservationSystem).stream()
+        return reservationSystemService.getSources(reservationSystem).stream()
                 .map(SourceDTO::new)
                 .collect(Collectors.toList());
     }
