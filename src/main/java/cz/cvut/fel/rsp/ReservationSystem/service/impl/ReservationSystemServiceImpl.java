@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.PaymentDetailsRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationSystemRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
 import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
@@ -25,6 +26,7 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
 
     private final ReservationSystemRepository reservationSystemRepository;
     private final UserRepository userRepository;
+    private final SourceRepository sourceRepository;
 
     @Override
     public void createReservationSystem(User user, ReservationSystem reservationSystem) {
@@ -69,5 +71,9 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
     @Override
     public ReservationSystem find(Integer id) {
         return reservationSystemRepository.getById(id);
+    }
+
+    public List<Source> getSources(ReservationSystem reservationSystem){
+        return sourceRepository.findAllSourcesOfReservationSystem(reservationSystem);
     }
 }

@@ -95,4 +95,9 @@ public class UserServiceImpl implements UserService {
     public List<Reservation> findAllReservations(User user){
         return reservationRepository.findAllUsersReservations(user);
     }
+
+    @Transactional
+    public List<Reservation> findAllReservationInInterval(User user, LocalDate from, LocalDate to){
+        return null;
+    }
 }

@@ -110,11 +110,6 @@ public class SourceServiceImpl implements SourceService {
         sourceRepository.save(source);
     }
 
-    @Override
-    public List<Source> findSources(ReservationSystem reservationSystem) {
-        return sourceRepository.findAllSourcesOfReservationSystem(reservationSystem);
-    }
-
     @Transactional
     public boolean exists(Source source){
         return sourceRepository.existsById(source.getId());
