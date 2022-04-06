@@ -23,6 +23,8 @@ public class FeedbackServiceImpl implements FeedbackService {
         this.reservationSystemDao = reservationSystemDao;
     }
 
+    //show all feedbacks is implemented in reservationSystemServiceImpl !!!
+
     @Override
     public void createFeedback(Feedback feedback, ReservationSystem reservationSystem) {
         if (feedback.getMessage() == null) {

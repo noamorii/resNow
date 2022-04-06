@@ -7,6 +7,7 @@ import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
 import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSystemService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,6 @@ import java.util.Objects;
 public class ReservationSystemServiceImpl implements ReservationSystemService {
 
     private final ReservationSystemRepository reservationSystemRepository;
-    private final PaymentDetailsRepository paymentDetailsRepository;
     private final UserRepository userRepository;
 
     @Override

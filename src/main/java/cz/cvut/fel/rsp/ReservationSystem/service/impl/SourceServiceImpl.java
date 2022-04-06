@@ -32,6 +32,8 @@ public class SourceServiceImpl implements SourceService {
         this.eventRepository = eventRepository;
     }
 
+    //show all sources is implemented in reservationSystemServiceImpl !!!
+
     @Override
     @Transactional
     public void createSource(Source source, ReservationSystem reservationSystem) {
@@ -110,7 +112,7 @@ public class SourceServiceImpl implements SourceService {
 
     @Override
     public List<Source> findSources(ReservationSystem reservationSystem) {
-        return sourceRepository.findByReservationSystem(reservationSystem);
+        return sourceRepository.findAllSourcesOfReservationSystem(reservationSystem);
     }
 
     @Transactional
