@@ -46,8 +46,10 @@ public class FeedbackServiceImplTest {
 
     @Test
     public void createFeedback_createsNewFeedback_newFeedbackisCreated(){
+        Feedback feedback = new Feedback();
         String message = "testFeedback";
-        feedbackService.createFeedback(message, reservationSystem);
+        feedback.setMessage(message);
+        feedbackService.createFeedback(feedback, reservationSystem);
 
         ReservationSystem resultSystem = reservationSystemRepository.findById(reservationSystem.getId()).get();
         Feedback resultFeedback = resultSystem.getFeedback().get(0);
@@ -58,13 +60,15 @@ public class FeedbackServiceImplTest {
     @Test
     public void createFeedback_createsNewFeedbackWithoutMessage_throwException(){
         Assertions.assertThrows(FeedbackException.class,
-                () -> feedbackService.createFeedback(null, reservationSystem));
+                () -> feedbackService.createFeedback(new Feedback(), reservationSystem));
     }
 
     @Test
     public void removeFeedback_removesCorrectFeedback_feedbackIsRemoved(){
+        Feedback feedback = new Feedback();
         String message = "testFeedback";
-        feedbackService.createFeedback(message, reservationSystem);
+        feedback.setMessage(message);
+        feedbackService.createFeedback(feedback, reservationSystem);
 
         ReservationSystem resultSystem = reservationSystemRepository.findById(reservationSystem.getId()).get();
         Feedback resultFeedback = resultSystem.getFeedback().get(0);
@@ -80,12 +84,16 @@ public class FeedbackServiceImplTest {
 
     @Test
     public void removeFeedback(){
+        Feedback feedback1 = new Feedback();
+        Feedback feedback2 = new Feedback();
         String message1 = "testFeedback1";
         String message2 = "testFeedback2";
+        feedback1.setMessage(message1);
+        feedback2.setMessage(message2);
         ReservationSystem reservationSystem2 = Generator.generateReservationSystem(new ArrayList<>(), new ArrayList<>());
         reservationSystemService.createReservationSystem(Generator.generateSystemOwner(), reservationSystem2);
-        feedbackService.createFeedback(message1, reservationSystem);
-        feedbackService.createFeedback(message2, reservationSystem2);
+        feedbackService.createFeedback(feedback1, reservationSystem);
+        feedbackService.createFeedback(feedback2, reservationSystem2);
 
         ReservationSystem resultSystem1 = reservationSystemRepository.findById(reservationSystem.getId()).get();
         Feedback resultFeedback1 = resultSystem1.getFeedback().get(0);

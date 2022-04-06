@@ -24,12 +24,10 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public void createFeedback(String message, ReservationSystem reservationSystem) {
-        if (message == null) {
+    public void createFeedback(Feedback feedback, ReservationSystem reservationSystem) {
+        if (feedback.getMessage() == null) {
             throw new FeedbackException("Feedback has to have content.");
         }
-        Feedback feedback = new Feedback();
-        feedback.setMessage(message);
         reservationSystem.getFeedback().add(feedback);
 
         dao.save(feedback);
