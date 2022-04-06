@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.PaymentDetailsRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationSystemRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
+import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
@@ -31,6 +32,8 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
             throw new ReservationSystemException("User creating a system must have a system owner account.");
         }
         addManager(user, reservationSystem);
+        List<Feedback> feedbacks = new ArrayList<>();
+        reservationSystem.setFeedback(feedbacks);
         reservationSystemRepository.save(reservationSystem);
     }
 
