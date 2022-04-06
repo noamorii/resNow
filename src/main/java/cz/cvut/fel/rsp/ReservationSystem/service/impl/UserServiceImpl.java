@@ -9,6 +9,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public void addPaymentDetails(User user, PaymentDetails paymentDetails) {
         paymentDetails.setUser(user);
         user.setPaymentDetails(paymentDetails);
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void removePaymentDetails(User user) {
         PaymentDetails details = user.getPaymentDetails();
         details.setUser(null);
@@ -47,6 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<Reservation> findUpcomingReservations(User user) {
         List<Reservation> reservations = reservationRepository.findAllUsersReservations(user);
         List<Reservation> result = new ArrayList<>();
@@ -60,6 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<Reservation> findPastReservations(User user) {
         List<Reservation> reservations = reservationRepository.findAllUsersReservations(user);
         List<Reservation> result = new ArrayList<>();
@@ -74,6 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<Reservation> findUnpaidReservations(User user) {
         List<Reservation> reservations = reservationRepository.findAllUsersReservations(user);
         List<Reservation> result = new ArrayList<>();
@@ -83,5 +89,10 @@ public class UserServiceImpl implements UserService {
             }
         }
         return result;
+    }
+
+    @Transactional
+    public List<Reservation> findAllReservations(User user){
+        return reservationRepository.findAllUsersReservations(user);
     }
 }
