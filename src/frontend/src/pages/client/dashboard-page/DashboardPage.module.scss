@@ -1,0 +1,54 @@
+.container{
+    display: flex;
+    flex-direction: column;
+
+
+    .topContent{
+        display: flex;
+        justify-content: space-between;
+
+        .cards{
+            border: 1px solid rgba(0, 0, 0, 0.23);
+            box-sizing: border-box;
+            box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
+            border-radius: 15px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+
+            margin: 2vh;
+
+            height: 30vh;
+            width: 25vh;
+
+            svg{
+                margin-top: 2vh;
+            }
+
+            .button{
+                width: 22vh;
+                margin-bottom: 1.5vh;
+                border-radius: 1.2vh;
+            }
+        }
+    }
+
+    .bottomContent{
+        display: flex;
+
+        border: 1px solid red;
+
+        .mainGraph{
+            border: 1px solid red;
+            height: 40vh;
+            width: 75vh;
+        }
+
+        .kolacGraph{
+            border: 1px solid red;
+            height: 40vh;
+        }
+    }
+}
