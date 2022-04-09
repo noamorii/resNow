@@ -1,12 +1,15 @@
-.menu{
-    margin: 1vh;
+.menu {
+    margin: 2vh;
     height: 8vh;
+    border-radius: 4vh;
 
     display: flex;
     align-items: center;
     justify-content: flex-start;
 
-    button{
+    background-color: #f9f9ff;
+
+    button {
         font-size: 0.8rem;
         margin-left: 1vh;
         width: 13vh;
@@ -15,7 +18,7 @@
         border: none;
         background-color: white;
 
-        &.active{
+        &.active {
             background-color: #e6f1ff;
             color: #0D6EFD;
         }
