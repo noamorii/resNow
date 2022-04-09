@@ -1,4 +1,4 @@
-import logo from "../../../assets/resnow1.png";
+import logo from "../../../assets/resnow.png";
 import {Link} from "react-router-dom";
 
 import styles from './NavbarIndex.module.scss'

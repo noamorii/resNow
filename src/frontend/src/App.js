@@ -1,10 +1,12 @@
 import './App.scss';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import React from "react";
+
 import AboutUs from "./pages/global/welcome-page/AboutUs";
 import Welcome from "./pages/global/welcome-page/Welcome";
-import {DocumentationPage, IndexPage, Test} from "./pages";
-import {MainLayoutRoutes} from "./MainLayoutRoutes";
-import React from "react";
+import {DocumentationPage, IndexPage, LoginPage, RegistrationPage} from "./pages";
+import {ClientRoutes} from "./routes/ClientRoutes";
+import {CustomerRoutes} from "./routes/CustomerRoutes";
 
 
 const App = () => {
@@ -16,11 +18,11 @@ const App = () => {
                 <Route exact path="/about" element={<AboutUs/>}/>
                 <Route exact path="/fe-template-documentation" element={<DocumentationPage/>}/>
 
+                <Route exact path="/login" element={<LoginPage/>}/>
+                <Route exact path="/register" element={<RegistrationPage/>}/>
 
-
-
-
-                <Route path="*" element={<MainLayoutRoutes/>}/>
+                <Route path="/client/*" element={<ClientRoutes/>}/>
+                <Route path="/customer/*" element={<CustomerRoutes/>}/>
             </Routes>
         </BrowserRouter>
     )

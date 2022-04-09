@@ -1,5 +1,5 @@
 import styles from './ContactSection.module.scss'
-import logo from '../../../../assets/resnow1.png'
+import logo from '../../../../assets/resnow.png'
 
 export const ContactSection = () => {
     return (
