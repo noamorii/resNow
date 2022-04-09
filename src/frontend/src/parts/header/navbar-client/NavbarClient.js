@@ -11,13 +11,13 @@ export const NavbarClient = () => {
     const location = useLocation();
 
     const { pathname } = location;
-    const splitLocation = pathname.split("/");
+    const splitLocation = pathname.split("client/");
 
 
     return (
         <nav className={styles.menu}>
             <div className={styles.leftSideMenu}>
-                <a href={'/dashboard'}>
+                <a href={'/client/dashboard'}>
                     <img src={logo} alt={'logo'}/>
                 </a>
                 <a href={'/client/dashboard'} className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</a>

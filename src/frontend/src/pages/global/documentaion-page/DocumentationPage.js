@@ -15,6 +15,10 @@ const Buttons = () => {
     return (
         <div className={styles.contents}>
             <h1>Components</h1>
+            <p>Pokud chcete přidat vlastní styl, stačí udělat .concat:</p>
+            <SyntaxHighlighter language="javascript" style={docco}>
+                {`<button className={'button-primary sm '.concat(styles.<name>)}>Foo</button>`}
+            </SyntaxHighlighter>
             <h2>Buttons</h2>
             <h3>primary</h3>
 

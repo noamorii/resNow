@@ -22,9 +22,6 @@ const App = () => {
                 <Route exact path="/login" element={<LoginPage/>}/>
                 <Route exact path="/register" element={<RegistrationPage/>}/>
 
-
-                <Route exact path="/dashboard-customer" element={<DashboardPageCustomer/>}/>
-
                 <Route path="/client/*" element={<ClientRoutes/>}/>
                 <Route path="/customer/*" element={<CustomerRoutes/>}/>
             </Routes>

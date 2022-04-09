@@ -4,7 +4,6 @@ import React from 'react';
 import {CustomersPage, DashboardPage, EventsPage, ResourcesPage, ReservationsPage} from "../pages";
 import {NavbarClient} from "../parts";
 
-
 export const ClientRoutes = () => {
     return (
         <React.Fragment>
