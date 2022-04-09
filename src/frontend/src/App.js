@@ -2,10 +2,9 @@ import './App.scss';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import React from "react";
 
-
 import AboutUs from "./pages/global/welcome-page/AboutUs";
 import Welcome from "./pages/global/welcome-page/Welcome";
-import {DashboardPageCustomer, DocumentationPage, IndexPage, LoginPage, RegistrationPage} from "./pages";
+import {DocumentationPage, IndexPage, LoginPage, RegistrationPage} from "./pages";
 import {ClientRoutes} from "./routes/ClientRoutes";
 import {CustomerRoutes} from "./routes/CustomerRoutes";
 

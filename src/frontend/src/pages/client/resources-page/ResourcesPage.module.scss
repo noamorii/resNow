@@ -1,0 +1,24 @@
+.menu{
+    margin: 1vh;
+    height: 8vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    button{
+        font-size: 0.8rem;
+        margin-left: 1vh;
+        width: 13vh;
+        height: 6vh;
+        border-radius: 3vh;
+        border: none;
+        background-color: white;
+
+        &.active{
+            background-color: #e6f1ff;
+            color: #0D6EFD;
+        }
+    }
+
+}
