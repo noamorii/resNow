@@ -14,6 +14,23 @@ import {Modal} from "../customers-page/modalWindow/Modal";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+const dataWithoutLabel = {
+    datasets: [
+        {
+            label: '# of Votes',
+            data: [12, 19],
+            backgroundColor: [
+                'rgb(186,202,232)',
+                'rgb(134,211,235)',
+            ],
+            borderColor: [
+                'rgb(186,202,232)',
+                'rgb(134,211,235)',
+            ],
+            borderWidth: 1,
+        },
+    ],
+};
 
 const PieChart = () => {
     const [show, setShow] = useState(false);
@@ -22,24 +39,6 @@ const PieChart = () => {
 
     const data = {
         labels: ['Tenisový kurt', 'Florbalová hala'],
-        datasets: [
-            {
-                label: '# of Votes',
-                data: [12, 19],
-                backgroundColor: [
-                    'rgb(186,202,232)',
-                    'rgb(134,211,235)',
-                ],
-                borderColor: [
-                    'rgb(186,202,232)',
-                    'rgb(134,211,235)',
-                ],
-                borderWidth: 1,
-            },
-        ],
-    };
-
-    const dataWithoutLabel = {
         datasets: [
             {
                 label: '# of Votes',
@@ -83,6 +82,9 @@ export const DashboardPageClient = () => {
     const [allPlace, setAllPlace] = useState(0);
     const [allCustomers, setAllCustomers] = useState(0);
     const [allEmployee, setAllEmployee] = useState(0);
+
+    const [show, setShow] = useState(false);
+
 
     const fetchTodayReservation = () => {
         // axios.get(`${baseUrl}/`).then(res => setTodayReservation(res.data))
@@ -130,8 +132,10 @@ export const DashboardPageClient = () => {
                 <div className={styles.cards}>
                     <img src={journals} alt={'icon'}/>
                     <p>{todayReservation}</p>
-                    <button className={'button-primary '.concat(styles.button)}><a href={'rezervace'}>Dnešní
-                        rezervace</a></button>
+                    <button className={'button-primary '.concat(styles.button)}  onClick={() => setShow(true)}>Dnešní
+                        rezervace</button>
+                    <Modal onClose={() => setShow(false)} show={show} data={dataWithoutLabel}/>
+
                 </div>
                 <div className={styles.cards}>
                     <img src={journalMedical} alt={'icon'}/>

@@ -12,7 +12,7 @@ export const Modal = (props) => {
     return (
         <div className={styles.modal} onClick={props.onClose}>
             <div className={styles.content} onClick={(e) => e.stopPropagation()}>
-                <p>{current.getDate()}.{current.getMonth() + 1}.{current.getFullYear()}</p>
+                <h3>{current.getDate()}.{current.getMonth() + 1}.{current.getFullYear()}</h3>
                 <div className={styles.topContent}>
                     {/*<div className={styles.pie}>*/}
                     {/*    <Pie data={props.data} options={{*/}
