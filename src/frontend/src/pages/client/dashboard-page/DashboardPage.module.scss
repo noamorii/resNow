@@ -1,0 +1,67 @@
+.container{
+    display: flex;
+    flex-direction: column;
+
+    padding: 2%;
+
+
+    .topContent{
+        display: flex;
+        //justify-content: space-between;
+
+        .cards{
+            border: 1px solid rgba(0, 0, 0, 0.23);
+            box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
+            border-radius: 15px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+
+            margin: 2vh;
+
+            max-height: 30vh;
+            width: 10%;
+
+            p{
+                font-size: 1.7rem;
+            }
+
+            svg{
+                margin-top: 2vh;
+            }
+
+            .button{
+                width: 90%;
+                min-height: 4.5vh;
+                margin-bottom: 1.3vh;
+                border-radius: 1.2vh;
+            }
+        }
+    }
+
+    .bottomContent{
+        display: flex;
+
+        .mainGraph{
+            height: 45vh;
+            width: 63%;
+
+            border: 1px solid rgba(0, 0, 0, 0.23);
+            box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
+            border-radius: 1.5vh;
+            margin: 2vh;
+        }
+
+        .kolacGraph{
+            height: 45vh;
+            width: 40%;
+
+            border: 1px solid rgba(0, 0, 0, 0.23);
+            box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
+            border-radius: 1.5vh;
+            margin: 2vh;
+        }
+    }
+}

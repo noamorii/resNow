@@ -13,7 +13,7 @@ body {
     border-radius: 0.7vh;
 
     width: 9vh;
-    height: 4vh;
+    height: 4.5vh;
 
     font-size: 1.6vh;
     color: white;
@@ -35,7 +35,7 @@ body {
     border-radius: 0.7vh;
 
     width: 9vh;
-    height: 4vh;
+    height: 4.5vh;
 
     font-size: 1.6vh;
     color: #0D6EFD;
@@ -89,6 +89,15 @@ body {
         width: 30vh;
         height: 4vh;
         border-radius: 1.3vh;
+    }
+
+    &.sh{
+        width: 25vh;
+    }
+
+    &.search{
+        border-radius: 0.7vh;
+        outline: 0.3vh solid #CFD4D9;
     }
 
     &:focus {
