@@ -91,17 +91,19 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
     @Transactional
     public List<Reservation> findAllReservations(User user){
         return reservationRepository.findAllUsersReservations(user);
     }
 
+    @Override
     @Transactional
     public List<Reservation> findAllReservationInInterval(User user, LocalDate from, LocalDate to){
         List<Reservation> reservations = reservationRepository.findAllUsersReservations(user);
         List<Reservation> result = new ArrayList<>();
         for (Reservation reservation : reservations){
-            if (reservation.getReservationSlot().getDate().isAfter(from) || reservation.getReservationSlot().getDate().isBefore(to)){
+            if (reservation.getReservationSlot().getDate().isAfter(from) && reservation.getReservationSlot().getDate().isBefore(to)){
                 result.add(reservation);
             }
         }
