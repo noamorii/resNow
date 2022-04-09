@@ -5,6 +5,8 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -14,7 +16,7 @@ public interface ReservationService{
 
     public void cancelReservation(Reservation reservation);
 
-    public List<Reservation> findAllCanceled(ReservationSystem reservationSystem, LocalTime from, LocalTime to);
+    List<Reservation> findAllReservations(User user);
 
-    public List<Reservation> findAllCanceled(Source source, LocalTime from, LocalTime to);
+    List<Reservation> findAllUnpaidReservations(User user);
 }

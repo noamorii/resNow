@@ -9,10 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
@@ -32,7 +29,7 @@ public class Reservation extends AbstractEntity {
     private ReservationSlot reservationSlot;
 
     @NotNull
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     private String additionalInfo;
 }
