@@ -30,9 +30,10 @@ export const ResourcesPage = () => {
     return (
         <div>
             <div className={styles.menu}>
-                <button type={'button'}  className={source?styles.active:""} onClick={activeSource}>Zdroje</button>
-                <button type={'button'} className={place?styles.active:""} onClick={activePlace}>Místa</button>
-                <button type={'button'} className={employee?styles.active:""} onClick={activeEmployee}>Zaměstanci</button>
+                <button type={'button'} className={source ? styles.active : ""} onClick={activeSource}>Zdroje</button>
+                <button type={'button'} className={place ? styles.active : ""} onClick={activePlace}>Místa</button>
+                <button type={'button'} className={employee ? styles.active : ""} onClick={activeEmployee}>Zaměstanci
+                </button>
             </div>
             {source ? <Sources/> : <></>}
             {place ? <Places/> : <></>}
