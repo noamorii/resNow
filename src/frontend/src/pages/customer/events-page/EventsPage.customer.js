@@ -1,6 +1,6 @@
 import styles from './EventsPage.module.scss'
 
-export const EventsPage = () =>{
+export const EventsPageCustomer = () =>{
     return (
         <div>
             EventsPage

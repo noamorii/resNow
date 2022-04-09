@@ -4,13 +4,13 @@ import logo from '../../../assets/resnow.png'
 import profileSVG from '../../../assets/svg/profile.svg'
 import settingSVG from '../../../assets/svg/setting.svg'
 import notifySVG from '../../../assets/svg/notify.svg'
-import { useLocation } from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
 
 export const NavbarClient = () => {
     const location = useLocation();
 
-    const { pathname } = location;
+    const {pathname} = location;
     const splitLocation = pathname.split("client/");
 
 
@@ -20,17 +20,20 @@ export const NavbarClient = () => {
                 <a href={'/client/dashboard'}>
                     <img src={logo} alt={'logo'}/>
                 </a>
-                <a href={'/client/dashboard'} className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</a>
+                <a href={'/client/dashboard'}
+                   className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</a>
                 <a href={'/client/terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Termíny</a>
-                <a href={'/client/rezervace'} className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</a>
-                <a href={'/client/zakaznici'} className={splitLocation[1] === "zakaznici" ? styles.active : ""}>Zákazníci</a>
-                <a href={'/client/zdroje'} className={splitLocation[1] === "zdroje" ? styles.active : ""}>Zdroje</a>
+                <a href={'/client/rezervace'}
+                   className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</a>
+                <a href={'/client/zakaznici'}
+                   className={splitLocation[1] === "zakaznici" ? styles.active : ""}>Zákazníci</a>
+                <a href={'/client/zdroje'} className={splitLocation[1] === "zdroje" ? styles.active : ""}>Služby</a>
             </div>
             <div className={styles.rightSideMenu}>
                 <div className={styles.iconContainer}>
-                    <img src={settingSVG} alt={'icon'}/>
-                    <img src={notifySVG} alt={'icon'}/>
-                    <img src={profileSVG} alt={'icon'}/>
+                    <a href={'/client/nastaveni'}><img src={settingSVG} alt={'icon'}/></a>
+                    <a href={'/client/notifikace'}><img src={notifySVG} alt={'icon'}/></a>
+                    <a href={'/client/profil'}><img src={profileSVG} alt={'icon'}/></a>
                 </div>
                 <div className={styles.searchContainer}>
                     <input className={'input-primary search sh sm'} placeholder={'Find me'}/>

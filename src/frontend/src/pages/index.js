@@ -7,13 +7,19 @@ export * from './global/login-page/LoginPage'
 
 
 //CUSTOMER
-export * from './customer/dashboard-page/DashboardPage'
-export * from './customer/history-page/HistoryPage'
+export * from './customer/dashboard-page/DashboardPage.customer'
+export * from './customer/events-page/EventsPage.customer'
+export * from './customer/history-page/HistoryPage.customer'
+export * from './customer/profile-page/ProfilePage.customer'
+export * from './customer/reservations-page/ReservationsPage.customer'
+export * from './customer/settings-page/SettingsPage.customer'
 
 
 //CLIENT
-export * from './client/resources-page/ResourcesPage'
-export * from './client/dashboard-page/DashboardPage'
-export * from './client/events-page/EventsPage'
-export * from './client/reservations-page/ReservationsPage'
-export * from './client/customers-page/CustomersPage'
+export * from './client/resources-page/ResourcesPage.client'
+export * from './client/dashboard-page/DashboardPage.client'
+export * from './client/events-page/EventsPage.client'
+export * from './client/reservations-page/ReservationsPage.client'
+export * from './client/customers-page/CustomersPage.client'
+export * from './client/settings-page/SettingsPage.client'
+export * from './client/profile-page/ProfilePage.client'

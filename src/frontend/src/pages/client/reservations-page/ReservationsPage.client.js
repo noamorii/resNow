@@ -1,7 +1,7 @@
 import styles from './ReservationsPage.module.scss'
 
-export const ReservationsPage = () =>{
-    return(
+export const ReservationsPageClient = () => {
+    return (
         <div>
             ReservationsPage
         </div>

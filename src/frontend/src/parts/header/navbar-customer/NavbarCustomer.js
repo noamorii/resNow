@@ -4,12 +4,12 @@ import logo from '../../../assets/resnow.png'
 import profileSVG from '../../../assets/svg/profile.svg'
 import settingSVG from '../../../assets/svg/setting.svg'
 import notifySVG from '../../../assets/svg/notify.svg'
-import { useLocation } from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
-export const NavbarCustomer = () =>{
+export const NavbarCustomer = () => {
     const location = useLocation();
 
-    const { pathname } = location;
+    const {pathname} = location;
     const splitLocation = pathname.split("customer/");
 
     return (
@@ -18,15 +18,19 @@ export const NavbarCustomer = () =>{
                 <a href={'/customer/dashboard'}>
                     <img src={logo} alt={'logo'}/>
                 </a>
-                <a href={'/customer/dashboard'} className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</a>
+                <a href={'/customer/dashboard'}
+                   className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</a>
                 <a href={'/customer/terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Eventy</a>
-                <a href={'/customer/rezervace'} className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</a>
+                <a href={'/customer/rezervace'}
+                   className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</a>
+                <a href={'/customer/historie'}
+                   className={splitLocation[1] === "historie" ? styles.active : ""}>Historie</a>
             </div>
             <div className={styles.rightSideMenu}>
                 <div className={styles.iconContainer}>
-                    <img src={settingSVG} alt={'icon'}/>
-                    <img src={notifySVG} alt={'icon'}/>
-                    <img src={profileSVG} alt={'icon'}/>
+                    <a href={'/customer/nastaveni'}><img src={settingSVG} alt={'icon'}/></a>
+                    <a href={'/customer/notifikace'}><img src={notifySVG} alt={'icon'}/></a>
+                    <a href={'/customer/profil'}><img src={profileSVG} alt={'icon'}/></a>
                 </div>
                 <div className={styles.searchContainer}>
                     <input className={'input-primary search sh sm'} placeholder={'Find me'}/>

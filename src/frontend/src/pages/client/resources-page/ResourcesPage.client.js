@@ -4,7 +4,7 @@ import {Sources} from "./sources/Sources";
 import {Places} from "./places/Places";
 import {Employees} from "./employes/Employees";
 
-export const ResourcesPage = () => {
+export const ResourcesPageClient = () => {
     const [source, setSource] = useState(true);
     const [place, setPlace] = useState(false);
     const [employee, setEmployee] = useState(false);
@@ -32,7 +32,7 @@ export const ResourcesPage = () => {
             <div className={styles.menu}>
                 <button type={'button'} className={source ? styles.active : ""} onClick={activeSource}>Zdroje</button>
                 <button type={'button'} className={place ? styles.active : ""} onClick={activePlace}>Místa</button>
-                <button type={'button'} className={employee ? styles.active : ""} onClick={activeEmployee}>Zaměstanci
+                <button type={'button'} className={employee ? styles.active : ""} onClick={activeEmployee}>Zaměstnanci
                 </button>
             </div>
             {source ? <Sources/> : <></>}

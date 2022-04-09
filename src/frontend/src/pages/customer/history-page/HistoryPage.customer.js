@@ -1,6 +1,6 @@
 import styles from './HistoryPage.module.scss'
 
-export const HistoryPage = () =>{
+export const HistoryPageCustomer = () =>{
     return (
         <div>
             HistoryPage
