@@ -5,8 +5,10 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.testutil.Generator;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.ReservationSystemServiceImpl;
+import cz.cvut.fel.rsp.ReservationSystem.service.impl.SourceServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -25,6 +30,9 @@ public class ReservationSystemServiceImplTest {
 
     @Autowired
     private ReservationSystemRepository reservationSystemRepository;
+
+    @Autowired
+    private SourceServiceImpl sourceService;
 
     @Autowired
     private UserRepository userRepository;
@@ -86,4 +94,43 @@ public class ReservationSystemServiceImplTest {
         Assertions.assertThrows(ReservationSystemException.class,
                 () -> reservationSystemService.addManager(employee, reservationSystem));
     }
+
+    @Test
+    public void findAll_findsAllReservationSystem_allReservationSystemFounds(){
+        reservationSystemService.createReservationSystem(owner, reservationSystem);
+
+        ReservationSystem reservationSystem2 = Generator.generateReservationSystem(null, null);
+        ReservationSystem reservationSystem3 = Generator.generateReservationSystem(null, null);
+
+        reservationSystemService.createReservationSystem(owner, reservationSystem2);
+        reservationSystemService.createReservationSystem(owner, reservationSystem3);
+
+        List<ReservationSystem> result = reservationSystemService.findAll();
+        Assertions.assertEquals(3, result.size());
+    }
+
+    @Test
+    public void findById_findCorrectReservationSystem_returnCorrectReservationSystem(){
+        reservationSystemService.createReservationSystem(owner, reservationSystem);
+
+        ReservationSystem result = reservationSystemService.find(reservationSystem.getId());
+
+        Assertions.assertEquals(reservationSystem, result);
+    }
+
+    @Test
+    public void findSources_findsAllSources_returnAllReservationSystemSources(){
+        reservationSystemService.createReservationSystem(owner, reservationSystem);
+
+        Source source1 = Generator.generateSource(reservationSystem, null);
+        Source source2 = Generator.generateSource(reservationSystem, null);
+
+        sourceService.createSource(source1, reservationSystem);
+        sourceService.createSource(source2, reservationSystem);
+
+        List<Source> result = reservationSystemService.getSources(reservationSystem);
+
+        Assertions.assertEquals(2, result.size());
+    }
+
 }
