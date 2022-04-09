@@ -10,14 +10,15 @@ import axios from "axios";
 import {baseUrl} from "../../../config/const";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {Pie} from 'react-chartjs-2';
+import {Modal} from "../customers-page/modalWindow/Modal";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 const PieChart = () => {
+    const [show, setShow] = useState(false);
 
     const current = new Date();
-
 
     const data = {
         labels: ['Tenisový kurt', 'Florbalová hala'],
@@ -38,6 +39,23 @@ const PieChart = () => {
         ],
     };
 
+    const dataWithoutLabel = {
+        datasets: [
+            {
+                label: '# of Votes',
+                data: [12, 19],
+                backgroundColor: [
+                    'rgb(186,202,232)',
+                    'rgb(134,211,235)',
+                ],
+                borderColor: [
+                    'rgb(186,202,232)',
+                    'rgb(134,211,235)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
 
     return (
         <div className={styles.kolacGraph}>
@@ -49,7 +67,10 @@ const PieChart = () => {
                     maintainAspectRatio: false
                 }}/>
             </div>
-            <button type={'button'} className={'button-primary '.concat(styles.button)}>Zobrazit více</button>
+            <button type={'button'} onClick={() => setShow(true)}
+                    className={'button-primary '.concat(styles.button)}>Zobrazit více
+            </button>
+            <Modal onClose={() => setShow(false)} show={show} data={dataWithoutLabel}/>
         </div>
     )
 }
