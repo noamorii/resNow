@@ -1,6 +1,6 @@
 import styles from './NavbarClient.module.scss'
 
-import logo from '../../../assets/resnow1.png'
+import logo from '../../../assets/resnow.png'
 import profileSVG from '../../../assets/svg/profile.svg'
 import settingSVG from '../../../assets/svg/setting.svg'
 import notifySVG from '../../../assets/svg/notify.svg'
@@ -20,11 +20,11 @@ export const NavbarClient = () => {
                 <a href={'/dashboard'}>
                     <img src={logo} alt={'logo'}/>
                 </a>
-                <a href={'/dashboard'} className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</a>
-                <a href={'/terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Termíny</a>
-                <a href={'/rezervace'} className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</a>
-                <a href={'/zakaznici'} className={splitLocation[1] === "zakaznici" ? styles.active : ""}>Zákazníci</a>
-                <a href={'/zdroje'} className={splitLocation[1] === "zdroje" ? styles.active : ""}>Zdroje</a>
+                <a href={'/client/dashboard'} className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</a>
+                <a href={'/client/terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Termíny</a>
+                <a href={'/client/rezervace'} className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</a>
+                <a href={'/client/zakaznici'} className={splitLocation[1] === "zakaznici" ? styles.active : ""}>Zákazníci</a>
+                <a href={'/client/zdroje'} className={splitLocation[1] === "zdroje" ? styles.active : ""}>Zdroje</a>
             </div>
             <div className={styles.rightSideMenu}>
                 <div className={styles.iconContainer}>
