@@ -30,8 +30,6 @@ public class SystemControllerImpl implements SystemController {
 
     private final ReservationSystemServiceImpl reservationSystemService;
 
-    private final SourceServiceImpl sourceService;
-
     private final FeedbackServiceImpl feedbackService;
 
     @Override
