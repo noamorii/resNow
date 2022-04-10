@@ -1,3 +1,32 @@
-.topic {
-  border: 1px solid red;
+.topbutton{
+  display: inline-block;
+  text-align: center;
+  width: initial;
+  margin: 1vh;
+}
+
+.topbuttons{
+  padding-top: 2vh;
+  display: flex;
+  align-items: flex-end;
+}
+
+.caldescr {
+   display: flex;
+ }
+
+.pdescr {
+  margin: 2vh;
+}
+
+.datedisplay {
+  margin: 2vh;
+  padding-right: 13vh;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
 }
