@@ -9,7 +9,7 @@ import {
     ResourcesPageClient,
     ReservationsPageCustomer,
     SettingsPageCustomer,
-    ProfilePageCustomer
+    ProfilePageCustomer, ReservationPageClient
 } from "../pages";
 
 export const ClientRoutes = () => {
@@ -20,7 +20,7 @@ export const ClientRoutes = () => {
                 <Route exact path="/dashboard" element={<DashboardPageClient/>}/>
                 <Route exact path="/zdroje" element={<ResourcesPageClient/>}/>
                 <Route exact path="/terminy" element={<EventsPageCustomer/>}/>
-                <Route exact path="/rezervace" element={<ReservationsPageCustomer/>}/>
+                <Route exact path="/rezervace" element={<ReservationPageClient/>}/>
                 <Route exact path="/zakaznici" element={<CustomersPageClient/>}/>
                 <Route exact path="/nastaveni" element={<SettingsPageCustomer/>}/>
                 <Route exact path="/profil" element={<ProfilePageCustomer/>}/>
