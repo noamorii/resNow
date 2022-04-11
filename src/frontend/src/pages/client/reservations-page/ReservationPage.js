@@ -9,6 +9,7 @@ const TopButtons = () => {
 
     return (
         <div className={styles.topbuttons}>
+            <p className={styles.heading}>DAILY RESERVATION OVERVIEW</p>
             <button className={'button-primary '.concat(styles.topbutton)}>Filter</button>
             <button className={'button-primary '.concat(styles.topbutton)}>Statistics</button>
             <button className={'button-primary '.concat(styles.topbutton)}>Export of reservations</button>
