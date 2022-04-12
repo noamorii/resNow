@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.*;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationException;
+import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
@@ -43,7 +44,10 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservationSlot == null) {
             throw new ReservationException("Slot ");
         }
-        // TODO kontrola, ze slot jiz neni obsazen
+        Reservation helper = dao.findReservationForReservationSlot(reservationSlot.getId());
+        if (helper != null && !helper.isCancelled()){
+            throw new ReservationSystemException("Slot already has reservation");
+        }
         reservation.setUser(user);
         reservation.setReservationSlot(reservationSlot);
         dao.save(reservation);
