@@ -10,7 +10,7 @@ import axios from "axios";
 import {baseUrl} from "../../../config/const";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {Pie} from 'react-chartjs-2';
-import {Modal} from "../customers-page/modalWindow/Modal";
+import {Modal} from "./modalWindow/Modal";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
