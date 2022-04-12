@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/v1/")
@@ -24,7 +23,6 @@ public class ReservationsControllerImpl implements ReservationsController {
         return null;
     }
 
-    //i think getById can return id of payment
     @Override
     public PaymentDTO getPayment(Integer reservationId) {
         return null;
@@ -39,6 +37,16 @@ public class ReservationsControllerImpl implements ReservationsController {
     @Override
     @GetMapping(value = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllForDay(@RequestParam(name = "year") Integer year, @RequestParam(name = "month") Integer month, @RequestParam(name = "day") Integer day) {
+        return null;
+    }
+
+    @PostMapping(value = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ReservationDTO> getAllForInterval(@RequestParam("yearFrom") Integer yearFrom,
+                                                  @RequestParam("monthFrom") Integer monthFrom,
+                                                  @RequestParam("dayFrom") Integer dayFrom,
+                                                  @RequestParam("yearTo") Integer yearTo,
+                                                  @RequestParam("monthTo") Integer monthTo,
+                                                  @RequestParam("dayTo") Integer dayTo) {
         return null;
     }
 }
