@@ -16,7 +16,7 @@ export const CustomerRoutes = () => {
         <React.Fragment>
             <NavbarCustomer/>
             <Routes>
-                <Route exact path="/dashboard" element={<DashboardPageCustomer/>}/>
+                <Route exact path="/" element={<DashboardPageCustomer/>}/>
                 <Route exact path="/historie" element={<HistoryPageCustomer/>}/>
                 <Route exact path="/terminy" element={<EventsPageCustomer/>}/>
                 <Route exact path="/rezervace" element={<ReservationsPageCustomer/>}/>
