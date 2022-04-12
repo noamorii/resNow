@@ -17,7 +17,7 @@ export const ClientRoutes = () => {
         <React.Fragment>
             <NavbarClient/>
             <Routes>
-                <Route exact path="/dashboard" element={<DashboardPageClient/>}/>
+                <Route exact path="/" element={<DashboardPageClient/>}/>
                 <Route exact path="/zdroje" element={<ResourcesPageClient/>}/>
                 <Route exact path="/terminy" element={<EventsPageClient/>}/>
                 <Route exact path="/rezervace" element={<ResourcesPageClient/>}/>
