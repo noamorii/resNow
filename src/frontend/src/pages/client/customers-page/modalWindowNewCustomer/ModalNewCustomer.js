@@ -5,14 +5,16 @@ import {useState} from "react";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const ModalNewCustomer = (props) => {
-    if (!props.show) return null;
-
     const [firstName, setFirstName] = useState('');
     const [secondName, setSecondName] = useState('');
     const [telephone, setTelephone] = useState('');
     const [email, setEmail] = useState('');
     const [description, setDescription] = useState('');
     const [active, setActive] = useState(true);
+
+    if (!props.show) return (
+        <></>
+    );
 
     const handleFirstName = (e) => {
         setFirstName(e.target.value);
