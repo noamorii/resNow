@@ -5,16 +5,14 @@ import {NavbarClient} from "../parts";
 import {
     CustomersPageClient,
     DashboardPageClient,
-    EventsPageCustomer,
     ResourcesPageClient,
-    ReservationsPageCustomer,
-    SettingsPageCustomer,
-    ProfilePageCustomer, EventsPageClient, SettingsPageClient, ProfilePageClient
+    EventsPageClient,
+    SettingsPageClient,
+    ProfilePageClient
 } from "../pages";
 
 export const ClientRoutes = () => {
-    return (
-        <React.Fragment>
+    return (<React.Fragment>
             <NavbarClient/>
             <Routes>
                 <Route exact path="/" element={<DashboardPageClient/>}/>
@@ -25,6 +23,5 @@ export const ClientRoutes = () => {
                 <Route exact path="/nastaveni" element={<SettingsPageClient/>}/>
                 <Route exact path="/profil" element={<ProfilePageClient/>}/>
             </Routes>
-        </React.Fragment>
-    )
+        </React.Fragment>)
 }

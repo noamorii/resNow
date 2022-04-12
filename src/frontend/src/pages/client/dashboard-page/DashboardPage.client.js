@@ -5,7 +5,7 @@ import calendar2 from './../../../assets/svg/calendar2-event.svg'
 import pin from './../../../assets/svg/pin.svg'
 import person from './../../../assets/svg/person.svg'
 import personCircle from './../../../assets/svg/person-circle.svg'
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {baseUrl} from "../../../config/const";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
@@ -82,9 +82,16 @@ export const DashboardPageClient = () => {
     const [allPlace, setAllPlace] = useState(0);
     const [allCustomers, setAllCustomers] = useState(0);
     const [allEmployee, setAllEmployee] = useState(0);
-
     const [show, setShow] = useState(false);
 
+    useEffect(() => {
+        fetchTodayReservation()
+        fetchAllReservation()
+        fetchAllEvents()
+        fetchAllPlace()
+        fetchAllCustomer()
+        fetchAllEmployee()
+    }, [])
 
     const fetchTodayReservation = () => {
         // axios.get(`${baseUrl}/`).then(res => setTodayReservation(res.data))
@@ -116,14 +123,7 @@ export const DashboardPageClient = () => {
         setAllEmployee(10);
     }
 
-    useEffect(() => {
-        fetchTodayReservation()
-        fetchAllReservation()
-        fetchAllEvents()
-        fetchAllPlace()
-        fetchAllCustomer()
-        fetchAllEmployee()
-    }, [])
+
 
 
     return (
