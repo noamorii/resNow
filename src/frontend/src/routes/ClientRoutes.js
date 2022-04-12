@@ -9,7 +9,7 @@ import {
     ResourcesPageClient,
     ReservationsPageCustomer,
     SettingsPageCustomer,
-    ProfilePageCustomer
+    ProfilePageCustomer, EventsPageClient, SettingsPageClient, ProfilePageClient
 } from "../pages";
 
 export const ClientRoutes = () => {
@@ -19,11 +19,11 @@ export const ClientRoutes = () => {
             <Routes>
                 <Route exact path="/dashboard" element={<DashboardPageClient/>}/>
                 <Route exact path="/zdroje" element={<ResourcesPageClient/>}/>
-                <Route exact path="/terminy" element={<EventsPageCustomer/>}/>
-                <Route exact path="/rezervace" element={<ReservationsPageCustomer/>}/>
+                <Route exact path="/terminy" element={<EventsPageClient/>}/>
+                <Route exact path="/rezervace" element={<ResourcesPageClient/>}/>
                 <Route exact path="/zakaznici" element={<CustomersPageClient/>}/>
-                <Route exact path="/nastaveni" element={<SettingsPageCustomer/>}/>
-                <Route exact path="/profil" element={<ProfilePageCustomer/>}/>
+                <Route exact path="/nastaveni" element={<SettingsPageClient/>}/>
+                <Route exact path="/profil" element={<ProfilePageClient/>}/>
             </Routes>
         </React.Fragment>
     )
