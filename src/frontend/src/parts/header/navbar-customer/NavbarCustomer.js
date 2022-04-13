@@ -15,10 +15,10 @@ export const NavbarCustomer = () => {
     return (
         <nav className={styles.menu}>
             <div className={styles.leftSideMenu}>
-                <a href={'/customer/dashboard'}>
+                <a href={'/customer'}>
                     <img src={logo} alt={'logo'}/>
                 </a>
-                <a href={'/customer/dashboard'}
+                <a href={'/customer'}
                    className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</a>
                 <a href={'/customer/terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Eventy</a>
                 <a href={'/customer/rezervace'}
