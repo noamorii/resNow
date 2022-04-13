@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,9 @@ public class SystemInitializerImpl implements SystemInitializer {
 
     private final Environment environment;
 
+    @Autowired //Pro hashovani hesla
+    PasswordEncoder encoder;
+
     @Override
     @PostConstruct
     public void initSystem() {
@@ -48,6 +52,9 @@ public class SystemInitializerImpl implements SystemInitializer {
         }
 
         User systemOwner = generateOwner();
+        User regularUser = generateRegularUser();
+        User admin = generateAdmin();
+        User systemEmployee = generateEmployee();
         ReservationSystem reservationSystem = generateReservationSystem(systemOwner);
         Source source = generateSource(reservationSystem);
         Event seatEvent = generateSeatEvent(source);
@@ -95,7 +102,49 @@ public class SystemInitializerImpl implements SystemInitializer {
         user.setFirstName("Herbert");
         user.setLastName("Adenauer");
         user.setUserType(UserType.SYSTEM_OWNER);
-        user.setPassword("password"); // TODO
+        user.setPassword(encoder.encode("123456"));
+
+        userRepository.save(user);
+
+        return user;
+    }
+
+    private User generateRegularUser(){
+        User user = new User();
+        user.setEmail("user@user.com");
+        user.setUsername("Lojza");
+        user.setFirstName("Lojza");
+        user.setLastName("Spojitá");
+        user.setUserType(UserType.REGULAR_USER);
+        user.setPassword(encoder.encode("123456"));
+
+        userRepository.save(user);
+
+        return user;
+    }
+
+    private User generateAdmin(){
+        User user = new User();
+        user.setEmail("admin@admin.com");
+        user.setUsername("admin");
+        user.setFirstName("admin");
+        user.setLastName("admin");
+        user.setUserType(UserType.ADMIN);
+        user.setPassword(encoder.encode("123456"));
+
+        userRepository.save(user);
+
+        return user;
+    }
+
+    private User generateEmployee(){
+        User user = new User();
+        user.setEmail("employee@employee.com");
+        user.setUsername("dikybohu");
+        user.setFirstName("Bohuslav");
+        user.setLastName("Trpký");
+        user.setUserType(UserType.SYSTEM_EMPLOYEE);
+        user.setPassword(encoder.encode("123456"));
 
         userRepository.save(user);
 
