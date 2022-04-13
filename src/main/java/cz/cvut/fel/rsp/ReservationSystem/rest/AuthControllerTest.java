@@ -24,8 +24,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/rest/v1/")
 @RestController
-@RequestMapping("/api/auth")
 public class AuthControllerTest {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -60,12 +60,12 @@ public class AuthControllerTest {
                 roles));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody
-                                          @RequestParam("firstname") String firstname,
+    //    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    @PostMapping(value = "/signup")
+    public ResponseEntity<?> registerUser(@RequestParam("firstname") String firstname,
                                           @RequestParam("lastname") String lastname,
-                                          @RequestParam("email") String email,
                                           @RequestParam("username") String username,
+                                          @RequestParam("email") String email,
                                           @RequestParam("password") String password
     ) {
        if (userRepository.existsByUsername(username)){
@@ -88,7 +88,7 @@ public class AuthControllerTest {
         user.setEmail(email);
         user.setPassword(encoder.encode(password));
 
-
+//TODO Milan (ja xd) musi udelat na fe na vyber co chci byt za type
         user.setUserType(UserType.ADMIN);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

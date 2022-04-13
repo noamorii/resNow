@@ -13,7 +13,6 @@ export const NavbarClient = () => {
     const {pathname} = location;
     const splitLocation = pathname.split("client/");
 
-
     return (
         <nav className={styles.menu}>
             <div className={styles.leftSideMenu}>
@@ -21,7 +20,7 @@ export const NavbarClient = () => {
                     <img src={logo} alt={'logo'}/>
                 </a>
                 <a href={'/client'}
-                   className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</a>
+                   className={splitLocation[0] === "/client" ? styles.active : ""}>Dashboard</a>
                 <a href={'/client/terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Termíny</a>
                 <a href={'/client/rezervace'}
                    className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</a>

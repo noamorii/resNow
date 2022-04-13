@@ -2,17 +2,14 @@ import axios from 'axios';
 import {baseUrl} from "../config/const";
 
 const login = (username, password) => {
-    return (
-        axios.post(
-            `${baseUrl}/signin`,
-            {username, password}
-        ).then(response => {
+    return (axios.post(`${baseUrl}/signin`, {}, {
+            params: {"username": username, "password": password}
+        }).then(response => {
             if (response.data.accessToken) {
                 localStorage.setItem('user', JSON.stringify(response.data));
             }
             return response.data
-        })
-    );
+        }));
 }
 
 const logout = () => {
@@ -20,12 +17,11 @@ const logout = () => {
 }
 
 const register = (firstname, lastname, username, email, password) => {
-    return (
-        axios.post(
-            `${baseUrl}/signup`,
-            {firstname, lastname, username, email, password}
-        )
-    );
+    return (axios.post(`${baseUrl}/signup`, {}, {
+            params: {
+                "firstname": firstname, "lastname": lastname, "username": username, "email": email, "password": password
+            }
+        }));
 }
 
 const getCurrentUser = () => {
@@ -33,9 +29,6 @@ const getCurrentUser = () => {
 }
 
 const AuthService = {
-    register,
-    login,
-    logout,
-    getCurrentUser,
+    register, login, logout, getCurrentUser,
 };
 export default AuthService;
