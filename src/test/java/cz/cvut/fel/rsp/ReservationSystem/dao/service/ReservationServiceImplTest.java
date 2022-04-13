@@ -139,7 +139,7 @@ public class ReservationServiceImplTest {
         reservationService.createReservation(user, slot2);
         ReservationSlot slot3 = Generator.generateReservationSlotSeat();
         slotRepository.save(slot3);
-        reservationService.createReservation(user, slot2);
+        reservationService.createReservation(user, slot3);
         reservationService.cancelReservation(userService.findAllReservations(user).get(0));
 
         int count = reservationService.findAllReservations(user).size();
