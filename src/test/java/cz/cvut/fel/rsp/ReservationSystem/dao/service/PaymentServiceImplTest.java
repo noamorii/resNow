@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.PaymentService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSystemService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -28,7 +29,5 @@ public class PaymentServiceImplTest {
     public void init(){
 
     }
-
-//    TODO jakmile bude co...
 
 }
