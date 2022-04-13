@@ -126,9 +126,6 @@ public class ReservationServiceImplTest {
         // melo by dojit k chybe dany slot je obsazen, ale v poradku se prepise
         Assertions.assertThrows(ReservationSystemException.class,
                 () -> reservationService.createReservation(newUser, slot));
-
-
-
     }
 
     @Test
