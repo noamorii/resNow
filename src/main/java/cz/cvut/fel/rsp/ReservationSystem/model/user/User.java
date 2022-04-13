@@ -42,4 +42,8 @@ public class User extends AbstractEntity {
 
     @ManyToMany
     private List<ReservationSystem> manages;
+
+    public void erasePassword(){
+        this.password = null;
+    }
 }
