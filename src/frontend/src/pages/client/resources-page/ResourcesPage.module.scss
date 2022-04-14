@@ -25,28 +25,3 @@
     }
 
 }
-
-.buttonContainer {
-    display: flex;
-    flex-direction: column;
-    padding: 1.5%;
-
-    .button {
-        width: 8%;
-        height: 4.5vh;
-        margin-bottom: 1.3vh;
-        cursor: pointer;
-    }
-}
-
-.table {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 90%;
-    margin: 0.5vh 5vh;
-    width: 90%;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-
-}
