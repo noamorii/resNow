@@ -11,6 +11,7 @@ import {baseUrl} from "../../../config/const";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {Pie} from 'react-chartjs-2';
 import {Modal} from "./modalWindow/Modal";
+import {Link} from "react-router-dom";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -140,29 +141,29 @@ export const DashboardPageClient = () => {
                 <div className={styles.cards}>
                     <img src={journalMedical} alt={'icon'}/>
                     <p>{allReservation}</p>
-                    <button className={'button-primary '.concat(styles.button)}><a href={'rezervace'}>Rezervace</a>
+                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/rezervace'}>Rezervace</Link>
                     </button>
                 </div>
                 <div className={styles.cards}>
                     <img src={calendar2} alt={'icon'}/>
                     <p>{allEvents}</p>
-                    <button className={'button-primary '.concat(styles.button)}><a href={'terminy'}>Termíny</a></button>
+                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/terminy'}>Termíny</Link></button>
                 </div>
                 <div className={styles.cards}>
                     <img src={pin} alt={'icon'}/>
                     <p>{allPlace}</p>
-                    <button className={'button-primary '.concat(styles.button)}><a href={'zdroje'}>Místa</a></button>
+                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/zdroje'}>Místa</Link></button>
                 </div>
                 <div className={styles.cards}>
                     <img src={person} alt={'icon'}/>
                     <p>{allCustomers}</p>
-                    <button className={'button-primary '.concat(styles.button)}><a href={'zakaznici'}>Zákazníci</a>
+                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/zakaznici'}>Zákazníci</Link>
                     </button>
                 </div>
                 <div className={styles.cards}>
                     <img src={personCircle} alt={'icon'}/>
                     <p>{allEmployee}</p>
-                    <button className={'button-primary '.concat(styles.button)}><a href={'zdroje'}>Zaměstnanci</a>
+                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/zdroje'}>Zaměstnanci</Link>
                     </button>
                 </div>
             </div>

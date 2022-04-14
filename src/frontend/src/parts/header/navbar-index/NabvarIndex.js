@@ -1,9 +1,19 @@
 import logo from "../../../assets/resnow.png";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 import styles from './NavbarIndex.module.scss'
+import AuthService from "../../../services/auth.service";
 
-export const NabvarIndex = () => {
+export const NabvarIndex = (props) => {
+
+    let navigate = useNavigate();
+
+    const logout = () =>{
+        AuthService.logout();
+        navigate('/');
+        window.location.reload()
+    }
+
 
     return (
         <div className={styles.topNav}>
@@ -15,19 +25,32 @@ export const NabvarIndex = () => {
                 <a href={'#contact'}>Contact</a>
             </span>
             <span className={styles.buttonsContainer}>
-
-                <Link to={'/login'}>
-                    <button type={"button"} className={'button-primary-outline'}>
-                        Login
-                    </button>
-                </Link>
-
-                <Link to={'/register'}>
-                    <button type={"button"} className={'button-primary'}>
-                        Register
-                    </button>
-                </Link>
-
+                {props.user ? (
+                        <>
+                            <Link to={'/app/dashboard'}>
+                                <button type={"button"} className={'button-primary'}>
+                                    App
+                                </button>
+                            </Link>
+                            <button type={"button"} className={'button-primary-outline'} onClick={()=>logout()}>
+                                Logout
+                            </button>
+                        </>
+                    )
+                    :
+                    <>
+                        <Link to={'/login'}>
+                            <button type={"button"} className={'button-primary-outline'}>
+                                Login
+                            </button>
+                        </Link>
+                        <Link to={'/register'}>
+                            <button type={"button"} className={'button-primary'}>
+                                Register
+                            </button>
+                        </Link>
+                    </>
+                }
             </span>
         </div>
     );
