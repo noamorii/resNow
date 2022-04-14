@@ -1,5 +1,5 @@
 import styles from './LoginPage.module.scss'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import AuthService from "../../../services/auth.service";
 
@@ -12,15 +12,15 @@ const Form = () => {
 
     let navigate = useNavigate();
 
+    useEffect(()=>{
+        AuthService.logout();
+    },[])
+
     const login = (e) => {
         e.preventDefault();
         AuthService.login(username, password).then(
             () => {
-                console.log('logged');
-                const user = AuthService.getCurrentUser();
-                console.log(user.roles[0]);
-                navigate("/profile");
-                window.location.reload();
+                navigate("/app");
             },
             (error) => {
                 const resMessage =
@@ -36,7 +36,7 @@ const Form = () => {
     }
 
     return (
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={(e) => login(e)}>
             <input
                 className={'input-primary'}
                 type={'text'}
@@ -53,7 +53,7 @@ const Form = () => {
                 onChange={(e) => setPassword(e.target.value)}
             />
             {error}
-            <button className={'button-primary'} onClick={(e) => login(e)}>Login</button>
+            <button className={'button-primary'}>Login</button>
         </form>
     )
 }
