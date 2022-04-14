@@ -51,6 +51,7 @@ const App = () => {
     return (
         <div>
             <Routes>
+                <Route exact path="/" element={<IndexPage/>}/>
                 <Route exact path="/login" element={<LoginPage/>}/>
                 <Route exact path="/register" element={<RegistrationPage/>}/>
 
