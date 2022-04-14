@@ -1,5 +1,5 @@
 import styles from './RegistrationPage.module.scss'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import AuthService from "../../../services/auth.service";
 import {baseUrl} from "../../../config/const";
 import axios from "axios";
@@ -13,6 +13,9 @@ const Form = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('admin');
 
+    useEffect(()=>{
+        AuthService.logout();
+    },[])
 
     const valid = (e) => {
         e.preventDefault();
@@ -23,7 +26,7 @@ const Form = () => {
         );
     }
 
-    return (<form className={styles.container}>
+    return (<form className={styles.container} onSubmit={e => valid(e)}>
         <input
             className={'input-primary'}
             type={'text'}
@@ -69,7 +72,6 @@ const Form = () => {
         />
         <button
             className={'button-primary'}
-            onClick={e => valid(e)}
         >Registrovat se
         </button>
     </form>)
