@@ -21,6 +21,7 @@ const Form = () => {
         AuthService.login(username, password).then(
             () => {
                 navigate("/app");
+                window.location.reload();
             },
             (error) => {
                 const resMessage =
