@@ -39,23 +39,29 @@ const DatePicker = () => {
                 value={value}
                 onChange={e => getData(e)}
             />
-            <div className={'calendar-description '.concat(styles.caldescr)}>
-                <p className={styles.datedisplay}>
-                    {value?.format("dddd MMMM D, YYYY")}
-                </p>
-                <p className={' '.concat(styles.pdescr)}>
-                    RESERVATIONS: {}
-                </p>
-                <p className={' '.concat(styles.pdescr)}>
-                    RESERVED CAPACITY: {}
-                </p>
-                <p className={' '.concat(styles.pdescr)}>
-                    PRICE OF RESERVATIONS: {}
-                </p>
+            <div className={styles.undercalendar}>
+                <div className={styles.datedisplay}>
+                    <p className={styles.datedisplay}>
+                        {value?.format("dddd MMMM D, YYYY")}
+                    </p>
+                </div>
+                <div className={'calendar-description '.concat(styles.caldescr)}>
+
+                    <p className={' '.concat(styles.pdescr)}>
+                        RESERVATIONS: {}1
+                    </p>
+                    <p className={' '.concat(styles.pdescr)}>
+                        RESERVED CAPACITY: {}1
+                    </p>
+                    <p className={' '.concat(styles.pdescr)}>
+                        PRICE OF RESERVATIONS: {}250,-
+                    </p>
+                </div>
             </div>
         </div>
     )
 }
+
 
 export const ReservationPageClient = () => {
     return(

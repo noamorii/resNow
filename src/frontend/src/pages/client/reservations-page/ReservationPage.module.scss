@@ -12,16 +12,16 @@
 }
 
 .caldescr {
-   display: flex;
+  display: flex;
  }
 
 .pdescr {
-  margin: 2vh;
+  padding-right: 3vh;
 }
 
 .datedisplay {
-  margin: 2vh;
-  padding-right: 13vh;
+  padding-left: 15px;
+  width: 300px;
 }
 
 .container{
@@ -32,4 +32,7 @@
 }
 .heading {
   padding-right: 20vh;
+}
+.undercalendar{
+  display: flex;
 }
