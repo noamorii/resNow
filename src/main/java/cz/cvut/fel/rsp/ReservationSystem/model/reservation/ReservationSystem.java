@@ -25,4 +25,13 @@ public class ReservationSystem extends AbstractEntity {
 
     @OneToMany
     private List<Feedback> feedback;
+
+    @Override
+    public String toString() {
+        return "ReservationSystem{" +
+                "name='" + name + '\'' +
+                ", managers=" + managers +
+                ", feedback=" + feedback +
+                '}';
+    }
 }
