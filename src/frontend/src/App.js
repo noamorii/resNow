@@ -2,20 +2,15 @@ import './App.scss';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 
-import AboutUs from "./pages/global/welcome-page/AboutUs";
-import Welcome from "./pages/global/welcome-page/Welcome";
+
 import {
-    DashboardPageClient,
-    DashboardPageCustomer,
-    DocumentationPage, EventsPageCustomer, HistoryPageCustomer,
     IndexPage,
-    LoginPage, ProfilePageCustomer,
-    RegistrationPage, ReservationsPageCustomer, SettingsPageCustomer
+    LoginPage,
+    RegistrationPage
 } from "./pages";
 import {ClientRoutes} from "./routes/ClientRoutes";
 import {CustomerRoutes} from "./routes/CustomerRoutes";
 import AuthService from "./services/auth.service";
-import {NabvarIndex, NavbarCustomer} from "./parts";
 
 
 const App = () => {
