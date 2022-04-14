@@ -20,7 +20,7 @@ const Form = () => {
         e.preventDefault();
         AuthService.login(username, password).then(
             () => {
-                navigate("/app");
+                navigate("/app/dashboard");
                 window.location.reload();
             },
             (error) => {

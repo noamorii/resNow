@@ -37,17 +37,6 @@ const App = () => {
         }
     }, []);
 
-
-    // <NavbarCustomer/>
-    // <Routes>
-    //     <Route exact path="/" element={<DashboardPageCustomer/>}/>
-    //     <Route exact path="/historie" element={<HistoryPageCustomer/>}/>
-    //     <Route exact path="/terminy" element={<EventsPageCustomer/>}/>
-    //     <Route exact path="/rezervace" element={<ReservationsPageCustomer/>}/>
-    //     <Route exact path="/nastaveni" element={<SettingsPageCustomer/>}/>
-    //     <Route exact path="/profil" element={<ProfilePageCustomer/>}/>
-    // </Routes>
-
     return (
         <div>
             <Routes>
@@ -59,37 +48,15 @@ const App = () => {
                     <Route path="/app/*" element={<CustomerRoutes/>}/>
                 )}
 
-            </Routes>
+                {systemOwner && (
+                    <Route path="/app/*" element={<ClientRoutes/>}/>
+                )}
 
+                {systemEmployee && (
+                    <Route path="/app/*" element={<ClientRoutes/>}/>
+                )}
+            </Routes>
         </div>
-        // <div>
-        //     <Routes>
-        //         <Route exact path="/" element={<Welcome/>}/>
-        //         <Route exact path="/beta" element={<IndexPage/>}/>
-        //         <Route exact path="/about" element={<AboutUs/>}/>
-        //         <Route exact path="/fe-template-documentation" element={<DocumentationPage/>}/>
-        //
-        //         <Route exact path="/login" element={<LoginPage/>}/>
-        //         <Route exact path="/register" element={<RegistrationPage/>}/>
-        //
-        //         <Route path="/client/*" element={<ClientRoutes/>}/>
-        //         <Route path="/customer/*" element={<CustomerRoutes/>}/>
-        //     </Routes>
-        // </div>
-        // <BrowserRouter>
-        //     <Routes>
-        //         <Route exact path="/" element={<Welcome/>}/>
-        //         <Route exact path="/beta" element={<IndexPage/>}/>
-        //         <Route exact path="/about" element={<AboutUs/>}/>
-        //         <Route exact path="/fe-template-documentation" element={<DocumentationPage/>}/>
-        //
-        //         <Route exact path="/login" element={<LoginPage/>}/>
-        //         <Route exact path="/register" element={<RegistrationPage/>}/>
-        //
-        //         <Route path="/client/*" element={<ClientRoutes/>}/>
-        //         <Route path="/customer/*" element={<CustomerRoutes/>}/>
-        //     </Routes>
-        // </BrowserRouter>
     )
 }
 
