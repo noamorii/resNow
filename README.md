@@ -20,6 +20,8 @@ bezici containery pomoci `docker kill $(docker ps -q)` a zkus znovu `docker comp
 Aby se pouzila spravna konfiguraci pri lokalnim vyvoji, tak je treba nastavit environment variable
 v IDE.
 
+1. 
+
 
 
 ## Linky
