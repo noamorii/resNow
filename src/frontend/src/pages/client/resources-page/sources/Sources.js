@@ -1,6 +1,6 @@
 import styles from './Sources.module.scss'
 
-function Table({columns, data}) {
+const Table = ({columns, data}) => {
     // const {
     //     getTableProps,
     //     getTableBodyProps,
@@ -35,7 +35,7 @@ function Table({columns, data}) {
                     <p>Zaměstnanec</p>
                 </td>
                 <td>
-                    <p>  </p>
+                    <p></p>
                 </td>
             </tr>
             </thead>
@@ -95,7 +95,7 @@ export const Sources = () => {
             <div className={styles.buttonContainer}>
                 <button className={'button-primary '.concat(styles.button)}>Nový zdroj</button>
             </div>
-            <div className={styles.table}>< Table/></div>
+            <div className={styles.table}><Table/></div>
         </div>
     )
 }
