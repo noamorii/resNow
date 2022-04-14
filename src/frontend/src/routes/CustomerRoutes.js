@@ -5,8 +5,8 @@ import {NavbarCustomer} from "../parts";
 import {
     DashboardPageCustomer,
     EventsPageCustomer,
-    HistoryPageCustomer,
-    ProfilePageCustomer,
+    HistoryPageCustomer, LoginPage,
+    ProfilePageCustomer, RegistrationPage,
     ReservationsPageCustomer,
     SettingsPageCustomer
 } from "../pages";
@@ -16,6 +16,8 @@ export const CustomerRoutes = () => {
         <React.Fragment>
             <NavbarCustomer/>
             <Routes>
+                <Route exact path="/login" element={<LoginPage/>}/>
+                <Route exact path="/register" element={<RegistrationPage/>}/>
                 <Route exact path="/app" element={<DashboardPageCustomer/>}/>
                 <Route exact path="/historie" element={<HistoryPageCustomer/>}/>
                 <Route exact path="/terminy" element={<EventsPageCustomer/>}/>
