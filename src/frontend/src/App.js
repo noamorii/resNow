@@ -50,9 +50,16 @@ const App = () => {
 
     return (
         <div>
-            {regularUser && (
-                <CustomerRoutes/>
-            )}
+            <Routes>
+                <Route exact path="/login" element={<LoginPage/>}/>
+                <Route exact path="/register" element={<RegistrationPage/>}/>
+
+                {regularUser && (
+                    <Route path="/app/*" element={<CustomerRoutes/>}/>
+                )}
+
+            </Routes>
+
         </div>
         // <div>
         //     <Routes>
