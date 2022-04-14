@@ -12,6 +12,8 @@ public interface UserService{
 
     public void removePaymentDetails(User user);
 
+    User findByUsername(String username);
+
     public List<Reservation> findUpcomingReservations(User user);
 
     public List<Reservation> findPastReservations(User user);

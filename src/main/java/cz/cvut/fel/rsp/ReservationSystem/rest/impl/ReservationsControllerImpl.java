@@ -6,9 +6,11 @@ import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationSystemDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.interfaces.ReservationsController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,11 +22,6 @@ public class ReservationsControllerImpl implements ReservationsController {
     @Override
     @GetMapping(value = "/reservations/{reservationId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ReservationDTO getById(@PathVariable Integer reservationId) {
-        return null;
-    }
-
-    @Override
-    public PaymentDTO getPayment(Integer reservationId) {
         return null;
     }
 
@@ -41,12 +38,8 @@ public class ReservationsControllerImpl implements ReservationsController {
     }
 
     @PostMapping(value = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ReservationDTO> getAllForInterval(@RequestParam("yearFrom") Integer yearFrom,
-                                                  @RequestParam("monthFrom") Integer monthFrom,
-                                                  @RequestParam("dayFrom") Integer dayFrom,
-                                                  @RequestParam("yearTo") Integer yearTo,
-                                                  @RequestParam("monthTo") Integer monthTo,
-                                                  @RequestParam("dayTo") Integer dayTo) {
+    public List<ReservationDTO> getAllForInterval(@RequestParam("dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+                                                  @RequestParam("dateTo") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
         return null;
     }
 }

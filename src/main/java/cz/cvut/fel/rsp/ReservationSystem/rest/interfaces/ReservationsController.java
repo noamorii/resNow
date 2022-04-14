@@ -9,8 +9,6 @@ import java.util.List;
 public interface ReservationsController {
     public ReservationDTO getById(Integer reservationId);
 
-    public PaymentDTO getPayment(Integer reservationId);
-
     public List<ReservationDTO> getAllToday();
 
     public List<ReservationDTO> getAllForDay(Integer year, Integer month, Integer day);
