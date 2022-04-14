@@ -15,7 +15,7 @@ import {
 import {ClientRoutes} from "./routes/ClientRoutes";
 import {CustomerRoutes} from "./routes/CustomerRoutes";
 import AuthService from "./services/auth.service";
-import {NavbarCustomer} from "./parts";
+import {NabvarIndex, NavbarCustomer} from "./parts";
 
 
 const App = () => {
@@ -40,7 +40,7 @@ const App = () => {
     return (
         <div>
             <Routes>
-                <Route exact path="/" element={<IndexPage/>}/>
+                <Route exact path="/" element={<IndexPage user={currentUser}/>}/>
                 <Route exact path="/login" element={<LoginPage/>}/>
                 <Route exact path="/register" element={<RegistrationPage/>}/>
 

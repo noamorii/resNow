@@ -8,7 +8,7 @@ import {
     ResourcesPageClient,
     EventsPageClient,
     SettingsPageClient,
-    ProfilePageClient
+    ProfilePageClient, ReservationsPageClient
 } from "../pages";
 
 export const ClientRoutes = () => {
@@ -18,7 +18,7 @@ export const ClientRoutes = () => {
                 <Route exact path="/dashboard" element={<DashboardPageClient/>}/>
                 <Route exact path="/zdroje" element={<ResourcesPageClient/>}/>
                 <Route exact path="/terminy" element={<EventsPageClient/>}/>
-                <Route exact path="/rezervace" element={<ResourcesPageClient/>}/>
+                <Route exact path="/rezervace" element={<ReservationsPageClient/>}/>
                 <Route exact path="/zakaznici" element={<CustomersPageClient/>}/>
                 <Route exact path="/nastaveni" element={<SettingsPageClient/>}/>
                 <Route exact path="/profil" element={<ProfilePageClient/>}/>

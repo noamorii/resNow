@@ -15,22 +15,22 @@ export const NavbarCustomer = () => {
     return (
         <nav className={styles.menu}>
             <div className={styles.leftSideMenu}>
-                <Link to={"/app"}>
+                <Link to={"dashboard"}>
                     <img src={logo} alt={'logo'}/>
                 </Link>
-                <a href={'/app'}
-                   className={splitLocation[0] === "/app" ? styles.active : ""}>Dashboard</a>
-                <a href={'/app/terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Eventy</a>
-                <a href={'/app/rezervace'}
-                   className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</a>
-                <a href={'/app/historie'}
-                   className={splitLocation[1] === "historie" ? styles.active : ""}>Historie</a>
+                <Link to={'dashboard'}
+                   className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</Link>
+                <Link to={'terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Eventy</Link>
+                <Link to={'rezervace'}
+                   className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</Link>
+                <Link to={'historie'}
+                   className={splitLocation[1] === "historie" ? styles.active : ""}>Historie</Link>
             </div>
             <div className={styles.rightSideMenu}>
                 <div className={styles.iconContainer}>
-                    <a href={'/app/nastaveni'}><img src={settingSVG} alt={'icon'}/></a>
-                    <a href={'/app/notifikace'}><img src={notifySVG} alt={'icon'}/></a>
-                    <a href={'/app/profil'}><img src={profileSVG} alt={'icon'}/></a>
+                    <Link to={'nastaveni'}><img src={settingSVG} alt={'icon'}/></Link>
+                    <Link to={'notifikace'}><img src={notifySVG} alt={'icon'}/></Link>
+                    <Link to={'profil'}><img src={profileSVG} alt={'icon'}/></Link>
                 </div>
                 <div className={styles.searchContainer}>
                     <input className={'input-primary search sh sm'} placeholder={'Find me'}/>
