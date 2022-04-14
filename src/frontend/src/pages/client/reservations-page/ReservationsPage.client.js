@@ -63,7 +63,7 @@ const DatePicker = () => {
 }
 
 
-export const ReservationPageClient = () => {
+export const ReservationsPageClient = () => {
     return(
         <div className={styles.container}>
             <TopButtons/>
