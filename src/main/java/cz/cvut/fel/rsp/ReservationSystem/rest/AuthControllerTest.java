@@ -36,6 +36,10 @@ public class AuthControllerTest {
     @Autowired
     JwtUtils jwtUtils;
 
+    @GetMapping("/exists/{username}")
+    public boolean userExistsByUsername(@PathVariable String username){
+        return userRepository.existsByUsername(username);
+    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestParam("username") String username,
@@ -64,18 +68,18 @@ public class AuthControllerTest {
                                           @RequestParam("email") String email,
                                           @RequestParam("password") String password
     ) {
-//        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-//            return ResponseEntity
-//                    .badRequest()
-//                    .body(new MessageResponse("Error: Username is already taken!"));
-//        }
-//        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-//            return ResponseEntity
-//                    .badRequest()
-//                    .body(new MessageResponse("Error: Email is already in use!"));
-//        }
-        // Create new user's account
+       if (userRepository.existsByUsername(username)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+        if (userRepository.existsByEmail(email)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
 
+        // Create new user's account
 
         User user = new User();
         user.setUsername(username);
