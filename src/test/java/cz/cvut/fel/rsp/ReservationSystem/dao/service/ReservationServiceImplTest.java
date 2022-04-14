@@ -4,13 +4,15 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationSlotRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.testutil.Generator;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
-import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
-import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSystemService;
-import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.SourceService;
-import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.UserService;
+import cz.cvut.fel.rsp.ReservationSystem.service.impl.SystemInitializerImpl;
+import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,13 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class ReservationServiceImplTest {
-
 
     @Autowired
     private ReservationService reservationService;
@@ -43,6 +47,9 @@ public class ReservationServiceImplTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SystemInitializerImpl systemInitializer;
 
     private ReservationSlot slot;
     private User user;
@@ -147,5 +154,4 @@ public class ReservationServiceImplTest {
     public void findAllUnpaidReservations_findUnpaidReservation_findOnlyUnpaidReservation(){
         //TODO
     }
-
 }
