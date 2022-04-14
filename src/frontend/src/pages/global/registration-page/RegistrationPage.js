@@ -21,10 +21,6 @@ const Form = () => {
                 console.log(res);
             }
         );
-        // axios.post(
-        //     `${baseUrl}/v1/systems/1`
-        // ).then(res => console.log(res))
-
     }
 
     return (<form className={styles.container}>
