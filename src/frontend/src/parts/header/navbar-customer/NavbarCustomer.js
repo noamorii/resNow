@@ -18,9 +18,6 @@ export const NavbarCustomer = () => {
                 <Link to={"/app"}>
                     <img src={logo} alt={'logo'}/>
                 </Link>
-                <Link to={"terminy"}>
-                    Eventy
-                </Link>
                 <a href={'/app'}
                    className={splitLocation[0] === "/app" ? styles.active : ""}>Dashboard</a>
                 <a href={'/app/terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Eventy</a>
