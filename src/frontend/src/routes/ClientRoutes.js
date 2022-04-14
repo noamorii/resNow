@@ -5,26 +5,24 @@ import {NavbarClient} from "../parts";
 import {
     CustomersPageClient,
     DashboardPageClient,
-    EventsPageCustomer,
     ResourcesPageClient,
-    ReservationsPageCustomer,
-    SettingsPageCustomer,
-    ProfilePageCustomer, ReservationPageClient
+    EventsPageClient,
+    SettingsPageClient,
+    ProfilePageClient, ReservationsPageClient
 } from "../pages";
 
 export const ClientRoutes = () => {
-    return (
-        <React.Fragment>
+    return (<React.Fragment>
             <NavbarClient/>
             <Routes>
                 <Route exact path="/dashboard" element={<DashboardPageClient/>}/>
                 <Route exact path="/zdroje" element={<ResourcesPageClient/>}/>
-                <Route exact path="/terminy" element={<EventsPageCustomer/>}/>
-                <Route exact path="/rezervace" element={<ReservationPageClient/>}/>
+                <Route exact path="/terminy" element={<EventsPageClient/>}/>
+                <Route exact path="/rezervace" element={<ReservationsPageClient/>}/>
                 <Route exact path="/zakaznici" element={<CustomersPageClient/>}/>
-                <Route exact path="/nastaveni" element={<SettingsPageCustomer/>}/>
-                <Route exact path="/profil" element={<ProfilePageCustomer/>}/>
+                <Route exact path="/nastaveni" element={<SettingsPageClient/>}/>
+                <Route exact path="/profil" element={<ProfilePageClient/>}/>
+                {/*<Route exact path="*" element={<DashboardPageClient/>}/>*/}
             </Routes>
-        </React.Fragment>
-    )
+        </React.Fragment>)
 }
