@@ -22,4 +22,13 @@ public class Category extends AbstractEntity {
 
     @OneToMany(mappedBy = "category")
     private List<Event> events;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "name='" + name + '\'' +
+                ", sources=" + sources +
+                ", events=" + events +
+                '}';
+    }
 }

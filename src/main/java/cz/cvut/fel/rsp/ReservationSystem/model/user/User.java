@@ -50,4 +50,18 @@ public class User extends AbstractEntity {
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", userType=" + userType +
+                ", paymentDetails=" + paymentDetails +
+                ", manages=" + manages +
+                '}';
+    }
 }

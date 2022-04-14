@@ -32,4 +32,15 @@ public class Reservation extends AbstractEntity {
     private boolean cancelled = false;
 
     private String additionalInfo;
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "user=" + user +
+                ", payment=" + payment +
+                ", reservationSlot=" + reservationSlot +
+                ", cancelled=" + cancelled +
+                ", additionalInfo='" + additionalInfo + '\'' +
+                '}';
+    }
 }
