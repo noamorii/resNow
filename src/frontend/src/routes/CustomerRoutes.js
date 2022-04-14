@@ -5,8 +5,8 @@ import {NavbarCustomer} from "../parts";
 import {
     DashboardPageCustomer,
     EventsPageCustomer,
-    HistoryPageCustomer, LoginPage,
-    ProfilePageCustomer, RegistrationPage,
+    HistoryPageCustomer,
+    ProfilePageCustomer,
     ReservationsPageCustomer,
     SettingsPageCustomer
 } from "../pages";
