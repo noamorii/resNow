@@ -175,6 +175,9 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <environmentVariables>
+                        <spring.config.name>prodcfg</spring.config.name>
+                    </environmentVariables>
                 </configuration>
             </plugin>
         </plugins>
