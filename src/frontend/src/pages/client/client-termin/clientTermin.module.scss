@@ -1,0 +1,66 @@
+.sectionBody .sideBar {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: -1;
+}
+.sectionBody .sideBar button {
+  margin-top: 15px;
+  width: 120px;
+  transition: all 0.4s ease;
+}
+.sectionBody {
+  display: flex;
+  flex-grow: 1;
+}
+.calendarBody {
+  position: relative;
+  display: flex;
+  width: 82.5%;
+  min-height: 650px;
+  margin-left: 251px;
+  background-color: #F6FBFF;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px grey;
+}
+.rightSide {
+  position: relative;
+  top: 100px;
+  margin: 15px;
+  display: block;
+  background-color: white;
+  width: 60px;
+  height: 520px;
+  border-radius: 15px;
+  box-shadow: 2px 2px 5px grey;
+}
+.topSide {
+  margin: 15px -8px;
+  top: 45px;
+  position: relative;
+  background-color: white;
+  display: block;
+  width: 92%;
+  height: 60px;
+  border-radius: 15px;
+  box-shadow: 2px 2px 5px grey;
+}
+.days {
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 95px;
+  font-size: 14px;
+}
+.bodySide {
+  display: block;
+  position: absolute;
+  left: 30px;
+  top: 30px;
+}
