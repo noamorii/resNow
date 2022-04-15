@@ -1,8 +1,10 @@
 import React, {useState} from "react";
+import {NabvarIndex} from "../../../parts/header/navbar-index/NabvarIndex";
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
 
-import styles from "./EventsPage.module.scss";
+import styles from "./clientTermin.module.scss";
+
 
 const events = [
     {
@@ -24,9 +26,12 @@ const events = [
 //create data and save to db
 //as feature create event by dragging on calendar
 
-export const EventsPageClient = () => {
+export default function ClientTermin() {
     return (
         <div>
+            <header>
+                <NabvarIndex/>
+            </header>
             <section className={styles.sectionBody}>
                 <nav className={styles.sideBar}>
                     <p>Sidebar</p>
@@ -40,7 +45,7 @@ export const EventsPageClient = () => {
                 <div className={styles.calendarBody}>
                     <div className={styles.bodySide}>
                         <FullCalendar
-                            plugins={[timeGridPlugin]}
+                            plugins={[ timeGridPlugin ]}
                             initialView="timeGridWeek"
                             locale={'cs'}
                             selectable={true}
