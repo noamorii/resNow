@@ -2,8 +2,8 @@ import './App.scss';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 
-
 import {
+    DocumentationPage,
     IndexPage,
     LoginPage,
     RegistrationPage
@@ -11,6 +11,8 @@ import {
 import {ClientRoutes} from "./routes/ClientRoutes";
 import {CustomerRoutes} from "./routes/CustomerRoutes";
 import AuthService from "./services/auth.service";
+import {NabvarIndex, NavbarCustomer} from "./parts";
+import AboutUs from "./pages/global/welcome-page/AboutUs";
 
 
 const App = () => {
@@ -38,6 +40,8 @@ const App = () => {
                 <Route exact path="/" element={<IndexPage user={currentUser}/>}/>
                 <Route exact path="/login" element={<LoginPage/>}/>
                 <Route exact path="/register" element={<RegistrationPage/>}/>
+                <Route exact path="/about" element={<AboutUs/>}/>
+                <Route exact path="/documentation" element={<DocumentationPage/>}/>
 
                 {regularUser && (
                     <Route path="/app/*" element={<CustomerRoutes/>}/>
