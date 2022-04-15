@@ -1,5 +1,5 @@
 import './App.scss';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 
 import {
@@ -11,7 +11,6 @@ import {
 import {ClientRoutes} from "./routes/ClientRoutes";
 import {CustomerRoutes} from "./routes/CustomerRoutes";
 import AuthService from "./services/auth.service";
-import {NabvarIndex, NavbarCustomer} from "./parts";
 import AboutUs from "./pages/global/welcome-page/AboutUs";
 
 
