@@ -29,33 +29,88 @@ const Form = () => {
 
         const userType = provider ? 1 : 2;
 
-        if (firstname.trim() == 0 ||
-            lastname.trim() == 0 ||
-            username.trim() == 0 ||
-            email.trim() == 0 ||
-            password.trim() == 0
+        if (firstname.trim().length === 0 ||
+            lastname.trim().length === 0 ||
+            username.trim().length === 0 ||
+            email.trim().length === 0 ||
+            password.trim().length === 0 ||
+            rePassword.trim().length === 0
         ) {
             setError('Please fill data')
         } else {
+            const regex = /[^a-zA-ZÀ-Žà-ž]/;
+            if (firstname.trim().length >= 2) {
+                if (firstname.match(regex)) {
+                    setError("Incorrect first name format.")
+                    e.preventDefault();
+                    return;
 
+                }
+            } else {
+                setError("First name is too short")
+                e.preventDefault();
+                return;
+            }
+            if (lastname.trim().length >= 2) {
+                if (lastname.match(regex)) {
+                    setError("Incorrect last name format.")
+                    e.preventDefault();
+                    return;
+                }
+            } else {
+                setError("Last name is too short")
+                e.preventDefault();
+                return;
+            }
+            if (username.trim().length >= 4) {
+                if (lastname.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,20}$/)) {
+                    setError("Incorrect last name format.")
+                    e.preventDefault();
+                    return;
+                }
+            } else {
+                setError("Username is too short")
+                e.preventDefault();
+                return;
+            }
+            if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                setError("Incorrect email format.")
+                e.preventDefault();
+                return;
+            }
+            if (password.trim().length >= 6) {
+                if (!password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)) {
+                    setError("Password must contain at least one capital letter and at least one number.")
+                    e.preventDefault();
+                    return;
+                }
+            } else {
+                setError("Password is too short")
+                e.preventDefault();
+                return;
+            }
+            if (rePassword !== password) {
+                setError("Passwords do not match")
+                e.preventDefault();
+                return;
+            }
         }
 
-        // AuthService.register(firstname, lastname, username, email, password, userType).then(
-        //     () => {
-        //         navigate('/login')
-        //         window.location.reload();
-        //     },
-        //     (error) => {
-        //         const resMessage =
-        //             (error.response &&
-        //                 error.response.data &&
-        //                 error.response.data.message) ||
-        //             error.message ||
-        //             error.toString();
-        //         console.log(resMessage);
-        //         setError(resMessage);
-        //     }
-        // );
+        AuthService.register(firstname, lastname, username, email, password, userType).then(
+            () => {
+                navigate('/login')
+            },
+            (error) => {
+                const resMessage =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+                console.log(resMessage);
+                setError(resMessage);
+            }
+        );
     }
 
     return (
@@ -69,7 +124,7 @@ const Form = () => {
                     <label>
                         Firstname
                         <input
-                            className={'input-primary '.concat(error.trim() != 0 ? "error" : "")}
+                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
                             type={'text'}
                             value={firstname}
                             placeholder={'John'}
@@ -81,7 +136,7 @@ const Form = () => {
                     <label>
                         Email
                         <input
-                            className={'input-primary '.concat(error.trim() != 0 ? "error" : "")}
+                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
                             type={'email'}
                             value={email}
                             placeholder={'john@example.com'}
@@ -95,7 +150,7 @@ const Form = () => {
                     <label>
                         Password
                         <input
-                            className={'input-primary '.concat(error.trim() != 0 ? "error" : "")}
+                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
                             type={'password'}
                             value={password}
                             autoComplete="new-password"
@@ -123,7 +178,7 @@ const Form = () => {
                     <label>
                         Lastname
                         <input
-                            className={'input-primary '.concat(error.trim() != 0 ? "error" : "")}
+                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
                             type={'text'}
                             value={lastname}
                             placeholder={'Lemon'}
@@ -136,7 +191,7 @@ const Form = () => {
                     <label>
                         Username
                         <input
-                            className={'input-primary '.concat(error.trim() != 0 ? "error" : "")}
+                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
                             type={'text'}
                             value={username}
                             placeholder={'lemonade'}
@@ -150,7 +205,7 @@ const Form = () => {
                     <label>
                         Repeat Password
                         <input
-                            className={'input-primary '.concat(error.trim() != 0 ? "error" : "")}
+                            className={'input-primary '.concat(error.trim().length !== 0 ? "error" : "")}
                             type={'password'}
                             value={rePassword}
                             autoComplete="new-password"

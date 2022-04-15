@@ -66,7 +66,8 @@ public class AuthControllerTest {
                                           @RequestParam("lastname") String lastname,
                                           @RequestParam("username") String username,
                                           @RequestParam("email") String email,
-                                          @RequestParam("password") String password
+                                          @RequestParam("password") String password,
+                                          @RequestParam("userType") String userType
     ) {
        if (userRepository.existsByUsername(username)){
             return ResponseEntity
@@ -80,7 +81,6 @@ public class AuthControllerTest {
         }
 
         // Create new user's account
-
         User user = new User();
         user.setUsername(username);
         user.setFirstName(firstname);
@@ -88,8 +88,9 @@ public class AuthControllerTest {
         user.setEmail(email);
         user.setPassword(encoder.encode(password));
 
-//TODO Milan (ja xd) musi udelat na fe na vyber co chci byt za type
-        user.setUserType(UserType.ADMIN);
+        if(userType.equals("1")) user.setUserType(UserType.SYSTEM_OWNER);
+        if(userType.equals("2")) user.setUserType(UserType.REGULAR_USER);
+
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
