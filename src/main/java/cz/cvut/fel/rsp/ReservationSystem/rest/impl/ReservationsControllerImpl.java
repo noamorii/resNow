@@ -40,9 +40,11 @@ public class ReservationsControllerImpl implements ReservationsController {
         return null;
     }
 
+    @PreAuthorize("hasAnyRole('SYSTEM_EMPLOYEE')")
     @PostMapping(value = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllForInterval(@RequestParam("dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
                                                   @RequestParam("dateTo") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
+        System.out.println(dateFrom);
         return null;
     }
 }
