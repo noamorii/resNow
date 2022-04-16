@@ -30,7 +30,7 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
 
     @Override
     public void createReservationSystem(User user, ReservationSystem reservationSystem) {
-        if (user.getUserType() != UserType.SYSTEM_OWNER){
+        if (user.getUserType() != UserType.ROLE_SYSTEM_OWNER){
             throw new ReservationSystemException("User creating a system must have a system owner account.");
         }
         addManager(user, reservationSystem);

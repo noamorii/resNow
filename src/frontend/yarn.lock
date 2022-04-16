@@ -3225,6 +3225,11 @@
   "resolved" "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.21.1.tgz"
   "version" "3.21.1"
 
+"core-js@^2.4.1":
+  "integrity" "sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ=="
+  "resolved" "https://registry.npmjs.org/core-js/-/core-js-2.6.12.tgz"
+  "version" "2.6.12"
+
 "core-js@^3.19.2":
   "integrity" "sha512-FRq5b/VMrWlrmCzwRrpDYNxyHP9BcAZC+xHJaqTgIE5091ZV1NTmyh0sGOg5XqpnHvR0svdy0sv1gWA1zmhxig=="
   "resolved" "https://registry.npmjs.org/core-js/-/core-js-3.21.1.tgz"
@@ -5988,6 +5993,13 @@
   "integrity" "sha512-HVl9ZqccQihZ7JM85dco1MvO9G+ONvxoGa9rkhzFsneGLKSUg1gJf9bWzhRhcvm2qChhWpebQhP44qxjKIUCaQ=="
   "resolved" "https://registry.npmjs.org/loader-utils/-/loader-utils-3.2.0.tgz"
   "version" "3.2.0"
+
+"local-date@^2.0.6":
+  "integrity" "sha512-8uTc1Ksa8451cqKSd8tZvTBdemTVz/RbroTBm86q86arWK0/2a8ntenxKtaDZeR6HGnoXG2MN73+q//kvCBeRw=="
+  "resolved" "https://registry.npmjs.org/local-date/-/local-date-2.0.6.tgz"
+  "version" "2.0.6"
+  dependencies:
+    "core-js" "^2.4.1"
 
 "locate-path@^2.0.0":
   "integrity" "sha1-K1aLJl7slExtnA3pw9u7ygNUzY4="

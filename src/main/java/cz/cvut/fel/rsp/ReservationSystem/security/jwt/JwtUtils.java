@@ -13,12 +13,17 @@ import io.jsonwebtoken.*;
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+
     @Value("${jwtSecret}")
     private String jwtSecret;
+
     @Value("${jwtExpirationMs}")
     private int jwtExpirationMs;
+
     public String generateJwtToken(Authentication authentication) {
+
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
@@ -26,9 +31,11 @@ public class JwtUtils {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
+
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
+
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
@@ -44,6 +51,7 @@ public class JwtUtils {
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
+
         return false;
     }
 }
