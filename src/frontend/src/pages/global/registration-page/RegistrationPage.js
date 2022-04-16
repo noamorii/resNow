@@ -29,6 +29,8 @@ const Form = () => {
 
         const userType = provider ? 1 : 2;
 
+        let valid = true;
+
         if (firstname.trim().length === 0 ||
             lastname.trim().length === 0 ||
             username.trim().length === 0 ||
@@ -37,80 +39,94 @@ const Form = () => {
             rePassword.trim().length === 0
         ) {
             setError('Please fill data')
+            valid = false;
+            e.preventDefault()
         } else {
             const regex = /[^a-zA-ZÀ-Žà-ž]/;
             if (firstname.trim().length >= 2) {
                 if (firstname.match(regex)) {
                     setError("Incorrect first name format.")
+                    valid = false;
                     e.preventDefault();
                     return;
 
                 }
             } else {
                 setError("First name is too short")
+                valid = false;
                 e.preventDefault();
                 return;
             }
             if (lastname.trim().length >= 2) {
                 if (lastname.match(regex)) {
                     setError("Incorrect last name format.")
+                    valid = false;
                     e.preventDefault();
                     return;
                 }
             } else {
                 setError("Last name is too short")
+                valid = false;
                 e.preventDefault();
                 return;
             }
             if (username.trim().length >= 4) {
                 if (lastname.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,20}$/)) {
                     setError("Incorrect last name format.")
+                    valid = false;
                     e.preventDefault();
                     return;
                 }
             } else {
                 setError("Username is too short")
+                valid = false;
                 e.preventDefault();
                 return;
             }
             if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
                 setError("Incorrect email format.")
+                valid = false;
                 e.preventDefault();
                 return;
             }
             if (password.trim().length >= 6) {
                 if (!password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)) {
                     setError("Password must contain at least one capital letter and at least one number.")
+                    valid = false;
                     e.preventDefault();
                     return;
                 }
             } else {
                 setError("Password is too short")
+                valid = false;
                 e.preventDefault();
                 return;
             }
             if (rePassword !== password) {
                 setError("Passwords do not match")
+                valid = false;
                 e.preventDefault();
                 return;
             }
         }
 
-        AuthService.register(firstname, lastname, username, email, password, userType).then(
-            () => {
-                navigate('/login')
-            },
-            (error) => {
-                const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-                console.log(resMessage);
-                setError(resMessage);
-            }
-        );
+        if(valid){
+            AuthService.register(firstname, lastname, username, email, password, userType).then(
+                () => {
+                    navigate('/login')
+                },
+                (error) => {
+                    const resMessage =
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
+                    console.log(resMessage);
+                    setError(resMessage);
+                }
+            );
+        }
     }
 
     return (
