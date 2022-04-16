@@ -30,19 +30,19 @@ public class Generator {
 
     public static User generateEmployeeUser() {
         User user = generateGenericUser();
-        user.setUserType(UserType.SYSTEM_EMPLOYEE);
+        user.setUserType(UserType.ROLE_SYSTEM_EMPLOYEE);
         return user;
     }
 
     public static User generateRegularUser() {
         User user = generateGenericUser();
-        user.setUserType(UserType.REGULAR_USER);
+        user.setUserType(UserType.ROLE_REGULAR_USER);
         return user;
     }
 
     public static User generateSystemOwner() {
         User user = generateGenericUser();
-        user.setUserType(UserType.SYSTEM_OWNER);
+        user.setUserType(UserType.ROLE_SYSTEM_OWNER);
         return user;
     }
 
