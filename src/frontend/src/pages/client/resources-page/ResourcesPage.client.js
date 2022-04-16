@@ -3,41 +3,12 @@ import {useState, useEffect, useMemo} from "react";
 // import {useTable} from "react-table"
 import {Sources} from "./sources/Sources";
 import {Places} from "./places/Places";
-import {Employees} from "./employes/Employees";
+import {Employees} from "./employees/Employees";
 
 export const ResourcesPageClient = () => {
     const [source, setSource] = useState(true);
     const [place, setPlace] = useState(false);
     const [employee, setEmployee] = useState(false);
-    // const [data, setData] = useState();
-    // const columns = useMemo(() => [
-    //     {
-    //         Header: "Zdroje",
-    //         columns: [
-    //             {
-    //                 Header: "Plný název"
-    //             },
-    //             {
-    //                 Header: "Název"
-    //             },
-    //             {
-    //                 Header: "Služba",
-    //                 Cell: ({ cell: { value } }) => value ? {value} : "-"
-    //             },
-    //             {
-    //                 Header: "Místo"
-    //             },
-    //             {
-    //                 Header: "Zaměstnanec",
-    //                 Cell: ({ cell: { value } }) => value ? {value} : "-"
-    //             },
-    //             {
-    //                 Header: " "
-    //             },
-    //         ]
-    //
-    //     }]
-    // )
 
     const activeSource = () => {
         setSource(true)
@@ -56,12 +27,6 @@ export const ResourcesPageClient = () => {
         setPlace(false)
         setEmployee(true)
     }
-
-    // const basicTable = () => {
-    //     useTable({
-    //
-    //     })
-    // }
 
     return (
         <div>
