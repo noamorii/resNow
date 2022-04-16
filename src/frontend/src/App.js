@@ -26,10 +26,10 @@ const App = () => {
         const user = AuthService.getCurrentUser();
         if (user) {
             setCurrentUser(user);
-            setRegularUser(user.roles.includes("REGULAR_USER"));
-            setAdmin(user.roles.includes("ADMIN"));
-            setSystemOwner(user.roles.includes("SYSTEM_OWNER"));
-            setSystemEmployee(user.roles.includes("SYSTEM_EMPLOYEE"));
+            setRegularUser(user.roles.includes("ROLE_REGULAR_USER"));
+            setAdmin(user.roles.includes("ROLE_ADMIN"));
+            setSystemOwner(user.roles.includes("ROLE_SYSTEM_OWNER"));
+            setSystemEmployee(user.roles.includes("ROLE_SYSTEM_EMPLOYEE"));
         }
     }, []);
 

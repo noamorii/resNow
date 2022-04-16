@@ -12,6 +12,8 @@ import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {Pie} from 'react-chartjs-2';
 import {Modal} from "./modalWindow/Modal";
 import {Link} from "react-router-dom";
+import {LocalDate, LocalDateTime} from "local-date";
+import authHeader from "../../../services/auth-header";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -75,6 +77,17 @@ const PieChart = () => {
     )
 }
 
+export const getDate = (year, month, day) => {
+    if (month < 10) {
+        month = "0".concat(month.toString());
+    }
+    if (day < 10) {
+        day = "0".concat(day.toString());
+    }
+
+    return year + "-" + month + "-" + day;
+}
+
 export const DashboardPageClient = () => {
 
     const [todayReservation, setTodayReservation] = useState(0);
@@ -95,8 +108,32 @@ export const DashboardPageClient = () => {
     }, [])
 
     const fetchTodayReservation = () => {
-        // axios.get(`${baseUrl}/`).then(res => setTodayReservation(res.data))
-        setTodayReservation(5)
+
+        const localDate = getDate(2022, 4, 12);
+        console.log(localDate)
+
+        // axios.post(
+        //     `${baseUrl}/reservations`,
+        //     {}, {
+        //         params: {
+        //             "dateFrom": new LocalDate(localDate),
+        //             "dateTo": new LocalDate('2022-04-16'),
+        //         }
+        //     }
+        // ).then(res => {
+        //         console.log(res);
+        //         setTodayReservation(res.data)
+        //     }
+        // )
+
+        axios.get(
+            `${baseUrl}/reservations/today`,
+            {headers: authHeader()}
+        ).then(r => {
+            console.log(r.data)
+        }, e =>{
+            console.log(e)
+        })
     }
 
     const fetchAllReservation = () => {
@@ -125,45 +162,49 @@ export const DashboardPageClient = () => {
     }
 
 
-
-
     return (
         <div className={styles.container}>
             <div className={styles.topContent}>
                 <div className={styles.cards}>
                     <img src={journals} alt={'icon'}/>
                     <p>{todayReservation}</p>
-                    <button className={'button-primary '.concat(styles.button)}  onClick={() => setShow(true)}>Dnešní
-                        rezervace</button>
+                    <button className={'button-primary '.concat(styles.button)} onClick={() => setShow(true)}>Dnešní
+                        rezervace
+                    </button>
                     <Modal onClose={() => setShow(false)} show={show} data={dataWithoutLabel}/>
 
                 </div>
                 <div className={styles.cards}>
                     <img src={journalMedical} alt={'icon'}/>
                     <p>{allReservation}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/rezervace'}>Rezervace</Link>
+                    <button className={'button-primary '.concat(styles.button)}><Link
+                        to={'/app/rezervace'}>Rezervace</Link>
                     </button>
                 </div>
                 <div className={styles.cards}>
                     <img src={calendar2} alt={'icon'}/>
                     <p>{allEvents}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/terminy'}>Termíny</Link></button>
+                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/terminy'}>Termíny</Link>
+                    </button>
                 </div>
                 <div className={styles.cards}>
                     <img src={pin} alt={'icon'}/>
                     <p>{allPlace}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/zdroje'}>Místa</Link></button>
+                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/zdroje'}>Místa</Link>
+                    </button>
                 </div>
                 <div className={styles.cards}>
                     <img src={person} alt={'icon'}/>
                     <p>{allCustomers}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/zakaznici'}>Zákazníci</Link>
+                    <button className={'button-primary '.concat(styles.button)}><Link
+                        to={'/app/zakaznici'}>Zákazníci</Link>
                     </button>
                 </div>
                 <div className={styles.cards}>
                     <img src={personCircle} alt={'icon'}/>
                     <p>{allEmployee}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/zdroje'}>Zaměstnanci</Link>
+                    <button className={'button-primary '.concat(styles.button)}><Link
+                        to={'/app/zdroje'}>Zaměstnanci</Link>
                     </button>
                 </div>
             </div>

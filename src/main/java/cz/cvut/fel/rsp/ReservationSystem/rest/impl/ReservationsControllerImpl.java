@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -26,8 +27,10 @@ public class ReservationsControllerImpl implements ReservationsController {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('SYSTEM_EMPLOYEE')")
     @GetMapping(value = "/reservations/today", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllToday() {
+        System.out.println("test");
         return null;
     }
 

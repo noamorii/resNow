@@ -73,9 +73,9 @@ public class SystemInitializerImpl implements SystemInitializer {
         }
 
         User admin = generateAdmin();
-        List<User> systemOwners = generateUsers(10, UserType.SYSTEM_OWNER);
-        List<User> users = generateUsers(50, UserType.REGULAR_USER);
-        List<User> employees = generateUsers(20, UserType.SYSTEM_EMPLOYEE);
+        List<User> systemOwners = generateUsers(10, UserType.ROLE_SYSTEM_OWNER);
+        List<User> users = generateUsers(50, UserType.ROLE_REGULAR_USER);
+        List<User> employees = generateUsers(20, UserType.ROLE_SYSTEM_EMPLOYEE);
         List<ReservationSystem> reservationSystems = generateReservationSystems(systemOwners);
         List<Source> sources = generateSources(reservationSystems);
         List<Event> events = generateEvents(sources);
@@ -217,9 +217,9 @@ public class SystemInitializerImpl implements SystemInitializer {
             user.setFirstName(faker.name().firstName());
             user.setLastName(faker.name().lastName());
             user.setUsername(user.getFirstName().toLowerCase() + i + "." + user.getLastName().toLowerCase());
-            if (userType == UserType.SYSTEM_OWNER)
+            if (userType == UserType.ROLE_SYSTEM_OWNER)
                 user.setEmail(user.getFirstName() + i + "@owner.com");
-            else if (userType == UserType.SYSTEM_EMPLOYEE)
+            else if (userType == UserType.ROLE_SYSTEM_EMPLOYEE)
                 user.setEmail(user.getFirstName() + i + "@employee.com");
             else
                 user.setEmail(user.getFirstName() + i + "@user.com");
@@ -238,7 +238,7 @@ public class SystemInitializerImpl implements SystemInitializer {
         user.setUsername(admin);
         user.setFirstName(admin);
         user.setLastName(admin);
-        user.setUserType(UserType.ADMIN);
+        user.setUserType(UserType.ROLE_ADMIN);
         user.setPassword(encoder.encode("123456"));
 
         userRepository.save(user);

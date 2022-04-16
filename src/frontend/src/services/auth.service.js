@@ -2,7 +2,7 @@ import axios from 'axios';
 import {baseUrl} from "../config/const";
 
 const login = (username, password) => {
-    return (axios.post(`${baseUrl}/signin`, {}, {
+    return (axios.post(`${baseUrl}/auth/signin`, {}, {
         params: {"username": username, "password": password}
     }).then(response => {
         if (response.data.accessToken) {
@@ -17,7 +17,7 @@ const logout = () => {
 }
 
 const register = (firstname, lastname, username, email, password, userType) => {
-    return (axios.post(`${baseUrl}/signup`, {}, {
+    return (axios.post(`${baseUrl}/auth/signup`, {}, {
         params: {
             "firstname": firstname,
             "lastname": lastname,
