@@ -118,7 +118,8 @@ export const DashboardPageClient = () => {
                 params: {
                     "dateFrom": new LocalDate(localDate),
                     "dateTo": new LocalDate('2022-04-16'),
-                }
+                },
+                headers: authHeader()
             }
         ).then(res => {
                 console.log(res);
@@ -130,8 +131,8 @@ export const DashboardPageClient = () => {
             `${baseUrl}/reservations/today`,
             {headers: authHeader()}
         ).then(r => {
-            console.log(r.data)
-        }, e =>{
+            console.log("date")
+        }, e => {
             console.log(e)
         })
     }
