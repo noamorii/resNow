@@ -42,4 +42,14 @@ public abstract class ReservationSlot implements Serializable {
     private Event event;
 
     public abstract void visit(ReservationService reservationService);
+
+    @Override
+    public String toString() {
+        return "ReservationSlot{" +
+                "id=" + id +
+                ", price=" + price +
+                ", date=" + date +
+                ", event=" + event +
+                '}';
+    }
 }

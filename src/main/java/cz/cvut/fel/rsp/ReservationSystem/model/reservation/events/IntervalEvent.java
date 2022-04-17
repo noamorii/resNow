@@ -31,4 +31,12 @@ public class IntervalEvent extends Event{
     public void visit(EventService eventService) {
         eventService.validateSpecificEvent(this);
     }
+
+    @Override
+    public String toString() {
+        return "IntervalEvent{" +
+                "intervalDuration=" + intervalDuration +
+                ", timeBetweenIntervals=" + timeBetweenIntervals +
+                '}';
+    }
 }

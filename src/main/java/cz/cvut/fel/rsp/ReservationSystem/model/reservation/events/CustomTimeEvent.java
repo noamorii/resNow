@@ -28,4 +28,11 @@ public class CustomTimeEvent extends Event{
     public void visit(EventService eventService) {
         eventService.validateSpecificEvent(this);
     }
+
+    @Override
+    public String toString() {
+        return "CustomTimeEvent{" +
+                "minimalReservationTime=" + minimalReservationTime +
+                '}';
+    }
 }
