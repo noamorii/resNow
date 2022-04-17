@@ -17,7 +17,7 @@ public interface ReservationSlotRepository extends JpaRepository<ReservationSlot
             "WHERE rs.event.id = ?1")
     public List<ReservationSlot> findReservedByEventId(Integer eventId);
 
-    @Query(value = "SELECT rs FROM ReservationSlot rs WHERE rs NOT IN " +
+    @Query(value = "SELECT rs FROM ReservationSlot rs WHERE rs.event.id = ?1 AND rs NOT IN " +
                     "(SELECT rs FROM ReservationSlot rs JOIN Reservation re ON (re.reservationSlot.id = rs.id AND re.cancelled = false) " +
                     "WHERE rs.event.id = ?1)")
     public List<ReservationSlot> findFreeByEventId(Integer eventId);
@@ -29,7 +29,7 @@ public interface ReservationSlotRepository extends JpaRepository<ReservationSlot
             "WHERE rs.event.id = :event_id AND rs.date >= :from AND rs.date <= :to")
     public List<ReservationSlot> findReservedByEventId(@Param("event_id") Integer eventId, @Param("from") LocalDate from, @Param("to") LocalDate to);
 
-    @Query(value = "SELECT rs FROM ReservationSlot rs WHERE rs NOT IN " +
+    @Query(value = "SELECT rs FROM ReservationSlot rs WHERE rs.event.id = ?1 AND rs NOT IN " +
             "(SELECT rs FROM ReservationSlot rs JOIN Reservation re ON (re.reservationSlot.id = rs.id AND re.cancelled = false) " +
             "WHERE rs.event.id = :event_id)" +
             "AND rs.date >= :from AND rs.date <= :to")

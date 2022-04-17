@@ -29,4 +29,13 @@ public class CustomTime extends ReservationSlot{
     public void visit(ReservationService reservationService) {
         throw new UnsupportedOperationException("Not implemented");
     }
+
+    @Override
+    public String toString() {
+        return "CustomTime{" +
+                "start=" + start +
+                ", end=" + end +
+                ", mainSlot=" + mainSlot +
+                '}';
+    }
 }

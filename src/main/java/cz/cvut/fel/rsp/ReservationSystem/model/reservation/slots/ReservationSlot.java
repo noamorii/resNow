@@ -38,8 +38,18 @@ public abstract class ReservationSlot implements Serializable {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
     public abstract void visit(ReservationService reservationService);
+
+    @Override
+    public String toString() {
+        return "ReservationSlot{" +
+                "id=" + id +
+                ", price=" + price +
+                ", date=" + date +
+                ", event=" + event +
+                '}';
+    }
 }

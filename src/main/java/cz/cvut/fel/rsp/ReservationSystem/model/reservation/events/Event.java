@@ -60,4 +60,19 @@ public abstract class Event {
     public abstract void visit(ReservationSlotService reservationSlotService, LocalDate date);
 
     public abstract void visit(EventService eventService);
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", fromTime=" + fromTime +
+                ", toTime=" + toTime +
+                ", startDate=" + startDate +
+                ", repeatUntil=" + repeatUntil +
+                ", day=" + day +
+                ", repetition=" + repetition +
+                ", category=" + category +
+                '}';
+    }
 }

@@ -79,7 +79,7 @@ public class SystemInitializerImpl implements SystemInitializer {
         List<ReservationSystem> reservationSystems = generateReservationSystems(systemOwners);
         List<Source> sources = generateSources(reservationSystems);
         List<Event> events = generateEvents(sources);
-        // TODO generateReservations(users, events);
+        generateReservations(users, events);
 
         //Event seatEvent = generateSeatEvent(source);
     }
@@ -92,6 +92,7 @@ public class SystemInitializerImpl implements SystemInitializer {
             for (int i = 0; i < amount; i++) {
                 Event event = events.get(0);
                 List<ReservationSlot> eventSlots = reservationSlotService.findAllFree(event);
+                if (eventSlots.size() == 0) continue;
                 reservationService.createReservation(user, eventSlots.get(random.nextInt(eventSlots.size())));
             }
         }
