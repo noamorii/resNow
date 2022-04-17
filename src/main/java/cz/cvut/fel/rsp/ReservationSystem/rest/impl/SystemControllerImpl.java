@@ -92,11 +92,6 @@ public class SystemControllerImpl implements SystemController {
     }
 
     @Override
-    public List<ReservationDTO> getAllReservationsToday(Integer systemId) {
-        return null;
-    }
-
-    @Override
     public List<ReservationDTO> getAllReservationsForDay(Integer year, Integer month, Integer day) {
         return null;
     }

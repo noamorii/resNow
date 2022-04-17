@@ -28,9 +28,7 @@ public interface SystemController {
     // POST /systems/{system_id}/sources
     public ResponseEntity<Void> createSource(Integer systemId, SourceDTO sourceDTO);
 
-    // GET /systems/{system_id}/reservations?time="today"
-    public List<ReservationDTO> getAllReservationsToday(Integer systemId);
-
     // GET /systems/{system_id}/reservations?year=""&month=""&day=""
+    // Kdyz budou chtit today, tak tam daji dnesni datum
     public List<ReservationDTO> getAllReservationsForDay(Integer year, Integer month, Integer day);
 }
