@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,6 @@ public class ReservationsControllerImpl implements ReservationsController {
         return null;
     }
 
-    @Override
     @PreAuthorize("hasAnyRole('SYSTEM_EMPLOYEE')")
     @GetMapping(value = "/reservations/today", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllToday() {
@@ -34,7 +34,6 @@ public class ReservationsControllerImpl implements ReservationsController {
         return null;
     }
 
-    @Override
     @GetMapping(value = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllForDay(@RequestParam(name = "year") Integer year, @RequestParam(name = "month") Integer month, @RequestParam(name = "day") Integer day) {
         return null;
@@ -45,6 +44,11 @@ public class ReservationsControllerImpl implements ReservationsController {
     public List<ReservationDTO> getAllForInterval(@RequestParam("dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
                                                   @RequestParam("dateTo") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
         System.out.println(dateFrom);
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> cancel(Integer reservationId) {
         return null;
     }
 }

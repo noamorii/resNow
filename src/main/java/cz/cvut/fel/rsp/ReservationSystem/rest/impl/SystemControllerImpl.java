@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationSystemDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SourceDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.interfaces.SystemController;
@@ -85,4 +86,18 @@ public class SystemControllerImpl implements SystemController {
         return null;
     }
 
+    @Override
+    public ResponseEntity<Void> createSource(Integer systemId, SourceDTO sourceDTO) {
+        return null;
+    }
+
+    @Override
+    public List<ReservationDTO> getAllReservationsToday(Integer systemId) {
+        return null;
+    }
+
+    @Override
+    public List<ReservationDTO> getAllReservationsForDay(Integer year, Integer month, Integer day) {
+        return null;
+    }
 }
