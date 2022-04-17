@@ -61,6 +61,7 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
         while (currentTime.isBefore(event.getToTime())){
             Interval interval = new Interval();
             interval.setDate(date);
+            interval.setEvent(event);
             interval.setStart(currentTime);
             interval.setEnd(currentTime.plusSeconds(intervalDuration.getSeconds()));
             interval.setPrice(100); // TODO price
