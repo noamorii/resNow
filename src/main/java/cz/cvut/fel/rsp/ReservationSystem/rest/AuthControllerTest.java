@@ -8,6 +8,7 @@ import cz.cvut.fel.rsp.ReservationSystem.response.MessageResponse;
 import cz.cvut.fel.rsp.ReservationSystem.security.jwt.JwtUtils;
 import cz.cvut.fel.rsp.ReservationSystem.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,14 +24,15 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/rest/v1/auth/")
 @RestController
+@Profile(value = {"!testprofile"})
 public class AuthControllerTest {
-    @Autowired
+    @Autowired(required = false) // Required = false because of tests
     AuthenticationManager authenticationManager;
     @Autowired
     UserRepository userRepository;
-    @Autowired
+    @Autowired(required = false) // Required = false because of tests
     PasswordEncoder encoder;
-    @Autowired
+    @Autowired(required = false) // Required = false because of tests
     JwtUtils jwtUtils;
 
     @GetMapping("/exists/{username}")

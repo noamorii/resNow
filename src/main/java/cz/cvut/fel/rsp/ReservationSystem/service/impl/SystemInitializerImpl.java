@@ -62,7 +62,7 @@ public class SystemInitializerImpl implements SystemInitializer {
 
     private final Random random = new Random();
 
-    @Autowired //Pro hashovani hesla
+    @Autowired(required = false) // Required = false because of tests
     PasswordEncoder encoder;
 
     @Override
