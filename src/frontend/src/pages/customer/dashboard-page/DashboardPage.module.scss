@@ -1,234 +1,254 @@
-.container {
+.servicesNavigation {
+  position: sticky;
+  border-bottom: 0.2vh solid rgb(0, 0, 0, 0.25);
+  height: 3vh;
+  padding-left: 20vh;
+  padding-right: 20vh;
+  padding-top: 0.8vh;
+  padding-bottom: 0.8vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  .servicesNavigation {
-    position: sticky;
-    border-bottom: 0.2vh solid rgb(0, 0, 0, 0.25);
-    height: 3vh;
-    padding-left: 20vh;
-    padding-right: 20vh;
-    padding-top: 0.8vh;
-    padding-bottom: 0.8vh;
-    display: flex;
+  a {
     align-items: center;
-    justify-content: space-between;
+    font-size: 0.8rem;
+    text-decoration: none;
+    color: #000000;
 
-    a {
-      align-items: center;
-      font-size: 0.8rem;
-      text-decoration: none;
-      color: #000000;
+    &.active, &:hover {
+      padding: 1.2vh;
+      border-radius: 0.7vh;
+      color: white;
+      background-color: #0D6EFD;
+    }
+  }
+}
 
-      &.active, &:hover {
-        padding: 1.2vh;
-        border-radius: 0.7vh;
-        color: white;
-        background-color: #0D6EFD;
-      }
+.title{
+  font-size: larger;
+}
+
+.name:hover{
+  text-decoration: underline;
+}
+
+.leftButton{
+  background: url("./leftButton.svg") no-repeat;
+
+  &:hover{
+    background: url("./leftButH.svg") no-repeat;
+  }
+}
+
+.rightButton{
+  background: url("./rightButton.svg") no-repeat;
+
+  &:hover{
+    background: url("./rightButH.svg") no-repeat;
+  }
+}
+
+.upcomingSections {
+  margin-top: 5vh;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 2vh;
+  background: rgb(230, 230, 230, 0.62);
+  height: auto;
+  width: 70%;
+  border-radius: 10px;
+  position: relative;
+
+  p{
+    margin-left: 2vh;
+    padding-top: 1vh;
+  }
+
+  .buttons {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+
+    button{
+      border: none;
+      padding: 0;
+      margin-left: 10px;
+      width:30px;
+      height:30px;
     }
   }
 
-  .title{
-    font-size: larger;
-  }
-
-  .upcomingSections {
-    margin-top: 5vh;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 2vh;
-    background: rgb(230, 230, 230, 0.62);
-    height: auto;
-    width: 70%;
+  .block{
+    margin-left: 2vh;
+    padding-top: 1vh;
+    padding-bottom: 6vh;
+    padding-right: 1vh;
+    width: auto;
+    border: 0.3vh solid #7EA1FF;
     border-radius: 10px;
+    background: white;
+    display: inline-block;
+    justify-content: center;
     position: relative;
 
-    p{
-      margin-left: 2vh;
-      padding-top: 1vh;
+    img{
+      height: 20vh;
+      width: available;
+      border-radius: 10px;
+      margin-left: 1vh;
     }
 
-    .buttons {
-      position: absolute;
-      top: 7px;
-      right: 10px;
+    p{
+      margin: 0px 0px 0px 1vh;
+    }
 
-      button{
-        background-color: transparent;
-        border: none;
-        padding: 0;
-        margin-left: 10px;
+    .rating{
+      position: absolute;
+      right: 5px;
+      bottom: 2px;
+      display: inline-flex;
+
+      p{
+        color: #FFC459;
+        font-weight: bold;
+      }
+
+      img{
+        height: 3.2vh;
+        width: 3.2vh;
       }
     }
+  }
+}
 
-    .block{
-      margin-left: 2vh;
-      padding-top: 1vh;
-      padding-bottom: 6vh;
-      padding-right: 1vh;
+.sections {
+  margin-top: 5vh;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 2vh;
+  background: #FFFFFF;
+  height: auto;
+  width: 70%;
+  border-radius: 10px;
+  position: relative;
+
+  p{
+    margin-left: 2vh;
+    padding-top: 1vh;
+  }
+
+  .buttons {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+
+    button{
+      border: none;
+      padding: 0;
+      margin-left: 10px;
+      width:30px;
+      height:30px;
+    }
+  }
+
+  .block{
+    margin-left: 2vh;
+    padding-top: 1vh;
+    padding-bottom: 6vh;
+    padding-right: 1vh;
+    width: auto;
+    border: 0.3vh solid #7EA1FF;
+    border-radius: 10px;
+    background: white;
+    display: inline-block;
+    justify-content: center;
+    position: relative;
+
+    img{
+      height: 20vh;
+      width: available;
+      border-radius: 10px;
+      margin-left: 1vh;
+    }
+
+    p{
+      margin: 0px 0px 0px 1vh;
+    }
+
+    .rating{
+      position: absolute;
+      right: 5px;
+      bottom: 2px;
+      display: inline-flex;
+
+      p{
+        color: #FFC459;
+        font-weight: bold;
+      }
+
+      img{
+        height: 3.2vh;
+        width: 3.2vh;
+      }
+    }
+  }
+}
+
+.reviews {
+  margin-top: 5vh;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 2vh;
+  background: #FFFFFF;
+  height: auto;
+  width: 70%;
+  border-radius: 10px;
+  position: relative;
+
+  p{
+    margin-left: 2vh;
+    padding-top: 1vh;
+  }
+
+  .buttons {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+
+    button{
+      border: none;
+      padding: 0;
+      margin-left: 10px;
+      width:30px;
+      height:30px;
+    }
+  }
+
+  .block{
+    margin-left: 2vh;
+    padding-top: 1vh;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    width: 50vh;
+    border: 0.3vh solid #7EA1FF;
+    border-radius: 10px;
+    background: white;
+    display: inline-block;
+    justify-content: center;
+    text-align: center;
+
+    img{
+      height: 10vh;
+      width: 10vh;
+    }
+
+    p{
+      padding: 0vh 0vh 0vh 0vh;
+    }
+
+    text{
       width: auto;
-      border: 0.3vh solid #7EA1FF;
-      border-radius: 10px;
-      background: white;
-      display: inline-block;
-      justify-content: center;
-      position: relative;
-
-      img{
-        height: 20vh;
-        width: available;
-        border-radius: 10px;
-        margin-left: 1vh;
-      }
-
-      p{
-        margin: 0px 0px 0px 1vh;
-      }
-
-      .rating{
-        position: absolute;
-        right: 5px;
-        bottom: 2px;
-        display: inline-flex;
-
-        p{
-          color: #FFC459;
-          font-weight: bold;
-        }
-
-        img{
-          height: 3.2vh;
-          width: 3.2vh;
-        }
-      }
-    }
-  }
-
-  .sections {
-    margin-top: 5vh;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 2vh;
-    background: #FFFFFF;
-    height: auto;
-    width: 70%;
-    border-radius: 10px;
-    position: relative;
-
-    p{
-      margin-left: 2vh;
-      padding-top: 1vh;
-    }
-
-    .buttons {
-      position: absolute;
-      top: 7px;
-      right: 10px;
-
-      button{
-        background-color: transparent;
-        border: none;
-        padding: 0;
-        margin-left: 10px;
-      }
-    }
-
-    .block{
-      margin-left: 2vh;
-      padding-top: 1vh;
-      padding-bottom: 6vh;
-      padding-right: 1vh;
-      width: auto;
-      border: 0.3vh solid #7EA1FF;
-      border-radius: 10px;
-      background: white;
-      display: inline-block;
-      justify-content: center;
-      position: relative;
-
-      img{
-        height: 20vh;
-        width: available;
-        border-radius: 10px;
-        margin-left: 1vh;
-      }
-
-      p{
-        margin: 0px 0px 0px 1vh;
-      }
-
-      .rating{
-        position: absolute;
-        right: 5px;
-        bottom: 2px;
-        display: inline-flex;
-
-        p{
-          color: #FFC459;
-          font-weight: bold;
-        }
-
-        img{
-          height: 3.2vh;
-          width: 3.2vh;
-        }
-      }
-    }
-  }
-
-  .reviews {
-    margin-top: 5vh;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 2vh;
-    background: #FFFFFF;
-    height: auto;
-    width: 70%;
-    border-radius: 10px;
-    position: relative;
-
-    p{
-      margin-left: 2vh;
-      padding-top: 1vh;
-    }
-
-    .buttons {
-      position: absolute;
-      top: 7px;
-      right: 10px;
-
-      button{
-        background-color: transparent;
-        border: none;
-        padding: 0;
-        margin-left: 10px;
-      }
-    }
-
-    .block{
-      margin-left: 2vh;
-      padding-top: 1vh;
-      padding-left: 1vh;
-      padding-right: 1vh;
-      width: 50vh;
-      border: 0.3vh solid #7EA1FF;
-      border-radius: 10px;
-      background: white;
-      display: inline-block;
-      justify-content: center;
-      text-align: center;
-
-      img{
-        height: 10vh;
-        width: 10vh;
-      }
-
-      p{
-        padding: 0vh 0vh 0vh 0vh;
-      }
-
-      text{
-        width: auto;
-      }
     }
   }
 }
