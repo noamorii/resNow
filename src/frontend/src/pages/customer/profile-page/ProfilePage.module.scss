@@ -1,0 +1,49 @@
+.mainText{
+  font-size: x-large;
+  font-weight: bold;
+  margin-left: 40vh;
+  margin-top: 10vh;
+}
+
+.section {
+  margin-top: 30px;
+  margin-left: 40vh;
+
+  p {
+    font-size: large;
+    font-weight: bold;
+  }
+
+  .block {
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 0.5px;
+    height: 22vh;
+    width: 90vh;
+    border-radius: 10px;
+    background-color: #CAD4E0;
+    box-shadow: 5px 5px 10px 3px rgb(0, 0, 0, 0.25);
+
+    p {
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+
+    .fieldsGroup {
+      div {
+        display: inline-block;
+        margin-right: 3vh;
+      }
+    }
+
+    .input {
+      width: 30vh;
+    }
+
+    button {
+      margin-top: 15px;
+      display: inline;
+      margin-right: 10px;
+    }
+  }
+}
