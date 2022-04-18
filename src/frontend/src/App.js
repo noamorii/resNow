@@ -41,6 +41,7 @@ const App = () => {
                 <Route exact path="/register" element={<RegistrationPage/>}/>
                 <Route exact path="/about" element={<AboutUs/>}/>
                 <Route exact path="/documentation" element={<DocumentationPage/>}/>
+                <Route path="/app/*" element={<ClientRoutes/>}/>
 
                 {regularUser && (
                     <Route path="/app/*" element={<CustomerRoutes/>}/>
