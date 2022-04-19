@@ -1,9 +1,9 @@
 import styles from './ReservationPage.module.scss'
 import {Calendar, DateObject} from "react-multi-date-picker"
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {baseUrl} from "../../../config/const";
-
+import ModalReservationDetails from "./modalWindowReservationDetails/ModalReservationDetails"
 
 const TopButtons = () => {
 
@@ -29,6 +29,7 @@ const DatePicker = () => {
         axios.get(`${baseUrl}/systems/1/`).then(result => setData(result.data.name))
         setValue(e)
         console.log(data1)
+        //console.log(value)
     }
 
     return (
@@ -64,11 +65,69 @@ const DatePicker = () => {
 }
 
 const TableUnder = () => {
+    const [data, setData] = useState([
+        {
+            date: '15-04-2022',
+            start: '14:00',
+            end: '16:00',
+            code: 'EL4-MF1-1EM',
+            price: '250',
+            capacity: 1,
+            customer: 'Tonny Stark',
+            state: 'NEW',
+            cancelDate: '-',
+            phone: '123456789',
+            place: 'Tennis court',
+            service: 'Coach',
+            employee: 'Pepper',
+            created: '22-03-2022'
+        },
+        {
+            date: '15-04-2022',
+            start: '14:00',
+            end: '16:00',
+            code: 'EL4-MF1-2OP',
+            price: '250',
+            capacity: 1,
+            customer: 'Tonny Stark',
+            state: 'NEW',
+            cancelDate: '-',
+            phone: '123456789',
+            place: 'Tennis court',
+            service: 'Coach',
+            employee: 'Pepper',
+            created: '22-03-2022'
+        }
+    ]);
+    const [detailsShown, setDeatilsShown] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
 
-    const [confirm, setConfirm] = useState(false)
+    useEffect(()=>{
+        getData();
+    }, [])
+
+    async function getData() {
+        const result = await fetch('')
+        const getResults = await result.json();
+        setData(getResults);
+        console.log(getResults)
+    }
+
+    const toggleShown = code => {
+        const shownState =  detailsShown.slice();
+        const index = shownState.indexOf(code)
+        if (index >= 0){
+            shownState.splice(index, 1);
+            setDeatilsShown(shownState)
+        } else {
+            shownState.push(code);
+            setDeatilsShown(shownState);
+        }
+    }
 
     return (
         <div>
+            {openModal && <ModalReservationDetails closeModal={setOpenModal}/>}
             <div className={styles.tableContainer}>
                 <table>
                     <thead>
@@ -99,41 +158,62 @@ const TableUnder = () => {
                         <td className={styles.collWide}>
                             <p>DATE OF CANCELLATION</p>
                         </td>
+                        <td className={styles.collMid}> </td>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th className={styles.collCheckbox}>
-                            <input className={'checkbox'} type="checkbox" />
-                        </th>
-                        <th>event time</th>
-                        <th>reservation code</th>
-                        <th>price</th>
-                        <th>1</th>
-                        <th>customer</th>
-                        <th>state</th>
-                        <th>date of cancellation</th>
-                        <th>
-                            <div className={styles.buttonsTable}>
-                                <button className={'button-primary-outline '}>Details</button>
-                                <button className={'button-primary-outline '} onClick={() => setConfirm(true)}>Cancel</button>
-                            </div>
-                        </th>
-                    </tr>
+                        {data.map(reservation => (
+                            <React.Fragment key={reservation.code}>
+                            <tr className={styles.headRow}>
+                                <td className={styles.collCheckbox}>
+                                    <input className={'checkbox'} type="checkbox" />
+                                    <button onClick={() => toggleShown(reservation.code)}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="19" fill="none" viewBox="0 0 16 19">
+                                            <path fill="#000"  d="M.685 6.14 2.05 4.55l5.581 6.524 5.593-6.51 1.362 1.593-6.958 8.1L.685 6.14Z"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                                <td>{reservation.start}-{reservation.end}</td>
+                                <td>{reservation.code}</td>
+                                <td>{reservation.price}</td>
+                                <td>{reservation.capacity}</td>
+                                <td>{reservation.customer}</td>
+                                <td>{reservation.state}</td>
+                                <td>{reservation.cancelDate}</td>
+                                <td>
+                                    <div className={styles.buttonsTable}>
+                                        <div className={styles.detailsButton}>
+                                            <button className={'button-primary-outline'} onClick={() => setOpenModal(true)}>Details</button>
+                                        </div>
+                                        <button className={'button-primary-outline '}>Cancel</button>
+                                    </div>
+                                </td>
+                            </tr>
+                                {detailsShown.includes(reservation.code) && (
+                                    <tr>
+                                        <td colSpan="2" className={styles.toggleInfo}>
+                                            PHONE NUMBER: <br/>{reservation.phone}</td>
+                                        <td className={styles.toggleInfo}>PLACE: <br/>{reservation.place}</td>
+                                        <td colSpan="2" className={styles.toggleInfo}>SERVICE: <br/>{reservation.service}</td>
+                                        <td className={styles.toggleInfo}>EMPLOYEE: <br/>{reservation.employee}</td>
+                                        <td colSpan="2" className={styles.toggleInfo}>DATE OF RESERVATION: <br/>{reservation.created}</td>
+                                        <td> </td>
+                                    </tr>
+                                )}
+                            </React.Fragment>
+                        ))}
+                        <div className={styles.containerFunction}>
+                            <select>
+                                <option selected value="-">-</option>
+                                <option value="allowReservations">test</option>
+                            </select>
+                            <button className={'button-primary sm '}>Apply</button>
+                        </div>
                     </tbody>
                 </table>
             </div>
-        <div className={styles.containerFunction}>
-            <select>
-                <option selected value="-">-</option>
-                <option value="allowReservations">Povolit rezervaci</option>
-                <option value="DisableReservations">Zakázat rezervaci</option>
-                <option value="Remove">Odstranit</option>
-                <option value="writeEmail">Napsat e-mail</option>
-                <option value="writeSms">Napsat sms</option>
-            </select>
-            <button className={'button-primary sm '}>Apply</button>
-        </div></div>
+
+        </div>
     )
 }
 

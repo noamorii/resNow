@@ -60,7 +60,7 @@
     flex-direction: column;
 
     margin: 2vh auto;
-    width: 80%;
+    width: 90%;
 
     border: 1px solid rgba(0, 0, 0, 0.23);
     box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
@@ -81,8 +81,25 @@
         font-weight: 400;
       }
 
+      thead {
+        border-bottom: 2px solid black;
+      }
+
+      .headRow {
+        border-top: 2px solid black;
+        border-left: 10px solid #7EA1FF;
+        border-right: 23px solid #7EA1FF;
+
+        &:last-child{
+          border-bottom: 4px solid #7EA1FF;
+        }
+      }
+
       td, th {
-        border: 1px solid rgba(0, 0, 0, 0.23);
+        //border:1px solid rgba(0, 0, 0, 0.23);
+        border-right: 1px solid rgba(0, 0, 0, 0.23);
+        border-left: 1px solid rgba(0, 0, 0, 0.23);
+        //border-top: 2px solid black;
         height: 8vh;
         text-align: center;
 
@@ -141,7 +158,7 @@
     display: flex;
     flex-direction: row;
     width: 80%;
-    margin: 0 auto;
+    margin: 2vh;
 
     button {
       margin: 0 1vh;
@@ -152,11 +169,26 @@
 }
 
 .collNarrow {
-  width: 8vh;
+  width: 5%;
 }
 .collMid {
- width: 15vh;
+ width: 10%;
 }
 .collWide {
-  width: 22vh;
+  width: 15%;
 }
+
+.collState {
+  width: 12vh;
+}
+.headRow {
+  background-color: #7EA1FF;
+}
+button {
+  background:transparent;
+  border:none;
+  outline:none;
+  cursor:pointer;
+}
+
+.toggleInfo {}
