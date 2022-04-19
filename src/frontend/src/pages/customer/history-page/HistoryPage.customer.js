@@ -1,6 +1,7 @@
 import styles from './HistoryPage.module.scss'
 import {useState, useEffect, useMemo} from "react";
 import {useTable, useFilters, usePagination} from "react-table";
+import DatePicker from "react-multi-date-picker"
 import MOCK_DATA from "./MOCK_DATA.json"
 
 
@@ -34,8 +35,7 @@ export const HistoryPageCustomer = () =>{
             {
                 Header: "Datum zrušení",
                 accessor:"date_of_cancellation",
-                Filter: Filter,
-                disableFilters: true
+                Filter: DatePick
             },
         ],
         []
@@ -134,6 +134,17 @@ const Filter = ({column}) => {
     return (
         <span>
             <input value={filterValue} onChange={(e) => setFilter(e.target.value)} className={'input-primary search sh sm'} placeholder={'Hledaný text…'}/>
+        </span>
+    )
+}
+
+const DatePick = ({column}) => {
+    // const [value, setValue] = useState(new Date())
+    const {value, setValue} = column
+
+    return (
+        <span>
+            <DatePicker value={value} onChange={setValue} />
         </span>
     )
 }
