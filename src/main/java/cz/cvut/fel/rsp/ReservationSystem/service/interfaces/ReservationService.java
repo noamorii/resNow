@@ -16,6 +16,8 @@ public interface ReservationService{
 
    List<Reservation> findAllReservations(User user);
 
+    public List<Reservation> findAllReservations(User user, LocalDate fromDate, LocalDate toDate);
+
    List<Reservation> findAllUnpaidReservations(User user);
 
    List<Reservation> findAllReservations(ReservationSystem reservationSystem);

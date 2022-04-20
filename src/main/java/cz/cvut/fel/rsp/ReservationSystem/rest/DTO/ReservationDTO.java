@@ -6,6 +6,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.JoinColumn;
@@ -13,6 +14,7 @@ import javax.persistence.OneToOne;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ReservationDTO {
     private Integer userId;
 
