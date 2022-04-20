@@ -20,4 +20,11 @@ public class FixedLengthCustomTime extends CustomTime{
     public void visit(ReservationService reservationService) {
         throw new UnsupportedOperationException("Not implemented");
     }
+
+    @Override
+    public String toString() {
+        return "FixedLengthCustomTime{" +
+                "fixedLength=" + fixedLength +
+                '}';
+    }
 }

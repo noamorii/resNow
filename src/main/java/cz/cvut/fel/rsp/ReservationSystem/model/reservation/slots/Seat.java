@@ -18,4 +18,11 @@ public class Seat extends ReservationSlot{
     public void visit(ReservationService reservationService) {
         throw new UnsupportedOperationException("Not implemented");
     }
+
+    @Override
+    public String toString() {
+        return "Seat{" +
+                "seatIdentifier='" + seatIdentifier + '\'' +
+                '}';
+    }
 }

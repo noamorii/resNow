@@ -6,11 +6,11 @@ import {ContactSection} from "./contact-section/ContactSection";
 
 import styles from './index.module.scss'
 
-export const IndexPage = () => {
+export const IndexPage = (props) => {
 
     return (
         <div>
-            <NabvarIndex/>
+            <NabvarIndex user={props.user}/>
             <div className={styles.mainContainer}>
                 <HomeSection/>
                 <AboutSection/>

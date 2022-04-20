@@ -1,12 +1,12 @@
 import styles from './DocumentationPage.module.scss'
-import projectTree from '../../../assets/projectstructure.png'
-import projectTreePages from '../../../assets/projectstructurePages.png'
-import terminologie from '../../../assets/terminologie.jpg'
-import pageStructure from '../../../assets/pagestucture.png'
-import underfolder from '../../../assets/underfolder.png'
-import scrn1 from '../../../assets/Screenshot_1.png'
-import scrn2 from '../../../assets/Screenshot_2.png'
-import scrn3 from '../../../assets/Screenshot_3.png'
+import projectTree from '../../../assets/documentaionPage/projectstructure.png'
+import projectTreePages from '../../../assets/documentaionPage/projectstructurePages.png'
+import terminologie from '../../../assets/documentaionPage/terminologie.jpg'
+import pageStructure from '../../../assets/documentaionPage/pagestucture.png'
+import underfolder from '../../../assets/documentaionPage/underfolder.png'
+import scrn1 from '../../../assets/documentaionPage/Screenshot_1.png'
+import scrn2 from '../../../assets/documentaionPage/Screenshot_2.png'
+import scrn3 from '../../../assets/documentaionPage/Screenshot_3.png'
 
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import {docco} from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -15,6 +15,10 @@ const Buttons = () => {
     return (
         <div className={styles.contents}>
             <h1>Components</h1>
+            <p>Pokud chcete přidat vlastní styl, stačí udělat .concat:</p>
+            <SyntaxHighlighter language="javascript" style={docco}>
+                {`<button className={'button-primary sm '.concat(styles.<name>)}>Foo</button>`}
+            </SyntaxHighlighter>
             <h2>Buttons</h2>
             <h3>primary</h3>
 

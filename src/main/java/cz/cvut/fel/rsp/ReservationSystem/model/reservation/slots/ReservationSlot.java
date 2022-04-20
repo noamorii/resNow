@@ -13,7 +13,7 @@ import java.time.LocalDate;
 /**
  * ALl reservationSlots are going to be generated in the DB after creating an Event.
  *
- * We are going to know, if they are booked based on the existence of the Reservation entity bound to them.
+ * We are going to know,if they are booked based on the existence of the Reservation entity bound to them.
  *
  * In case of CustomTime, one big CustomTime entity is going to be generated covering the whole interval.
  * After someone makes a reservation the entity is going to get split in two. Where the booked customTime is going to have
@@ -42,4 +42,14 @@ public abstract class ReservationSlot implements Serializable {
     private Event event;
 
     public abstract void visit(ReservationService reservationService);
+
+    @Override
+    public String toString() {
+        return "ReservationSlot{" +
+                "id=" + id +
+                ", price=" + price +
+                ", date=" + date +
+                ", event=" + event +
+                '}';
+    }
 }

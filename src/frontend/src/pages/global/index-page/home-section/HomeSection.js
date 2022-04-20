@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {Link} from "react-router-dom";
-import filter_img from "../../../../assets/filter.png";
-import dashboard_img from "../../../../assets/Dashboard.png";
+import filter_img from "../../../../assets/IndexPage/filter.png";
+import dashboard_img from "../../../../assets/IndexPage/Dashboard.png";
 
 import styles from './HomeSection.module.scss';
 

@@ -2,6 +2,9 @@ package cz.cvut.fel.rsp.ReservationSystem.rest.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
+import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationSystemDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SourceDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.interfaces.SystemController;
@@ -29,8 +32,6 @@ import java.util.stream.Collectors;
 public class SystemControllerImpl implements SystemController {
 
     private final ReservationSystemServiceImpl reservationSystemService;
-
-    private final SourceServiceImpl sourceService;
 
     private final FeedbackServiceImpl feedbackService;
 
@@ -73,5 +74,25 @@ public class SystemControllerImpl implements SystemController {
         log.info("Created feedback for system with id {} with following message: {}", systemId, feedback.getMessage());
         final HttpHeaders headers = RestUtil.createLocationHeaderFromCurrentUri("/{feedbackId}", feedback.getId());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/systems/workers")
+    public List<User> getMyEmployees(){
+        return null;
+    }
+
+    @GetMapping(value = "/systems/adresses")
+    public List<Source> getAllSourcesBookedForToday(){
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> createSource(Integer systemId, SourceDTO sourceDTO) {
+        return null;
+    }
+
+    @Override
+    public List<ReservationDTO> getAllReservationsForDay(Integer year, Integer month, Integer day) {
+        return null;
     }
 }

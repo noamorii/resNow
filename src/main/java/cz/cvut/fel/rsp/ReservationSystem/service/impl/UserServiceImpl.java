@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,11 @@ public class UserServiceImpl implements UserService {
         user.setPaymentDetails(null);
         paymentDetailsRepository.save(details);
         userRepository.save(user);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
@@ -91,17 +97,19 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
     @Transactional
     public List<Reservation> findAllReservations(User user){
         return reservationRepository.findAllUsersReservations(user);
     }
 
+    @Override
     @Transactional
     public List<Reservation> findAllReservationInInterval(User user, LocalDate from, LocalDate to){
         List<Reservation> reservations = reservationRepository.findAllUsersReservations(user);
         List<Reservation> result = new ArrayList<>();
         for (Reservation reservation : reservations){
-            if (reservation.getReservationSlot().getDate().isAfter(from) || reservation.getReservationSlot().getDate().isBefore(to)){
+            if (reservation.getReservationSlot().getDate().isAfter(from) && reservation.getReservationSlot().getDate().isBefore(to)){
                 result.add(reservation);
             }
         }

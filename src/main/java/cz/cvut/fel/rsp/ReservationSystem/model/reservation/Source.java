@@ -32,4 +32,16 @@ public class Source extends AbstractEntity {
     @NotNull
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Category> categories;
+
+    @Override
+    public String toString() {
+        return "Source{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", address=" + address +
+                ", isActive=" + isActive +
+                ", reservationSystem=" + reservationSystem +
+                ", categories=" + categories +
+                '}';
+    }
 }

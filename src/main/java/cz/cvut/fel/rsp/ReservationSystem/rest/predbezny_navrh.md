@@ -12,6 +12,7 @@ Reservation system
 - /systems/{system_id}
 - /systems/{system_id}/sources
 - /systems/{system_id}/feedback
+- /systems/{system_id}/reservations?time="today"
 
 Sources
 - /sources/{source_id}
@@ -30,5 +31,8 @@ Events
 Reservations
 - /reservations/{reservation_id}
 - /reservations/{reservation_id}/payment
+
+Reservation slots
+- /slots/{slot_id}
 
 

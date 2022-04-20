@@ -28,4 +28,12 @@ public class Interval extends ReservationSlot{
     public void visit(ReservationService reservationService) {
         throw new UnsupportedOperationException("Not implemented");
     }
+
+    @Override
+    public String toString() {
+        return "Interval{" +
+                "start=" + start +
+                ", end=" + end +
+                '}';
+    }
 }

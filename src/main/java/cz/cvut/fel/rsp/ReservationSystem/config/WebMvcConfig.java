@@ -3,6 +3,7 @@ package cz.cvut.fel.rsp.ReservationSystem.config;
 import java.io.IOException;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
 @Configuration
+@Profile(value = {"!testprofile"})
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override

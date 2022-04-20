@@ -27,4 +27,11 @@ public class SeatEvent extends Event{
     public void visit(EventService eventService) {
         eventService.validateSpecificEvent(this);
     }
+
+    @Override
+    public String toString() {
+        return "SeatEvent{" +
+                "seatAmount=" + seatAmount +
+                '}';
+    }
 }
