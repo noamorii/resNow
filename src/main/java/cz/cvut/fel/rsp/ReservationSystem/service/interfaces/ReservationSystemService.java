@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.interfaces;
 
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
@@ -14,4 +15,6 @@ public interface ReservationSystemService{
     public List<ReservationSystem> findAll();
 
     public ReservationSystem find(Integer id);
+
+    public List<Source> getSources(ReservationSystem reservationSystem);
 }

@@ -34,15 +34,10 @@ public class ReservationsControllerImpl implements ReservationsController {
         return null;
     }
 
-    @GetMapping(value = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ReservationDTO> getAllForDay(@RequestParam(name = "year") Integer year, @RequestParam(name = "month") Integer month, @RequestParam(name = "day") Integer day) {
-        return null;
-    }
-
     @PreAuthorize("hasAnyRole('SYSTEM_EMPLOYEE')")
-    @PostMapping(value = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ReservationDTO> getAllForInterval(@RequestParam("dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
-                                                  @RequestParam("dateTo") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
+    @GetMapping(value = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ReservationDTO> getAllForInterval(@RequestParam(name = "dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+                                                  @RequestParam(name = "dateTo") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
         System.out.println(dateFrom);
         return null;
     }
