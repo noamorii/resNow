@@ -8,15 +8,15 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface SourcesController {
-    // /sources/{source_id}
+    // /sources/{sourceId}
     public SourceDTO getById(Integer sourceId);
 
-    // /sources/{source_id}/events
+    // /sources/{sourceId}/events
     public List<EventDTO> getEvents(Integer sourceId, Integer fromTimestamp, Integer toTimeStamp);
 
-    // /sources/{source_id}/categories
+    // /sources/{sourceId}/categories
     public List<CategoryDTO> getCategories(Integer sourceId);
 
-    // /sources/{source_id}
+    // /sources/{sourceId}
     public ResponseEntity<Void> createCategory(Integer sourceId, CategoryDTO categoryDTO);
 }
