@@ -10,6 +10,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -58,6 +59,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public List<Reservation> findAllReservations(User user, LocalDate fromDate, LocalDate toDate) {
+        List<Reservation> allReservations = reservationRepository.findAllUsersReservations(user);
+        return this.filterReservations(allReservations, fromDate, toDate);
+    }
+
+    @Override
     public List<Reservation> findAllUnpaidReservations(User user) {
         return reservationRepository.findAllUsersUnpaidReservations(user.getId());
     }
@@ -70,9 +77,19 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> findAllReservations(ReservationSystem reservationSystem, LocalDate from, LocalDate to) {
         List<Reservation> allReservations = this.findAllReservations(reservationSystem);
-        List<Reservation> filtered = allReservations.stream().
-                filter(e -> (e.getReservationSlot().getDate().isEqual(from) || e.getReservationSlot().getDate().isAfter(from))
-                        && (e.getReservationSlot().getDate().isEqual(to) || e.getReservationSlot().getDate().isBefore(to)) )
+        return filterReservations(allReservations, from, to);
+    }
+
+    /**
+     * @param reservations
+     * @param fromDate
+     * @param toDate
+     * @return new list of reservations which are between the given dates (inclusive)
+     */
+    private List<Reservation> filterReservations(List<Reservation> reservations, LocalDate fromDate, LocalDate toDate){
+        List<Reservation> filtered = reservations.stream().
+                filter(e -> (e.getReservationSlot().getDate().isEqual(fromDate) || e.getReservationSlot().getDate().isAfter(fromDate))
+                        && (e.getReservationSlot().getDate().isEqual(toDate) || e.getReservationSlot().getDate().isBefore(toDate)) )
                 .collect(Collectors.toList());
 
         return filtered;
