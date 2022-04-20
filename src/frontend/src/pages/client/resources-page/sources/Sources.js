@@ -2,8 +2,14 @@ import styles from './Sources.module.scss';
 import {useState, useEffect, useMemo} from "react";
 import {useTable, useFilters, usePagination} from "react-table";
 import MOCK_DATA from "./MOCK_DATA.json"
+import {ModalDeleteConfirm} from "../../customers-page/modalWindowDeleteConfirm/ModalDeleteConfirm";
+import {ModalNew} from "./modalWindowNew/ModalNew";
+import {ModalEdit} from "./modalWindowEdit/ModalEdit";
 
 const Table = ({columns, data}) => {
+    const [confirm, setConfirm] = useState(false)
+    const [edit, setEdit] = useState(false)
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -28,52 +34,54 @@ const Table = ({columns, data}) => {
 
     return (
         <>
-        <table {...getTableProps()}>
-            <thead>
-                {headerGroups.map(headerGroup => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                        <td className={styles.collCheckbox}>
-                            <input type="checkbox" />
-                        </td>
-                        {headerGroup.headers.map(column => (
-                            <td {...column.getHeaderProps()}>
-                                <p>{column.render('Header')}</p>
-                                <div>{column.canFilter ? column.render('Filter') : null}</div>
+            <ModalDeleteConfirm onClose={() => setConfirm(false)} show={confirm} />
+            <ModalEdit onClose={() => setEdit(false)} show={edit} />
+            <table {...getTableProps()}>
+                <thead>
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            <td className={styles.collCheckbox}>
+                                <input type="checkbox" />
                             </td>
+                            {headerGroup.headers.map(column => (
+                                <td {...column.getHeaderProps()}>
+                                    <p>{column.render('Header')}</p>
+                                    <div>{column.canFilter ? column.render('Filter') : null}</div>
+                                </td>
 
-                        ))}
-                    </tr>
-                ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-                prepareRow(row)
-                return (
-                    <tr className={styles.tRow} {...row.getRowProps()}>
-                        <td className={styles.collCheckbox}>
-                            <input type="checkbox" />
-                        </td>
-                        {row.cells.map(cell => {
-                            return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                        })}
-                        <td>
-                            <div className={styles.buttonCell}>
-                                <button className={'button-primary-outline ' .concat(styles.buttonEdit)}>Upravit</button>
-                                <button className={'button-primary-outline ' .concat(styles.buttonDelete)}>Odstranit</button>
-                            </div>
-                        </td>
-                    </tr>
-                )
-            })}
-            </tbody>
-        </table>
-        <div className={styles.buttonsContainer}>
-            <div>
-                <span>Page {pageIndex + 1} of {pageOptions.length} </span>
-                <button onClick={() => previousPage()} disabled={!canPreviousPage} className={'button-primary sm'}>Předchozí</button>
-                <button onClick={() => nextPage()} disabled={!canNextPage} className={'button-primary sm'}>Další</button>
+                            ))}
+                        </tr>
+                    ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                {page.map((row) => {
+                    prepareRow(row)
+                    return (
+                        <tr className={styles.tRow} {...row.getRowProps()}>
+                            <td className={styles.collCheckbox}>
+                                <input type="checkbox" />
+                            </td>
+                            {row.cells.map(cell => {
+                                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                            })}
+                            <td>
+                                <div className={styles.buttonCell}>
+                                    <button className={'button-primary-outline ' .concat(styles.buttonEdit)} onClick={() => setEdit(true)}>Upravit</button>
+                                    <button className={'button-primary-outline ' .concat(styles.buttonDelete)} onClick={() => setConfirm(true)}>Odstranit</button>
+                                </div>
+                            </td>
+                        </tr>
+                    )
+                })}
+                </tbody>
+            </table>
+            <div className={styles.buttonsContainer}>
+                <div>
+                    <span>Page {pageIndex + 1} of {pageOptions.length} </span>
+                    <button onClick={() => previousPage()} disabled={!canPreviousPage} className={'button-primary sm'}>Předchozí</button>
+                    <button onClick={() => nextPage()} disabled={!canNextPage} className={'button-primary sm'}>Další</button>
+                </div>
             </div>
-        </div>
         </>
     )
 }
@@ -89,8 +97,7 @@ const Filter = ({column}) => {
 }
 
 export const Sources = () => {
-
-    // const [data, setData] = useState();
+    const [newRes, setNewRes] = useState(false)
     const data = useMemo(() => MOCK_DATA, [])
     const columns = useMemo(() => [
 
@@ -125,8 +132,9 @@ export const Sources = () => {
 
     return (
         <div className={styles.body}>
+            <ModalNew onClose={() => setNewRes(false)} show={newRes}/>
             <div className={styles.buttonContainer}>
-                <button className={'button-primary '.concat(styles.button)}>Nový zdroj</button>
+                <button className={'button-primary '.concat(styles.button)} onClick={() => {setNewRes(true)}}>Nový zdroj</button>
             </div>
             <div className={styles.table}>
                 <Table columns={columns} data={data}/>
@@ -141,3 +149,4 @@ export const Sources = () => {
         </div>
     )
 }
+
