@@ -1,32 +1,41 @@
 import React, {useState} from "react";
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
+import Modal from './Modal';
 
 import styles from "./EventsPage.module.scss";
 
 const events = [
     {
-        title: "RSP",
-        allDay: true,
-        start: new Date(2022, 4, 10),
-        end: new Date(2022, 5, 26)
+        title:"Hello",
+        start:"2022-04-17 20:25",
+        end:"2022-04-18 20:00"
     },
     {
-        title: "NSS",
-        allDay: true,
-        start: new Date(2022, 5, 11),
-        end: new Date(2022, 5, 26)
+        title:"world",
+        start:"2022-04-18 14:25",
+        end:"2022-04-18 20:00"
+    },
+    {
+        title:"!",
+        start:"2022-04-18 20:00",
+        end:"2022-04-18 21:00"
     }
 ]
+
 
 //TODO
 //fetch data from api
 //create data and save to db
-//as feature create event by dragging on calendar
 
 export const EventsPageClient = () => {
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+
     return (
         <div>
+            {show && <Modal closeModal={handleClose}/>}
             <section className={styles.sectionBody}>
                 <nav className={styles.sideBar}>
                     <p>Sidebar</p>
@@ -45,10 +54,21 @@ export const EventsPageClient = () => {
                             locale={'cs'}
                             selectable={true}
                             selectMirror={true}
-                            events={events}
                             weekends={true}
+                            events={events}
                             nowIndicator={true}
                             height={600}
+                            customButtons={{
+                                myCustomButton: {
+                                    text: 'Add event',
+                                    click: function() {
+                                        setShow(true);
+                                    },
+                                },
+                            }}
+                            headerToolbar={{
+                                right: 'myCustomButton today prev,next'
+                            }}
                         />
                     </div>
                 </div>
