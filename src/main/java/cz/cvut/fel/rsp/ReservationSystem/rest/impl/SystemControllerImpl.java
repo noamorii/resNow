@@ -1,6 +1,8 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
@@ -9,17 +11,18 @@ import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationSystemDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SourceDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.interfaces.SystemController;
 import cz.cvut.fel.rsp.ReservationSystem.rest.util.RestUtil;
-import cz.cvut.fel.rsp.ReservationSystem.service.impl.FeedbackServiceImpl;
-import cz.cvut.fel.rsp.ReservationSystem.service.impl.ReservationSystemServiceImpl;
-import cz.cvut.fel.rsp.ReservationSystem.service.impl.SourceServiceImpl;
+import cz.cvut.fel.rsp.ReservationSystem.service.impl.*;
+import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +36,11 @@ public class SystemControllerImpl implements SystemController {
 
     private final ReservationSystemServiceImpl reservationSystemService;
 
+    private final ReservationServiceImpl reservationService;
+
     private final FeedbackServiceImpl feedbackService;
+
+    private final SourceServiceImpl sourceService;
 
     @Override
     @GetMapping(value = "/systems", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -67,6 +74,7 @@ public class SystemControllerImpl implements SystemController {
         return Objects.isNull(feedbackList) ? new ArrayList<>() : feedbackList;
     }
 
+    @Override
     @PostMapping(value = "/systems/{systemId}/feedback")
     public ResponseEntity<Void> createFeedback(@PathVariable Integer systemId, @RequestBody Feedback feedback) {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
@@ -76,23 +84,24 @@ public class SystemControllerImpl implements SystemController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/systems/workers")
-    public List<User> getMyEmployees(){
-        return null;
-    }
-
-    @GetMapping(value = "/systems/adresses")
-    public List<Source> getAllSourcesBookedForToday(){
-        return null;
+    @Override
+    @PostMapping(value = "/systems/{systemId}/sources")
+    public ResponseEntity<Void> createSource(@PathVariable Integer systemId, @RequestBody SourceDTO sourceDTO) {
+        ReservationSystem reservationSystem = reservationSystemService.find(systemId);
+        Source source = new Source(sourceDTO);
+        sourceService.createSource(source, reservationSystem);
+        log.info("Created source {} for system with id {}.", source, systemId);
+        final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/sources/{sourceId}", source.getId());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> createSource(Integer systemId, SourceDTO sourceDTO) {
-        return null;
-    }
-
-    @Override
-    public List<ReservationDTO> getAllReservationsForDay(Integer year, Integer month, Integer day) {
-        return null;
+    @GetMapping(value = "/systems/{systemId}/reservations")
+    public List<ReservationDTO> getAllReservationsFromTo(@PathVariable Integer systemId,
+                                                         @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                         @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate toDate) {
+        ReservationSystem reservationSystem = reservationSystemService.find(systemId);
+        List<Reservation> reservations = reservationService.findAllReservations(reservationSystem, fromDate, toDate);
+        return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
     }
 }

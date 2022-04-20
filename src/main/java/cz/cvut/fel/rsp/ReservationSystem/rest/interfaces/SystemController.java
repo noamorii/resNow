@@ -7,6 +7,7 @@ import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationSystemDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SourceDTO;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface SystemController {
@@ -28,7 +29,7 @@ public interface SystemController {
     // POST /systems/{system_id}/sources
     public ResponseEntity<Void> createSource(Integer systemId, SourceDTO sourceDTO);
 
-    // GET /systems/{system_id}/reservations?year=""&month=""&day=""
+    // GET /systems/{system_id}/reservations?fromDate=2022-01-01&toDate=2022-02-02
     // Kdyz budou chtit today, tak tam daji dnesni datum
-    public List<ReservationDTO> getAllReservationsForDay(Integer year, Integer month, Integer day);
+    public List<ReservationDTO> getAllReservationsFromTo(Integer systemId, LocalDate fromDate, LocalDate toDate);
 }

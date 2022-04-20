@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
 import cz.cvut.fel.rsp.ReservationSystem.exception.EventException;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
@@ -85,5 +86,22 @@ public class EventServiceImpl implements EventService {
     @Override
     public void update(Event event) {
 
+    }
+
+    @Override
+    public List<Event> getAllEvents(Source source) {
+        List<Category> categories = source.getCategories();
+        List<Event> result = new ArrayList<>();
+
+        for (Category category : categories){
+            List<Event> events = category.getEvents();
+            for (Event event : events){
+                if (!result.contains(event)){
+                    result.add(event);
+                }
+            }
+        }
+
+        return result;
     }
 }
