@@ -24,6 +24,10 @@ public class Category extends AbstractEntity {
     @OneToMany(mappedBy = "category")
     private List<Event> events;
 
+    public Category (CategoryDTO dto) {
+        this.name = dto.getName();
+    }
+
     @Override
     public String toString() {
         return "Category{" +

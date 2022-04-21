@@ -7,6 +7,7 @@ import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.EventDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SourceDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.interfaces.SourcesController;
 import cz.cvut.fel.rsp.ReservationSystem.rest.util.RestUtil;
+import cz.cvut.fel.rsp.ReservationSystem.service.impl.CategoryServiceImpl;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.SourceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,8 @@ public class SourcesControllerImpl implements SourcesController {
 
     private final SourceServiceImpl sourceService;
 
+    private final CategoryServiceImpl categoryService;
+
     @Override
     @GetMapping(value = "/sources/{sourceId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SourceDTO getById(@PathVariable Integer sourceId) {
@@ -35,7 +39,8 @@ public class SourcesControllerImpl implements SourcesController {
 
     @Override
     public List<EventDTO> getEvents(Integer sourceId, Integer fromTimestamp, Integer toTimeStamp) {
-        return null;
+        // TODO: skipped on @belkapre's request
+        return new ArrayList<>();
     }
 
     @Override
@@ -48,8 +53,12 @@ public class SourcesControllerImpl implements SourcesController {
     }
 
     @Override
-    @PostMapping(value = "/sources/{sourceId}")
+    @PostMapping(value = "/sources/{sourceId}/categories")
     public ResponseEntity<Void> createCategory(@PathVariable Integer sourceId, @RequestBody CategoryDTO categoryDTO) {
-       return null;
+        Category category = new Category(categoryDTO);
+        categoryService.createCategory(category,sourceService.find(sourceId));
+        log.info("Created category {} for source with id {}", category, sourceId);
+        final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/categories/{categoryId}", category.getId());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 }
