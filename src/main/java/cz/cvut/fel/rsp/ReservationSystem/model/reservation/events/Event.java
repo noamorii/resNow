@@ -3,9 +3,11 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation.events;
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.EventDTO;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSlotService;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -16,6 +18,7 @@ import java.time.LocalTime;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter @Setter
+@NoArgsConstructor
 public abstract class Event {
 
     @Id
@@ -60,6 +63,16 @@ public abstract class Event {
     public abstract void visit(ReservationSlotService reservationSlotService, LocalDate date);
 
     public abstract void visit(EventService eventService);
+
+    public Event(EventDTO dto) {
+        this.setName(dto.getName());
+        this.setFromTime(dto.getFromTime());
+        this.setToTime(dto.getToTime());
+        this.setStartDate(dto.getStartDate());
+        this.setRepeatUntil(dto.getRepeatUntil());
+        this.setDay(dto.getDay());
+        this.setRepetition(dto.getRepetition());
+    }
 
     @Override
     public String toString() {

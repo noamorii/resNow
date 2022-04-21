@@ -5,13 +5,17 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 
 public interface CategoryService{
-    public void createCategory(Category category, Source source);
+    void createCategory(Category category, Source source);
 
-    public void addEventToCategory(Event event, Category category);
+    void addEventToCategory(Event event, Category category);
 
-    public void removeEventFromCategory(Event event, Category category);
+    void removeEventFromCategory(Event event, Category category);
 
-    public void update(Category category);
+    void update(Category category);
 
-    public void remove(Category toRemove, Category moveEventsTo);
+    void remove(Category toRemove, Category moveEventsTo);
+
+    Category find(Integer id);
+
+
 }
