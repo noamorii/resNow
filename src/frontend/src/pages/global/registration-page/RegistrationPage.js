@@ -27,7 +27,7 @@ const Form = () => {
     const valid = (e) => {
         e.preventDefault();
 
-        const userType = provider ? 1 : 2;
+        const userType = provider ? "ROLE_SYSTEM_OWNER" : "ROLE_REGULAR_USER";
 
         let valid = true;
 
