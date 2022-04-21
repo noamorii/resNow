@@ -21,11 +21,5 @@ public class CategoryDTO {
 
     public CategoryDTO(Category category) {
         this.name = category.getName();
-        this.sourcesIds = category.getSources().stream()
-                .map(Source::getId)
-                .collect(Collectors.toList());
-        this.eventsIds = category.getEvents().stream()
-                .map(Event::getId)
-                .collect(Collectors.toList());
     }
 }

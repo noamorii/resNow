@@ -4,12 +4,12 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 
-import java.util.List;
-
 public interface SourceService{
-    public void createSource(Source source, ReservationSystem reservationSystem);
+    void createSource(Source source, ReservationSystem reservationSystem);
 
-    public void removeAddress(Source source);
+    void removeAddress(Source source);
 
-    public void addAddress(Source source, Address address);
+    void addAddress(Source source, Address address);
+
+    Source find(Integer id);
 }
