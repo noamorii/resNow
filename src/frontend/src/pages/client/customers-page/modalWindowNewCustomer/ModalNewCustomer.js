@@ -1,50 +1,61 @@
 import styles from './ModalNewCustomer.module.scss'
-import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
-import {useState} from "react";
+import {ArcElement, Chart as ChartJS, Legend, Tooltip} from 'chart.js';
+import {getIn, useFormik} from 'formik';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const ModalNewCustomer = (props) => {
-    const [firstName, setFirstName] = useState('');
-    const [secondName, setSecondName] = useState('');
-    const [telephone, setTelephone] = useState('');
-    const [email, setEmail] = useState('');
-    const [description, setDescription] = useState('');
-    const [active, setActive] = useState(true);
+const Form = () => {
 
-    if (!props.show) return (
-        <></>
-    );
+    const validate = values => {
+        const errors = {};
 
-    const handleFirstName = (e) => {
-        setFirstName(e.target.value);
-    }
+        if (!values.firstName) {
+            errors.firstName = 'Toto pole je povinné.';
+        } else if (values.firstName.length < 2) {
+            errors.firstName = 'Musí mít minimálně 2 znaky.';
+        }
 
-    const handleSetSecondName = (e) => {
-        setSecondName(e.target.value);
-    }
+        if (!values.secondName) {
+            errors.secondName = 'Toto pole je povinné.';
+        } else if (values.secondName.length < 2) {
+            errors.secondName = 'Musí mít minimálně 2 znaky.';
+        }
 
-    const handleTelephone = (e) => {
-        setTelephone(e.target.value);
-    }
+        if (!values.email) {
+            errors.email = 'Toto pole je povinné.';
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            errors.email = 'Neplatná emailová adresa.';
+        }
 
-    const handleEmail = (e) => {
-        setEmail(e.target.value);
-    }
+        if (!values.telephone) {
+            errors.telephone = 'Toto pole je povinné.';
+        } else if (!/^[0-9\b]+$/i.test(values.telephone)) {
+            errors.telephone = 'Neplatný telefon.';
+        }
 
-    const handleDescription = (e) => {
-        setDescription(e.target.value);
-    }
+        return errors;
+    };
 
-    const handleSubmit = (e) => {
-        alert('Name-"' + firstName +
-            '    SecondName-"' + secondName +
-            '    Email-' + email +
-            '    Telephone-' + telephone +
-            '    Description-' + description +
-            '    Active-' + active);
+    const formik = useFormik({
+        initialValues: {firstName: '',
+                        secondName: '',
+                        email: '',
+                        telephone: '',
+                        description:'',
+                        checkbox: true
+        },
+        validate,
+        onSubmit: values => {
+            alert(JSON.stringify(values, null, 2));
+        },
+    });
 
-        e.preventDefault();
+    function getStyles(errors, fieldName) {
+        if (getIn(errors, fieldName)) {
+            return {
+                border: '1px solid red'
+            }
+        }
     }
 
     return (
@@ -53,44 +64,107 @@ export const ModalNewCustomer = (props) => {
                 <div className={styles.header}>
                     <p>Nový zákazník</p>
                 </div>
-                <form className={styles.form} onSubmit={(e) => {handleSubmit(e)}}>
+                <form className={styles.form} onSubmit={formik.handleSubmit}>
                     <div>
-                        <label htmlFor="firstName">Jméno</label>
-                        <input id="firstName" className={'input-primary search sh'} placeholder={'Jméno'} required
-                               value={firstName} onChange={(e) => {handleFirstName(e)}}/>
+                        <label htmlFor="firstName">*Jméno</label>
+                        <input id="firstName"
+                               className={'input-primary search sh '}
+                               placeholder={'John'}
+                               required
+                               onChange={formik.handleChange}
+                               onBlur={formik.handleBlur}
+                               value={formik.values.firstName}
+                               name={'firstName'}
+                               style={getStyles(formik.errors, 'firstName')}
+                        />
+                        {formik.errors.firstName ? <div className={styles.errorMessage}>{formik.errors.firstName}</div> : null}
 
-                        <label htmlFor="telephone">Telefonní číslo</label>
-                        <input id="telephone" className={'input-primary search sh'} placeholder={'Telephone'} type="tel"  required
-                               value={telephone} onChange={(e) => {handleTelephone(e)}}/>
+                        <label htmlFor="telephone">*Telefonní číslo</label>
+                        <input id="telephone"
+                               className={'input-primary search sh'}
+                               placeholder={'Telephone'}
+                               type="tel"
+                               required
+                               onChange={formik.handleChange}
+                               onBlur={formik.handleBlur}
+                               value={formik.values.telephone}
+                               name={'telephone'}
+                               style={getStyles(formik.errors, 'telephone')}
+                            />
+                        {formik.errors.telephone ? <div className={styles.errorMessage}>{formik.errors.telephone}</div> : null}
 
                         <label htmlFor="description">Popis</label>
-                        <textarea  id="description" className={'input-primary search sh ' .concat(styles.description)}
-                                   placeholder={'Popis'} value={description}
-                                   onChange={(e) => {handleDescription(e)}}/>
+                        <textarea id="description"
+                                  className={'input-primary search sh '
+                                      .concat(styles.description)}
+                                  placeholder={'Popis'}
+                                  onChange={formik.handleChange}
+                                  onBlur={formik.handleBlur}
+                                  value={formik.values.description}
+                        />
+                        {formik.errors.description ? <div className={styles.errorMessage}>{formik.errors.description}</div> : null}
 
                         <div className={styles.checkboxContainer}>
                             <label htmlFor="active">Aktivní</label>
-                            <input id="active" className={styles.checkbox} type="checkbox"
-                                   onChange={() => setActive(!active)} defaultChecked={true}/>
+                            <input id="checkbox"
+                                   className={styles.checkbox}
+                                   type="checkbox"
+                                   defaultChecked={true}
+                                   onChange={formik.handleChange}
+                                   onBlur={formik.handleBlur}
+                                   value={formik.values.checkbox}
+                            />
+                            {formik.errors.checkbox ? <div className={styles.errorMessage}>{formik.errors.checkbox}</div> : null}
+
                         </div>
                     </div>
                     <div>
-                        <label htmlFor="secondName">Příjmení</label>
-                        <input id="secondName" className={'input-primary search sh'} placeholder={'Příjmení'} required
-                               value={secondName} onChange={(e) => {handleSetSecondName(e)}}/>
+                        <label htmlFor="secondName">*Příjmení</label>
+                        <input id="secondName"
+                               className={'input-primary search sh'}
+                               placeholder={'Příjmení'}
+                               required
+                               onChange={formik.handleChange}
+                               onBlur={formik.handleBlur}
+                               value={formik.values.secondName}
+                               name={'secondName'}
+                               style={getStyles(formik.errors, 'secondName')}
+                        />
+                        {formik.errors.secondName ? <div className={styles.errorMessage}>{formik.errors.secondName}</div> : null}
 
-                        <label htmlFor="email">Email</label>
-                        <input id="email" className={'input-primary search sh'} placeholder={'Email'} type="email"
-                               required value={email} onChange={(e) => {handleEmail(e)}}/>
+                        <label htmlFor="email">*Email</label>
+                        <input id="email"
+                               className={'input-primary search sh'}
+                               placeholder={'john@example.com'}
+                               type="email"
+                               required
+                               onChange={formik.handleChange}
+                               onBlur={formik.handleBlur}
+                               value={formik.values.email}
+                               name={'email'}
+                               style={getStyles(formik.errors, 'email')}
+                        />
+                        {formik.errors.email ? <div className={styles.errorMessage}>{formik.errors.email}</div> : null}
 
                         <div className={styles.buttons}>
-                            <button className={'button-primary-outline ' .concat(styles.buttonSave)} type="submit">Uložit</button>
-                            <button className={'button-primary-outline ' .concat(styles.buttonCancel)} onClick={props.onClose}>Storno</button>
+                            <button className={'button-primary-outline '.concat(styles.buttonSave)}
+                                    type="submit">Uložit
+                            </button>
+                            <button className={'button-primary-outline '.concat(styles.buttonCancel)}
+                                    onClick={props.onClose}>Storno
+                            </button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
     )
+}
+
+let props;
+
+export const ModalNewCustomer = (prop) => {
+    props = prop;
+    if (!props.show) return (<></>);
+    return <Form/>
 }
