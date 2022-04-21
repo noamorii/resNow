@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class SourceDTO {
 
     private String name;
@@ -24,9 +26,6 @@ public class SourceDTO {
     private Integer reservationSystemId;
 
     private List<Integer> categoriesIds;
-
-    public SourceDTO() {
-    }
 
     public SourceDTO(Source source) {
         this.name = source.getName();

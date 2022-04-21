@@ -30,7 +30,6 @@ public class ReservationsControllerImpl implements ReservationsController {
     @PreAuthorize("hasAnyRole('SYSTEM_EMPLOYEE')")
     @GetMapping(value = "/reservations/today", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllToday() {
-        System.out.println("test");
         return null;
     }
 

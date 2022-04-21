@@ -65,4 +65,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void remove(Category toRemove, Category moveEventsTo) {
 
     }
+
+    @Override
+    public Category find(Integer id) {
+        return dao.getById(id);
+    }
 }

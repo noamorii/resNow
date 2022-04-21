@@ -7,6 +7,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.PaymentDetails;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,18 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final PaymentDetailsRepository paymentDetailsRepository;
-    private final UserRepository userRepository;
-    private final ReservationRepository reservationRepository;
 
-    @Autowired
-    public UserServiceImpl(PaymentDetailsRepository paymentDetailsRepository, UserRepository userRepository, ReservationRepository reservationRepository) {
-        this.paymentDetailsRepository = paymentDetailsRepository;
-        this.userRepository = userRepository;
-        this.reservationRepository = reservationRepository;
-    }
+    private final UserRepository userRepository;
+
+    private final ReservationRepository reservationRepository;
 
 
     @Override
@@ -114,5 +111,10 @@ public class UserServiceImpl implements UserService {
             }
         }
         return result;
+    }
+
+    @Override
+    public void createUser(User user) {
+        userRepository.save(user);
     }
 }

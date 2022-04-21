@@ -7,12 +7,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface CategoriesController {
-    // GET /categories/{category_id}
+    // GET /categories/{categoryId}
     public CategoryDTO getById(Integer categoryId);
 
-    // GET /categories/{category_id}/events
+    // GET /categories/{categoryId}/events
     public List<EventDTO> getEvents(Integer categoryId, Integer fromTimestamp, Integer toTimestamp);
 
-    // POST /categories/{category_id}
+    // POST /categories/{categoryId}
     public ResponseEntity<Void> createEvent(Integer categoryId, EventDTO eventDTO);
 }

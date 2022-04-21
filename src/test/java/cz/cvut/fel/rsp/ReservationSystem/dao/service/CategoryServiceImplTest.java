@@ -13,6 +13,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.PaymentDetails;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.rest.AuthControllerTest;
+import cz.cvut.fel.rsp.ReservationSystem.rest.impl.UserControllerImpl;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.ReservationSystemServiceImpl;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.CategoryService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
         excludeFilters = {
                 @ComponentScan.Filter(
                         type = FilterType.ASSIGNABLE_TYPE,
-                        classes = {AuthControllerTest.class}
+                        classes = {UserControllerImpl.class}
                 )}
 )
 public class CategoryServiceImplTest {
