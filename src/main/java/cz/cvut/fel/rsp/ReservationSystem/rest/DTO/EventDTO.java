@@ -1,6 +1,10 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.DTO;
 
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,4 +41,27 @@ public class EventDTO {
     private Duration timeBetweenIntervals;
 
     private Integer seatAmount;
+
+    public EventDTO(Event event) {
+        this.name = event.getName();
+        this.fromTime = event.getFromTime();
+        this.toTime = event.getToTime();
+        this.startDate = event.getStartDate();
+        this.repeatUntil = event.getRepeatUntil();
+        this.repetition = event.getRepetition();
+        this.day = event.getDay();
+        this.categoryId = event.getCategory().getId();
+
+        if (event instanceof CustomTimeEvent)
+            this.minimalReservationTime = ((CustomTimeEvent) event).getMinimalReservationTime();
+
+        else if (event instanceof IntervalEvent) {
+            IntervalEvent interval = ((IntervalEvent) event);
+            this.timeBetweenIntervals = interval.getTimeBetweenIntervals();
+            this.intervalDuration = interval.getIntervalDuration();
+        }
+
+        else if (event instanceof SeatEvent)
+            this.seatAmount = ((SeatEvent) event).getSeatAmount();
+    }
 }
