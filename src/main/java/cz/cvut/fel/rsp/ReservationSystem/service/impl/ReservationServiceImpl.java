@@ -43,6 +43,10 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.save(reservation);
     }
 
+    public void createReservation(Reservation reservation) {
+        reservationRepository.save(reservation);
+    }
+
     @Override
     public void cancelReservation(Reservation reservation) {
         if (reservation == null) {

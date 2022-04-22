@@ -31,6 +31,8 @@ public interface ReservationSlotService{
      */
     public void generateCustomTimeSlots(CustomTimeEvent event, LocalDate date);
 
+    public ReservationSlot find(Integer id);
+
     public List<ReservationSlot> findAll(Event event);
 
     public List<ReservationSlot> findAll(Event event, LocalDate from, LocalDate to);

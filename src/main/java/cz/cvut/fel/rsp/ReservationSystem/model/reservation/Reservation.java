@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
 import cz.cvut.fel.rsp.ReservationSystem.model.payment.Payment;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +33,11 @@ public class Reservation extends AbstractEntity {
     private boolean cancelled = false;
 
     private String additionalInfo;
+
+    public Reservation(ReservationDTO reservation) { //not sure
+        this.cancelled = reservation.isCancelled();
+        this.additionalInfo = reservation.getAdditionalInfo();
+    }
 
     @Override
     public String toString() {

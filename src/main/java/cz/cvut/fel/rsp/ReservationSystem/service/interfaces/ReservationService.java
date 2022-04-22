@@ -12,6 +12,8 @@ public interface ReservationService{
 
     void createReservation(User user, ReservationSlot reservationSlot);
 
+    void createReservation(Reservation reservation);
+
     void cancelReservation(Reservation reservation);
 
    List<Reservation> findAllReservations(User user);
