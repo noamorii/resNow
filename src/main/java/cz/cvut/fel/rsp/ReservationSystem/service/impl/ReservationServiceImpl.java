@@ -57,6 +57,10 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.save(tmp);
     }
 
+    public Reservation find(Integer id) {
+        return reservationRepository.getById(id);
+    }
+
     @Override
     public List<Reservation> findAllReservations(User user) {
         return reservationRepository.findAllUsersReservations(user);
@@ -68,6 +72,11 @@ public class ReservationServiceImpl implements ReservationService {
         return this.filterReservations(allReservations, fromDate, toDate);
     }
 
+    public List<Reservation> findAllReservations(User user, LocalDate date) {
+        List<Reservation> allReservations = reservationRepository.findAllUsersReservations(user);
+        return this.filterReservations(allReservations, date, date);
+    }
+
     @Override
     public List<Reservation> findAllUnpaidReservations(User user) {
         return reservationRepository.findAllUsersUnpaidReservations(user.getId());
@@ -77,6 +86,7 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> findAllReservations(ReservationSystem reservationSystem) {
         return reservationRepository.findAllReservationsForReservationSystem(reservationSystem.getId());
     }
+
 
     @Override
     public List<Reservation> findAllReservations(ReservationSystem reservationSystem, LocalDate from, LocalDate to) {
