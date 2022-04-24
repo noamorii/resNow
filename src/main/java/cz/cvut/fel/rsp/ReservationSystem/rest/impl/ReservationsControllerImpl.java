@@ -34,9 +34,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReservationsControllerImpl implements ReservationsController {
 
-    @Autowired(required = false) // Required = false because of tests
-    private AuthenticationManager authenticationManager;
-
     private final ReservationServiceImpl reservationService;
 
     private final UserServiceImpl userService;
