@@ -13,6 +13,7 @@ import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationSystemDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SourceDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.interfaces.SystemController;
 import cz.cvut.fel.rsp.ReservationSystem.rest.util.RestUtil;
+import cz.cvut.fel.rsp.ReservationSystem.security.services.UserDetailsImpl;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.*;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -46,6 +49,8 @@ public class SystemControllerImpl implements SystemController {
 
     private final EventServiceImpl eventService;
 
+    private final UserServiceImpl userService;
+
     @Override
     @GetMapping(value = "/systems", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationSystemDTO> getReservationSystems() {
@@ -58,6 +63,15 @@ public class SystemControllerImpl implements SystemController {
     @GetMapping(value = "/systems/{systemId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ReservationSystemDTO getById(@PathVariable Integer systemId) {
         return new ReservationSystemDTO(reservationSystemService.find(systemId));
+    }
+
+    @GetMapping(value = "/systems/my", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ReservationSystemDTO getMyReservationSystem() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+        return new ReservationSystemDTO(reservationSystem);
     }
 
     @Override
