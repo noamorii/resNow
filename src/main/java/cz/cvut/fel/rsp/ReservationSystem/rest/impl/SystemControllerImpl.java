@@ -5,7 +5,9 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.EventDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationSystemDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SourceDTO;
@@ -41,6 +43,8 @@ public class SystemControllerImpl implements SystemController {
     private final FeedbackServiceImpl feedbackService;
 
     private final SourceServiceImpl sourceService;
+
+    private final EventServiceImpl eventService;
 
     @Override
     @GetMapping(value = "/systems", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -103,5 +107,14 @@ public class SystemControllerImpl implements SystemController {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
         List<Reservation> reservations = reservationService.findAllReservations(reservationSystem, fromDate, toDate);
         return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/systems/{systemId}/events")
+    public List<EventDTO> getAllEventsFromTo(@PathVariable Integer systemId,
+                                                   @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                   @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate toDate) {
+        ReservationSystem reservationSystem = reservationSystemService.find(systemId);
+        List<Event> events = eventService.findAllEvents(reservationSystem);
+        return events.stream().map(EventDTO::new).collect(Collectors.toList());
     }
 }
