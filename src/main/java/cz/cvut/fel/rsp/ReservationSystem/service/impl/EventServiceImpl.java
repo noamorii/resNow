@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.ReservationSystem.exception.EventException;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
@@ -133,5 +134,9 @@ public class EventServiceImpl implements EventService {
                 result.add(reservation);
 
         return result;
+    }
+
+    public List<Event> findAllEvents(ReservationSystem reservationSystem) {
+        return eventRepository.findAllEventsInReservationSystem(reservationSystem.getId());
     }
 }
