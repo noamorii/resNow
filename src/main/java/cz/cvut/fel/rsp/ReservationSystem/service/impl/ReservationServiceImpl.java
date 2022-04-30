@@ -101,9 +101,12 @@ public class ReservationServiceImpl implements ReservationService {
      * @return new list of reservations which are between the given dates (inclusive)
      */
     private List<Reservation> filterReservations(List<Reservation> reservations, LocalDate fromDate, LocalDate toDate){
+        LocalDate helperFrom = fromDate.minusDays(1);
+        LocalDate helperTo = toDate.plusDays(1);
+
         List<Reservation> filtered = reservations.stream().
-                filter(e -> (e.getReservationSlot().getDate().isEqual(fromDate) || e.getReservationSlot().getDate().isAfter(fromDate))
-                        && (e.getReservationSlot().getDate().isEqual(toDate) || e.getReservationSlot().getDate().isBefore(toDate)) )
+                filter(e -> (e.getReservationSlot().getDate().isEqual(fromDate) || e.getReservationSlot().getDate().isAfter(helperFrom))
+                        && (e.getReservationSlot().getDate().isEqual(toDate) || e.getReservationSlot().getDate().isBefore(helperTo)) )
                 .collect(Collectors.toList());
 
         return filtered;
