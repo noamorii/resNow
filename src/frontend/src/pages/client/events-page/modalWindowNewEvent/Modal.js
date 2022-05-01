@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "./EventsPage.module.scss";
+import styles from "../EventsPage.module.scss";
 
 
 function timestampToDatetimeInputString(timestamp) {
