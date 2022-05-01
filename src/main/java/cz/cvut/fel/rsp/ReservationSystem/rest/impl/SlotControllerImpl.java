@@ -25,6 +25,7 @@ public class SlotControllerImpl implements SlotController {
 
     private final ReservationSlotService reservationSlotService;
     private final ReservationService reservationService;
+    private final UserService userService;
 
     @Override
     @GetMapping(value = "/slots/{slot_id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,7 +36,7 @@ public class SlotControllerImpl implements SlotController {
     @Override
     @PostMapping(value = "/slots/{slot_id}")
     public ResponseEntity<Void> createReservation(@PathVariable Integer slot_id, @RequestBody ReservationDTO reservationDTO) {
-        Reservation reservation = new Reservation(reservationDTO);
+        Reservation reservation = new Reservation(reservationDTO, userService.findById(reservationDTO.getUserId()));
         reservation.setReservationSlot(reservationSlotService.find(slot_id));
         reservationService.createReservation(reservation);
         log.info("Created reservation {} for slot with id {}", reservation, slot_id);

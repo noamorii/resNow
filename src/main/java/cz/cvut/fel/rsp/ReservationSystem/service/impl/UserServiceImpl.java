@@ -32,6 +32,10 @@ public class UserServiceImpl implements UserService {
 
     private final ReservationSystemRepository reservationSystemRepository;
 
+    @Override
+    public User findById(Integer id) {
+        return userRepository.findById(id).get();
+    }
 
     @Override
     @Transactional
