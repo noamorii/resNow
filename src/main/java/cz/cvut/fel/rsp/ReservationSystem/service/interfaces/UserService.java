@@ -16,6 +16,8 @@ public interface UserService{
 
     User findByUsername(String username);
 
+    public User findById(Integer id);
+
     public List<Reservation> findUpcomingReservations(User user);
 
     public List<Reservation> findPastReservations(User user);
