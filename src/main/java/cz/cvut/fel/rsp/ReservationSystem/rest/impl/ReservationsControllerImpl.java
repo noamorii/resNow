@@ -72,8 +72,8 @@ public class ReservationsControllerImpl implements ReservationsController {
     }
 
     @Override
-    @GetMapping(value = "/reservations/{reservationId}")
-    public ResponseEntity<Void> cancel(@PathVariable Integer reservationId, @RequestParam boolean cancel) {
+    @DeleteMapping(value = "/reservations/{reservationId}")
+    public ResponseEntity<Void> cancel(@PathVariable Integer reservationId) {
         Reservation reservation = reservationService.find(reservationId);
         reservationService.cancelReservation(reservation);
         log.info("Canceled reservation {}.", reservation.getId());
