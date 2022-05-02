@@ -123,7 +123,7 @@ public class SystemControllerImpl implements SystemController {
     }
 
     @Override
-    @GetMapping(value = "/systems/{systemId}/reservations")
+    @GetMapping(value = "/systems/{systemId}/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllReservationsFromTo(@PathVariable Integer systemId,
                                                          @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                          @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate toDate) {
@@ -132,12 +132,22 @@ public class SystemControllerImpl implements SystemController {
         return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/systems/{systemId}/events")
+    @GetMapping(value = "/systems/{systemId}/events", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EventDTO> getAllEventsFromTo(@PathVariable Integer systemId,
                                                    @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                    @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate toDate) {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
         List<Event> events = eventService.findAllEvents(reservationSystem);
+        return events.stream().map(EventDTO::new).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/systems/events", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EventDTO> getAllEventsToFuture() {
+        List<ReservationSystem> systems = reservationSystemService.findAll();
+        List<Event> events = new ArrayList<>();
+        for (ReservationSystem system: systems) {
+             events.addAll(eventService.findAllEventsToFuture(system));
+        }
         return events.stream().map(EventDTO::new).collect(Collectors.toList());
     }
 }
