@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 @Setter
 @NoArgsConstructor
 public class ReservationDTO {
+    private Integer reservationId;
+
     private Integer userId;
 
     private Integer paymentId; // null if not paid
@@ -27,6 +29,7 @@ public class ReservationDTO {
     private String additionalInfo;
 
     public ReservationDTO(Reservation reservation) {
+        this.reservationId = reservation.getId();
         this.userId = reservation.getUser().getId();
         this.paymentId = reservation.getPayment() != null ? reservation.getPayment().getId() : null;
         this.reservationSlotId = reservation.getReservationSlot().getId();
