@@ -55,6 +55,21 @@ public class SystemControllerImpl implements SystemController {
     }
 
     @Override
+    @PostMapping(value = "/systems")
+    public ResponseEntity<Void> createSystem(@RequestBody ReservationSystemDTO reservationSystemDTO) {
+        ReservationSystem reservationSystem = mapReservationSystem(reservationSystemDTO);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User loggedUser = userService.findByUsername(userDetails.getUsername());
+
+        reservationSystemService.createReservationSystem(loggedUser, reservationSystem);
+        log.info("Created reservation system: {} for user: {}", reservationSystem, loggedUser);
+
+        final HttpHeaders headers = RestUtil.createLocationHeaderFromCurrentUri("/{id}", reservationSystem.getId());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @Override
     @GetMapping(value = "/systems/{systemId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ReservationSystemDTO getById(@PathVariable Integer systemId) {
         return new ReservationSystemDTO(reservationSystemService.find(systemId));
@@ -149,5 +164,18 @@ public class SystemControllerImpl implements SystemController {
              events.addAll(eventService.findAllEventsToFuture(system));
         }
         return events.stream().map(EventDTO::new).collect(Collectors.toList());
+    }
+
+    private ReservationSystem mapReservationSystem(ReservationSystemDTO reservationSystemDTO){
+        ReservationSystem reservationSystem = new ReservationSystem();
+        reservationSystem.setName(reservationSystemDTO.getName());
+
+        if (reservationSystemDTO.getManagers() != null){
+            reservationSystem.setManagers(reservationSystemDTO.getManagers().stream()
+                    .map(userService::findByUsername)
+                    .collect(Collectors.toList()));
+        }
+
+        return reservationSystem;
     }
 }
