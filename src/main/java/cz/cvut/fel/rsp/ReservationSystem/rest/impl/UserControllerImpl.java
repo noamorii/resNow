@@ -67,7 +67,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/users/{username}")
-    public UserDTO getByUsername(String username) {
+    public UserDTO getByUsername(@PathVariable String username) {
         User user = userService.findByUsername(username);
         UserDTO userDTO = new UserDTO(user);
         return userDTO;
@@ -75,7 +75,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/users/id/{id}")
-    public UserDTO getById(Integer id) {
+    public UserDTO getById(@PathVariable Integer id) {
         User user = userService.findById(id);
         UserDTO userDTO = new UserDTO(user);
         return userDTO;
