@@ -13,6 +13,8 @@ import java.util.List;
 public interface UserController {
     public UserDTO getByUsername(String username);
 
+    public UserDTO getById(Integer id);
+
     public ResponseEntity<?> authenticate(CredentialsDTO credentialsDTO);
 
     public ResponseEntity<?> createUser(UserDTO userDTO);

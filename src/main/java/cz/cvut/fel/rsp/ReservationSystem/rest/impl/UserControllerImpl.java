@@ -74,6 +74,14 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    @GetMapping("/users/id/{id}")
+    public UserDTO getById(Integer id) {
+        User user = userService.findById(id);
+        UserDTO userDTO = new UserDTO(user);
+        return userDTO;
+    }
+
+    @Override
     @GetMapping("/users/{username}/reservations")
     public List<ReservationDTO> getReservations(@PathVariable String username,
                                                 @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
