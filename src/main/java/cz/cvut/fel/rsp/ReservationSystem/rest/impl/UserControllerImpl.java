@@ -118,6 +118,7 @@ public class UserControllerImpl implements UserController {
     @PostMapping("/users")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
         User user = new User(userDTO);
+        user.setPassword(encoder.encode(userDTO.getPassword()));
         userService.createUser(user);
         log.info("New user created {}", user);
         final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/users/{username}", user.getUsername());

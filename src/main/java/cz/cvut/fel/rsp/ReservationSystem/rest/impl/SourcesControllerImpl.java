@@ -1,7 +1,9 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.impl;
 
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.AddressDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.CategoryDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.EventDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SourceDTO;
@@ -59,6 +61,28 @@ public class SourcesControllerImpl implements SourcesController {
         categoryService.createCategory(category,sourceService.find(sourceId));
         log.info("Created category {} for source with id {}", category, sourceId);
         final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/categories/{categoryId}", category.getId());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @Override
+    @GetMapping(value = "/sources/{sourceId}/address")
+    public AddressDTO getAddress(Integer sourceId) {
+        Address address = sourceService.find(sourceId).getAddress();
+
+        if (address == null) {
+            return null;
+        }
+
+        return new AddressDTO(address);
+    }
+
+    @Override
+    @PostMapping(value = "/sources/{sourceId}/address")
+    public ResponseEntity<Void> createAddress(Integer sourceId, AddressDTO addressDTO) {
+        Source source = sourceService.find(sourceId);
+        sourceService.addAddress(source, new Address(addressDTO));
+        log.info("Created address {} for source with id {}", addressDTO, sourceId);
+        final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/sources/{sourceId}/address", source.getAddress());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 }

@@ -18,7 +18,7 @@ public class Source extends AbstractEntity {
 
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id")
     private Address address; // Might be null, in case the source is for example an online service
 

@@ -69,7 +69,6 @@ public class User extends AbstractEntity {
                 ", lastName='" + lastName + '\'' +
                 ", userType=" + userType +
                 ", paymentDetails=" + paymentDetails +
-                ", manages=" + manages.size() + " systems" +
                 '}';
     }
 }
