@@ -13,7 +13,6 @@ import {CustomerRoutes} from "./routes/CustomerRoutes";
 import AuthService from "./services/auth.service";
 import AboutUs from "./pages/global/welcome-page/AboutUs";
 
-
 const App = () => {
 
     const [regularUser, setRegularUser] = useState(false);
