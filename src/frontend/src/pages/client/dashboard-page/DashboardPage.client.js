@@ -108,30 +108,12 @@ export const DashboardPageClient = () => {
     }, [])
 
     const fetchTodayReservation = () => {
-
-        const localDate = getDate(2022, 4, 12);
-        console.log(localDate)
-
-        axios.post(
-            `${baseUrl}/reservations`,
-            {}, {
-                params: {
-                    "dateFrom": new LocalDate(localDate),
-                    "dateTo": new LocalDate('2022-04-16'),
-                },
-                headers: authHeader()
-            }
-        ).then(res => {
-                console.log(res);
-                setTodayReservation(res.data)
-            }
-        )
-
         axios.get(
             `${baseUrl}/reservations/today`,
             {headers: authHeader()}
         ).then(r => {
-            console.log("date")
+            setTodayReservation(r.data.length)
+            setAllReservation(r.data.length)
         }, e => {
             console.log(e)
         })

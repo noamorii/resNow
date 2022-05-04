@@ -121,7 +121,7 @@ const Form = () => {
                         axios.post(
                             `${baseUrl}/systems`,
                             {
-                                "username": username,
+                                "managers": {username},
                                 "name": system
                             }
                         ).then(r => console.log(r))
