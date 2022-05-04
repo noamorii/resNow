@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -138,5 +139,9 @@ public class EventServiceImpl implements EventService {
 
     public List<Event> findAllEvents(ReservationSystem reservationSystem) {
         return eventRepository.findAllEventsInReservationSystem(reservationSystem.getId());
+    }
+
+    public List<Event> findAllEventsToFuture(ReservationSystem reservationSystem) {
+        return eventRepository.findAllEventsInReservationSystem(reservationSystem.getId()).stream().filter(Event -> Event.getStartDate().isAfter(LocalDate.now().minusDays(1))).collect(Collectors.toList());
     }
 }

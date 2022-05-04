@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.DTO;
 
+import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
@@ -21,5 +22,7 @@ public class CategoryDTO {
 
     public CategoryDTO(Category category) {
         this.name = category.getName();
+        sourcesIds = category.getSources().stream().map(AbstractEntity::getId).collect(Collectors.toList());
+        eventsIds = category.getEvents().stream().map(Event::getId).collect(Collectors.toList());
     }
 }

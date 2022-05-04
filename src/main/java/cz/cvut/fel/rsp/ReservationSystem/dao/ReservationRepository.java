@@ -24,7 +24,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query(value = "SELECT r FROM Reservation r where r.reservationSlot.id = :reservationSlot_id AND r.cancelled = false")
     Reservation findNotCancelledReservationForReservationSlot(@Param("reservationSlot_id") Integer slotId);
 
-    @Query(value = "SELECT r FROM Reservation r JOIN ReservationSlot rs ON rs.id = r.id " +
+    @Query(value = "SELECT r FROM Reservation r JOIN ReservationSlot rs ON rs.id = r.reservationSlot" +
+            ".id " +
             "JOIN Event e ON rs.event.id = e.id " +
             "JOIN Source s ON e.category IN elements(s.categories)" +
             "WHERE s.reservationSystem.id = :system_Id")

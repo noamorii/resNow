@@ -14,6 +14,9 @@ public interface SystemController {
     // GET /systems
     public List<ReservationSystemDTO> getReservationSystems();
 
+    // POST /systems
+    public ResponseEntity<Void> createSystem(ReservationSystemDTO reservationSystemDTO);
+
     // GET /systems/{system_id}
     public ReservationSystemDTO getById(Integer systemId);
 

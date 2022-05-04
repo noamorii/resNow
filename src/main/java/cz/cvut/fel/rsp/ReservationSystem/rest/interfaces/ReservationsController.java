@@ -12,6 +12,6 @@ public interface ReservationsController {
     public ReservationDTO getById(Integer reservationId);
 
     // DELETE /reservations/{reservation_id}
-    public ResponseEntity<Void> cancel(Integer reservationId, boolean cancel);
+    public ResponseEntity<Void> cancel(Integer reservationId);
 
 }

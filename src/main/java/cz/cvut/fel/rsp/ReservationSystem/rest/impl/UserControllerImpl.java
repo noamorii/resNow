@@ -67,8 +67,16 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/users/{username}")
-    public UserDTO getByUsername(String username) {
+    public UserDTO getByUsername(@PathVariable String username) {
         User user = userService.findByUsername(username);
+        UserDTO userDTO = new UserDTO(user);
+        return userDTO;
+    }
+
+    @Override
+    @GetMapping("/users/id/{id}")
+    public UserDTO getById(@PathVariable Integer id) {
+        User user = userService.findById(id);
         UserDTO userDTO = new UserDTO(user);
         return userDTO;
     }
@@ -110,6 +118,7 @@ public class UserControllerImpl implements UserController {
     @PostMapping("/users")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
         User user = new User(userDTO);
+        user.setPassword(encoder.encode(userDTO.getPassword()));
         userService.createUser(user);
         log.info("New user created {}", user);
         final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/users/{username}", user.getUsername());
