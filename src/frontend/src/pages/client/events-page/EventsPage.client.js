@@ -1,15 +1,17 @@
 import React, {useState} from "react";
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
-import Modal from './Modal';
+import NewEventModal from './modalWindowNewEvent/Modal';
+import EventModal from './modalWindowEvent/EventModal';
 
 import styles from "./EventsPage.module.scss";
+import eventUtils from "./restUtils/eventUtils"
 
 const events = [
     {
         title:"Hello",
-        start:"2022-04-17 20:25",
-        end:"2022-04-18 20:00"
+        start:"2022-04-29 20:25",
+        end:"2022-04-30 20:00",
     },
     {
         title:"world",
@@ -19,7 +21,7 @@ const events = [
     {
         title:"!",
         start:"2022-04-18 20:00",
-        end:"2022-04-18 21:00"
+        end:"2022-04-18 21:00",
     }
 ]
 
@@ -30,12 +32,28 @@ const events = [
 
 export const EventsPageClient = () => {
     const [show, setShow] = useState(false);
+    const [hidden, setHidden] = useState(false);
 
-    const handleClose = () => setShow(false);
+    const handleHidden = () => setHidden(false);
+    const handleClose = () => {
+        setShow(false);
+        localStorage.removeItem("eventTitle");
+        localStorage.removeItem("eventFrom");
+        localStorage.removeItem("eventTo");
+    };
+    const selectedEvent = (eventTitle, eventFrom, eventTo) => {
+        if(eventTitle && eventTo && eventFrom) {
+            localStorage.setItem("eventTitle", eventTitle);
+            localStorage.setItem("eventFrom", eventFrom);
+            localStorage.setItem("eventTo", eventTo);
+        }
+        setTimeout(() => setShow(true), 200);
+    }
 
     return (
         <div>
-            {show && <Modal closeModal={handleClose}/>}
+            {hidden && <NewEventModal closeModal={handleHidden}/>}
+            {show && <EventModal closeModal={handleClose}/>}
             <section className={styles.sectionBody}>
                 <nav className={styles.sideBar}>
                     <p>Sidebar</p>
@@ -62,12 +80,15 @@ export const EventsPageClient = () => {
                                 myCustomButton: {
                                     text: 'Add event',
                                     click: function() {
-                                        setShow(true);
+                                        setHidden(true);
                                     },
                                 },
                             }}
                             headerToolbar={{
                                 right: 'myCustomButton today prev,next'
+                            }}
+                            eventClick={function (info) {
+                                selectedEvent(info.event.title, info.event.start, info.event.end)
                             }}
                         />
                     </div>
