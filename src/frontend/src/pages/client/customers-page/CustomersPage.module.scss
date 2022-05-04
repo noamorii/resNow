@@ -21,6 +21,7 @@
 
     margin: 2vh auto;
     width: 90%;
+    min-height: 70vh;
 
     border: 1px solid rgba(0, 0, 0, 0.23);
     box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
@@ -37,8 +38,16 @@
       border: 2px solid white;
       border-collapse:collapse;
 
+      .checkedCheckbox {
+        background: rgba(13, 110, 253, 0.31);
+      }
+
       th {
         font-weight: 400;
+      }
+
+      input[type="checkbox"]:checked ~ td {
+        background-color: red;
       }
 
       td, th {
@@ -65,6 +74,16 @@
 
           .buttonDelete:hover {
             background: #DD5544;
+            color: #FFFFFF;
+          }
+
+          .buttonEdit {
+            border-color: #00955B;
+            color:  #00955B;
+          }
+
+          .buttonEdit:hover {
+            background: #00955B;
             color: #FFFFFF;
           }
         }

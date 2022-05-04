@@ -68,6 +68,14 @@
         }
       }
 
+      .td:nth-child(3) {
+        width: 50%;
+      }
+
+      .td:nth-child(2) {
+        width: 30%;
+      }
+
       .collCheckbox {
         width: 4%;
         text-align: center;
@@ -77,15 +85,6 @@
         margin-bottom: 1vh;
         width: 90%;
       }
-
-      .td:nth-child(3) {
-        width: 10%;
-      }
-
-      .td:nth-child(5) {
-        width: 30%;
-      }
-
     }
 
     .buttonsContainer {

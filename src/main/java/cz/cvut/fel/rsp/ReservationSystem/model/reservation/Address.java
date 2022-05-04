@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation;
 
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.AddressDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,4 +24,11 @@ public class Address extends AbstractEntity {
 
     @NotNull
     private String postalCode;
+
+    public Address(AddressDTO addressDTO) {
+        this.city = addressDTO.getCity();
+        this.street = addressDTO.getStreet();
+        this.houseNumber = addressDTO.getHouseNumber();
+        this.postalCode = addressDTO.getHouseNumber();
+    }
 }

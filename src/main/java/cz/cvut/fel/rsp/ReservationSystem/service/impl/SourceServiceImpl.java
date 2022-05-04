@@ -71,6 +71,11 @@ public class SourceServiceImpl implements SourceService {
         }
     }
 
+    @Override
+    public Source find(Integer id) {
+        return sourceRepository.getById(id);
+    }
+
     @Transactional
     public void addCategory(Source source, Category category){
         if (source.getCategories().contains(category)){

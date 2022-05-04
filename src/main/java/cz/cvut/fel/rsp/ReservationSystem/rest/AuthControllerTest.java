@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/rest/v1/auth/")
 @RestController
 @Profile(value = {"!testprofile"})
+@Deprecated
 public class AuthControllerTest {
     @Autowired(required = false) // Required = false because of tests
     AuthenticationManager authenticationManager;

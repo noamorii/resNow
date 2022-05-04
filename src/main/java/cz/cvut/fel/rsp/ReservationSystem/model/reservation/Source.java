@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation;
 
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SourceDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class Source extends AbstractEntity {
 
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id")
     private Address address; // Might be null, in case the source is for example an online service
 
@@ -33,6 +34,13 @@ public class Source extends AbstractEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Category> categories;
 
+    public Source(SourceDTO sourceDTO) {
+        this.name = sourceDTO.getName();
+        this.description = sourceDTO.getDescription();;
+        this.address = sourceDTO.getAddress();
+        this.isActive = sourceDTO.isActive();
+    }
+
     @Override
     public String toString() {
         return "Source{" +
@@ -40,8 +48,7 @@ public class Source extends AbstractEntity {
                 ", description='" + description + '\'' +
                 ", address=" + address +
                 ", isActive=" + isActive +
-                ", reservationSystem=" + reservationSystem +
-                ", categories=" + categories +
+                ", reservationSystem=" + reservationSystem.getName() +
                 '}';
     }
 }

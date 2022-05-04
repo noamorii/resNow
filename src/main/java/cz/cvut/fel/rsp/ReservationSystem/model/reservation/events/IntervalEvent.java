@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.ReservationSystem.model.reservation.events;
 
 import com.sun.istack.NotNull;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.EventDTO;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSlotService;
 import lombok.Getter;
@@ -30,6 +31,12 @@ public class IntervalEvent extends Event{
     @Override
     public void visit(EventService eventService) {
         eventService.validateSpecificEvent(this);
+    }
+
+    public IntervalEvent (EventDTO dto) {
+        super(dto);
+        this.setIntervalDuration(dto.getIntervalDuration());
+        this.setTimeBetweenIntervals(dto.getTimeBetweenIntervals());
     }
 
     @Override

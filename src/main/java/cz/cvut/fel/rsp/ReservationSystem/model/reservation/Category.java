@@ -3,6 +3,7 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation;
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.CategoryDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,10 @@ public class Category extends AbstractEntity {
 
     @OneToMany(mappedBy = "category")
     private List<Event> events;
+
+    public Category (CategoryDTO dto) {
+        this.name = dto.getName();
+    }
 
     @Override
     public String toString() {

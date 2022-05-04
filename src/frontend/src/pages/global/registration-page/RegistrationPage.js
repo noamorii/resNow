@@ -4,6 +4,9 @@ import AuthService from "../../../services/auth.service";
 import logo from './../../../assets/resnow.png'
 import {useNavigate} from "react-router-dom";
 import ReactTooltip from "react-tooltip";
+import axios from "axios";
+import {baseUrl} from "../../../config/const";
+import authService from "../../../services/auth.service";
 
 const Form = () => {
 
@@ -13,6 +16,7 @@ const Form = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
+    const [system, setSystem] = useState('');
     const [provider, setProvider] = useState(true);
     const [customer, setCustomer] = useState(false);
 
@@ -27,7 +31,7 @@ const Form = () => {
     const valid = (e) => {
         e.preventDefault();
 
-        const userType = provider ? 1 : 2;
+        const userType = provider ? "ROLE_SYSTEM_OWNER" : "ROLE_REGULAR_USER";
 
         let valid = true;
 
@@ -110,10 +114,18 @@ const Form = () => {
             }
         }
 
-        if(valid){
+        if (valid) {
             AuthService.register(firstname, lastname, username, email, password, userType).then(
                 () => {
-                    navigate('/login')
+                    authService.login(username, password).then(
+                        axios.post(
+                            `${baseUrl}/systems`,
+                            {
+                                "managers": {username},
+                                "name": system
+                            }
+                        ).then(r => console.log(r))
+                    )
                 },
                 (error) => {
                     const resMessage =
@@ -242,9 +254,23 @@ const Form = () => {
                     <ReactTooltip id='customer' type='dark' effect='solid' place={'right'}>
                         <span>Customer account is<br/> kind of account that is <br/>used just for making<br/> reservations.</span>
                     </ReactTooltip>
-
                 </div>
             </div>
+            {provider ?
+                <label>
+                    System name
+                    <input
+                        className={'input-primary fl '.concat(error.trim().length !== 0 ? "error" : "")}
+                        type={'text'}
+                        value={system}
+                        placeholder={'Insacek'}
+                        onClick={() => setError('')}
+                        onChange={(e) => {
+                            setSystem(e.target.value)
+                        }}
+                    />
+                </label>
+                : null}
             <div className={styles.errorMessage}>
                 {error}
             </div>
