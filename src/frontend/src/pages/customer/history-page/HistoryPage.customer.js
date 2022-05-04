@@ -1,7 +1,6 @@
 import styles from './HistoryPage.module.scss'
 import {useState, useEffect, useMemo} from "react";
 import {useTable, useFilters, usePagination} from "react-table";
-import DatePicker from "react-multi-date-picker"
 import MOCK_DATA from "./MOCK_DATA.json"
 
 
@@ -25,17 +24,6 @@ export const HistoryPageCustomer = () =>{
                 accessor:"price",
                 Filter: Filter,
                 disableFilters: true
-            },
-            {
-                Header: "Stav",
-                accessor:"state",
-                Filter: Filter,
-                disableFilters: true
-            },
-            {
-                Header: "Datum zrušení",
-                accessor:"date_of_cancellation",
-                Filter: DatePick
             },
         ],
         []
@@ -107,11 +95,11 @@ const Table = ({columns, data}) => {
                             {row.cells.map(cell => {
                                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                             })}
-                            <td>
-                                <div className={styles.buttonCell}>
-                                    <button className={'button-primary-outline ' .concat(styles.buttonDetail)}>Detaily</button>
-                                </div>
-                            </td>
+                            {/*<td>*/}
+                            {/*    <div className={styles.buttonCell}>*/}
+                            {/*        <button className={'button-primary-outline ' .concat(styles.buttonDetail)}>Detaily</button>*/}
+                            {/*    </div>*/}
+                            {/*</td>*/}
                         </tr>
                     )
                 })}
@@ -138,13 +126,35 @@ const Filter = ({column}) => {
     )
 }
 
-const DatePick = ({column}) => {
-    // const [value, setValue] = useState(new Date())
-    const {value, setValue} = column
+// const DatePick = ({column}) => {
+//     // const [value, setValue] = useState(new Date())
+//     const {value, setValue} = column
+//
+//     return (
+//         <span>
+//             <DatePicker value={value} onChange={setValue} />
+//         </span>
+//     )
+// }
 
-    return (
-        <span>
-            <DatePicker value={value} onChange={setValue} />
-        </span>
-    )
-}
+// const Select = ({data}) => {
+//     const [value, setValue] = useState(null)
+//
+//     const filtering = (e) => {
+//         let state = e.target.value
+//
+//         if (state) {
+//
+//         }
+//     }
+//     return (
+//         <div>
+//             <select>
+//                 <option>All</option>
+//                 {data.map((history) => (
+//                     <option>{history.state}</option>
+//                 ))}
+//             </select>
+//         </div>
+//     )
+// }
