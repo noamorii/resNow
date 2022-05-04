@@ -4,24 +4,13 @@ import MOCK_DATA from "./MOCK_DATA.json"
 import {ModalNew} from "./modalWindowNew/ModalNew";
 import {Table} from "./resourcesTable/ResourcesTable";
 import sourcesUtils from "./restUtils/SourcesUtils"
+import axios from "axios";
+import {baseUrl} from "../../../../config/const";
+import authHeader from "../../../../services/auth-header";
 
 export const Sources = () => {
     const [newRes, setNewRes] = useState(false)
-    const [data, setData] = useState(false)
-    useEffect(() => {
-        const fetchSources = async () => {
-            try {
-                setData(sourcesUtils.getAllSources)
-            } catch (err) {
-                if (err.response) {
-                    console.log(err.response.data)
-                    console.log(err.response.status)
-                    console.log(err.response.headers)
-                }
-            }
-        }
-        fetchSources()
-    }, [])
+    const data = useMemo(() => MOCK_DATA, [])
     const columns = useMemo(() => [
                 {
                     Header: "Název",
@@ -30,12 +19,12 @@ export const Sources = () => {
                 },
                 {
                     Header: "Služba",
-                    accessor:"service",
+                    // accessor:"service",
                     Filter: Filter
                 },
                 {
                     Header: "Místo",
-                    accessor:"place",
+                    // accessor:"place",
                     Filter: Filter
                 },
             ],
