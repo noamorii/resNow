@@ -138,7 +138,7 @@ export const ChartReservation = () => {
             },
             title: {
                 display: true,
-                text: 'Reservations in last week',
+                text: 'Rezervace za poslední týden',
             },
         },
         layout: {
