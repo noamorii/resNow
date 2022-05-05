@@ -62,7 +62,7 @@ const PieChart = () => {
     return (
         <div className={styles.kolacGraph}>
             <p>
-                Rezervace dne {current.getDate()}.{current.getMonth() + 1}.{current.getFullYear()}
+                {current.getDate()}.{current.getMonth() + 1}.{current.getFullYear()}
             </p>
             <div className={styles.pie}>
                 <Pie data={data} options={{
