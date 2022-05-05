@@ -7,6 +7,7 @@ import ReactTooltip from "react-tooltip";
 import axios from "axios";
 import {baseUrl} from "../../../config/const";
 import authService from "../../../services/auth.service";
+import authHeader from "../../../services/auth-header";
 
 const Form = () => {
 
@@ -117,15 +118,25 @@ const Form = () => {
         if (valid) {
             AuthService.register(firstname, lastname, username, email, password, userType).then(
                 () => {
-                    authService.login(username, password).then(
-                        axios.post(
-                            `${baseUrl}/systems`,
-                            {
-                                "managers": {username},
-                                "name": system
+                    if (provider) {
+                        authService.login(username, password).then(() => {
+                                axios.post(
+                                    `${baseUrl}/systems`,
+                                    {
+                                        "managers": [username],
+                                        "name": system
+                                    },
+                                    {headers: authHeader()}
+                                ).then(() => {
+                                    navigate("/app/dashboard");
+                                    window.location.reload();
+                                })
                             }
-                        ).then(r => console.log(r))
-                    )
+                        )
+                    } else {
+                        navigate("/login");
+                        window.location.reload();
+                    }
                 },
                 (error) => {
                     const resMessage =
