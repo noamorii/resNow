@@ -1,6 +1,9 @@
 package cz.cvut.fel.rsp.ReservationSystem.model.reservation.events;
 
 import com.sun.istack.NotNull;
+import cz.cvut.fel.rsp.ReservationSystem.dao.CategoryRepository;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.EventDTO;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationSlotService;
 import lombok.Getter;
@@ -26,6 +29,11 @@ public class SeatEvent extends Event{
     @Override
     public void visit(EventService eventService) {
         eventService.validateSpecificEvent(this);
+    }
+
+    public SeatEvent(EventDTO dto) {
+        super(dto);
+        this.setSeatAmount(dto.getSeatAmount());
     }
 
     @Override

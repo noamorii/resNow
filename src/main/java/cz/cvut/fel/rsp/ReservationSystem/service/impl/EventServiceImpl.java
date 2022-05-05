@@ -4,16 +4,22 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
 import cz.cvut.fel.rsp.ReservationSystem.exception.EventException;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -79,11 +85,63 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void remove(Event event) {
-
     }
 
     @Override
     public void update(Event event) {
+    }
 
+    public Event find(Integer id) {
+        return eventRepository.getById(id);
+    }
+
+    @Override
+    public List<Event> getAllEvents(Source source) {
+        List<Category> categories = source.getCategories();
+        List<Event> result = new ArrayList<>();
+
+        for (Category category : categories){
+            List<Event> events = category.getEvents();
+            for (Event event : events){
+                if (!result.contains(event)){
+                    result.add(event);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public List<ReservationSlot> findAllEventReservationSlotsInInterval(Event event, LocalDate from, LocalDate to) {
+        List<ReservationSlot> reservationSlots = eventRepository.findAllReservationSlotsAtEvent(event);
+        List<ReservationSlot> result = new ArrayList<>();
+
+        for (ReservationSlot slot : reservationSlots)
+            if (slot.getDate().isAfter(from) && slot.getDate().isBefore(to))
+                result.add(slot);
+
+        return result;
+    }
+
+    @Override
+    public List<Reservation> findAllReservationsAtEventInInterval(Event event, LocalDate from, LocalDate to, boolean canceled) {
+        List<Reservation> reservations = eventRepository.findAllReservationsAtEvent(event);
+        List<Reservation> result = new ArrayList<>();
+
+        for (Reservation reservation : reservations)
+            if (reservation.getReservationSlot().getDate().isAfter(from) &&
+                    reservation.getReservationSlot().getDate().isBefore(to) &&
+                        reservation.isCancelled() == canceled)
+                result.add(reservation);
+
+        return result;
+    }
+
+    public List<Event> findAllEvents(ReservationSystem reservationSystem) {
+        return eventRepository.findAllEventsInReservationSystem(reservationSystem.getId());
+    }
+
+    public List<Event> findAllEventsToFuture(ReservationSystem reservationSystem) {
+        return eventRepository.findAllEventsInReservationSystem(reservationSystem.getId()).stream().filter(Event -> Event.getStartDate().isAfter(LocalDate.now().minusDays(1))).collect(Collectors.toList());
     }
 }

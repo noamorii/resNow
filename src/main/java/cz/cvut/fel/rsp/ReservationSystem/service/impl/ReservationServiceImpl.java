@@ -4,35 +4,26 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.*;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationException;
 import cz.cvut.fel.rsp.ReservationSystem.exception.ReservationSystemException;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
 
-    private final ReservationRepository dao;
-    private final ReservationSlotRepository reservationSlotDao;
-    private final ReservationSystemRepository reservationSystemDao;
-    private final UserRepository userDao;
-    private final SourceRepository sourceDao;
+    private final ReservationRepository reservationRepository;
 
-    @Autowired
-    public ReservationServiceImpl(ReservationRepository dao,
-                                  ReservationSlotRepository reservationSlotDao,
-                                  ReservationSystemRepository reservationSystemDao,
-                                  UserRepository userDao,
-                                  SourceRepository sourceDao) {
-        this.dao = dao;
-        this.reservationSlotDao = reservationSlotDao;
-        this.reservationSystemDao = reservationSystemDao;
-        this.userDao = userDao;
-        this.sourceDao = sourceDao;
-    }
+    private final EventServiceImpl eventServiceImpl;
 
     @Override
     public void createReservation(User user, ReservationSlot reservationSlot) {
@@ -43,13 +34,17 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservationSlot == null) {
             throw new ReservationException("Slot ");
         }
-        Reservation helper = dao.findNotCancelledReservationForReservationSlot(reservationSlot.getId());
+        Reservation helper = reservationRepository.findNotCancelledReservationForReservationSlot(reservationSlot.getId());
         if (helper != null && !helper.isCancelled()){
             throw new ReservationSystemException("Slot already has reservation");
         }
         reservation.setUser(user);
         reservation.setReservationSlot(reservationSlot);
-        dao.save(reservation);
+        reservationRepository.save(reservation);
+    }
+
+    public void createReservation(Reservation reservation) {
+        reservationRepository.save(reservation);
     }
 
     @Override
@@ -57,18 +52,63 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservation == null) {
             throw new ReservationException("Reservation has to be mentioned to cancel.");
         }
-        Reservation tmp = dao.findReservationById(reservation.getId());
+        Reservation tmp = reservationRepository.findReservationById(reservation.getId());
         tmp.setCancelled(true);
-        dao.save(tmp);
+        reservationRepository.save(tmp);
+    }
+
+    public Reservation find(Integer id) {
+        return reservationRepository.getById(id);
     }
 
     @Override
     public List<Reservation> findAllReservations(User user) {
-        return dao.findAllUsersReservations(user);
+        return reservationRepository.findAllUsersReservations(user);
+    }
+
+    @Override
+    public List<Reservation> findAllReservations(User user, LocalDate fromDate, LocalDate toDate) {
+        List<Reservation> allReservations = reservationRepository.findAllUsersReservations(user);
+        return this.filterReservations(allReservations, fromDate, toDate);
+    }
+
+    public List<Reservation> findAllReservations(User user, LocalDate date) {
+        List<Reservation> allReservations = reservationRepository.findAllUsersReservations(user);
+        return this.filterReservations(allReservations, date, date);
     }
 
     @Override
     public List<Reservation> findAllUnpaidReservations(User user) {
-        return dao.findAllUsersUnpaidReservations(user.getId());
+        return reservationRepository.findAllUsersUnpaidReservations(user.getId());
+    }
+
+    @Override
+    public List<Reservation> findAllReservations(ReservationSystem reservationSystem) {
+        return reservationRepository.findAllReservationsForReservationSystem(reservationSystem.getId());
+    }
+
+
+    @Override
+    public List<Reservation> findAllReservations(ReservationSystem reservationSystem, LocalDate from, LocalDate to) {
+        List<Reservation> allReservations = this.findAllReservations(reservationSystem);
+        return filterReservations(allReservations, from, to);
+    }
+
+    /**
+     * @param reservations
+     * @param fromDate
+     * @param toDate
+     * @return new list of reservations which are between the given dates (inclusive)
+     */
+    private List<Reservation> filterReservations(List<Reservation> reservations, LocalDate fromDate, LocalDate toDate){
+        LocalDate helperFrom = fromDate.minusDays(1);
+        LocalDate helperTo = toDate.plusDays(1);
+
+        List<Reservation> filtered = reservations.stream().
+                filter(e -> (e.getReservationSlot().getDate().isEqual(fromDate) || e.getReservationSlot().getDate().isAfter(helperFrom))
+                        && (e.getReservationSlot().getDate().isEqual(toDate) || e.getReservationSlot().getDate().isBefore(helperTo)) )
+                .collect(Collectors.toList());
+
+        return filtered;
     }
 }

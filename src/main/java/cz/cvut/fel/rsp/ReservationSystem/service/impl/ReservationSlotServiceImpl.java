@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -94,6 +95,10 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
         customTimeRepository.save(customTimeSlot);
     }
 
+    @Override
+    public ReservationSlot find(Integer id) {
+        return reservationSlotRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
 
     @Override
     public List<ReservationSlot> findAll(Event event) {

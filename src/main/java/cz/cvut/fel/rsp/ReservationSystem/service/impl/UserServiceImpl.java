@@ -2,12 +2,17 @@ package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.dao.PaymentDetailsRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationRepository;
+import cz.cvut.fel.rsp.ReservationSystem.dao.ReservationSystemRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.PaymentDetails;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,19 +22,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final PaymentDetailsRepository paymentDetailsRepository;
+
     private final UserRepository userRepository;
+
     private final ReservationRepository reservationRepository;
 
-    @Autowired
-    public UserServiceImpl(PaymentDetailsRepository paymentDetailsRepository, UserRepository userRepository, ReservationRepository reservationRepository) {
-        this.paymentDetailsRepository = paymentDetailsRepository;
-        this.userRepository = userRepository;
-        this.reservationRepository = reservationRepository;
-    }
+    private final ReservationSystemRepository reservationSystemRepository;
 
+    @Override
+    public User findById(Integer id) {
+        return userRepository.findById(id).get();
+    }
 
     @Override
     @Transactional
@@ -97,6 +104,11 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Transactional
+    public ReservationSystem findMyReservationSystem(User user){
+        return reservationSystemRepository.getReservationSystemByManagersContaining(user);
+    }
+
     @Override
     @Transactional
     public List<Reservation> findAllReservations(User user){
@@ -114,5 +126,10 @@ public class UserServiceImpl implements UserService {
             }
         }
         return result;
+    }
+
+    @Override
+    public void createUser(User user) {
+        userRepository.save(user);
     }
 }

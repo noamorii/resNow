@@ -4,9 +4,8 @@ import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.AbstractEntity;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.UserDTO;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,6 +14,15 @@ import java.util.List;
 @Table(name = "reservation_system_user")
 @Getter @Setter @NoArgsConstructor
 public class User extends AbstractEntity {
+
+    public User(UserDTO userDTO) {
+        this.username = userDTO.getUsername();
+        this.email = userDTO.getEmail();
+        this.password = userDTO.getPassword();
+        this.firstName = userDTO.getFirstName();
+        this.lastName = userDTO.getLastName();
+        this.userType = userDTO.getUserType();
+    }
 
     @NotNull
     @Column(unique = true)
@@ -61,7 +69,6 @@ public class User extends AbstractEntity {
                 ", lastName='" + lastName + '\'' +
                 ", userType=" + userType +
                 ", paymentDetails=" + paymentDetails +
-                ", manages=" + manages +
                 '}';
     }
 }

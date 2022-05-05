@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.EventDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SlotDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EventsController {
@@ -11,8 +12,8 @@ public interface EventsController {
     public EventDTO getById(Integer eventId);
 
     // GET /events/{event_id}/slots?from=""&to=""
-    public List<SlotDTO> getTimeSlots(Integer eventId, Integer fromTimestamp, Integer toTimestamp);
+    public List<SlotDTO> getTimeSlots(Integer eventId, LocalDate fromTimestamp, LocalDate toTimestamp);
 
     // GET /events/{event_id}/reservations?from=""&to""
-    public List<ReservationDTO> getReservations(Integer eventId, Integer fromTimestamp, Integer toTimestamp, boolean canceled);
+    public List<ReservationDTO> getReservations(Integer eventId, LocalDate fromTimestamp, LocalDate toTimestamp, boolean canceled);
 }
