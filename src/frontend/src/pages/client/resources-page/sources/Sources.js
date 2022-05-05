@@ -3,7 +3,6 @@ import {useState, useEffect, useMemo} from "react";
 import MOCK_DATA from "./MOCK_DATA.json"
 import {ModalNew} from "./modalWindowNew/ModalNew";
 import {Table} from "./resourcesTable/ResourcesTable";
-import sourcesUtils from "./restUtils/SourcesUtils"
 import axios from "axios";
 import {baseUrl} from "../../../../config/const";
 import authHeader from "../../../../services/auth-header";
@@ -11,6 +10,32 @@ import authHeader from "../../../../services/auth-header";
 export const Sources = () => {
     const [newRes, setNewRes] = useState(false)
     const data = useMemo(() => MOCK_DATA, [])
+    // const [data1, setData] = useState(false)
+    useEffect(() => {
+        const fetchSources = async () => {
+            try {
+                const systemId = axios.get(`${baseUrl}/systems/my`, {
+                    headers: authHeader()
+                }).then((response) => {
+                    return response.data
+                }).catch((error) => {
+                    console.log(error)
+                })
+                // return axios.get(`${baseUrl}/systems/` + systemId + `/sources`, {
+                //     headers: authHeader()
+                // })
+            } catch (err) {
+                if (err.response) {
+                    console.log(err)
+                }
+            }
+        }
+        fetchSources().then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }, [])
     const columns = useMemo(() => [
                 {
                     Header: "Název",
