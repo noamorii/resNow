@@ -19,6 +19,26 @@ const TopButtons = () => {
     )
 }
 
+const DatePicker = ( {getDate} ) => {
+    const [date, setDate] = useState(new DateObject())
+
+    useEffect(()=>{
+        getDate(date)
+    }, [date])
+
+    return (
+        <>
+            <Calendar
+                numberOfMonths={4}
+                disableMonthPicker
+                disableYearPicker
+                value={date}
+                onChange={setDate}
+            />
+        </>
+    )
+}
+
 const Table = () => {
     const [date, setDate] = useState(new DateObject())
 
@@ -27,8 +47,6 @@ const Table = () => {
     const [openModal, setOpenModal] = useState(false);
 
     const onChange = (e) => {
-        //console.log(e)
-        //console.log(value.format("YYYY-MM-DD"))
         sendGetRequest(date.format("YYYY-MM-DD"))
         toggleShown(data[0].reservationId)
     }
@@ -37,17 +55,26 @@ const Table = () => {
         sendGetRequest(date.format("YYYY-MM-DD"))
     }, [date])
 
+    const getDate = (date) => {
+        setDate(date)
+    }
+
+     console.log(axios.get(
+        `${baseUrl}/systems/my`,
+        {headers: authHeader()}))
+
+
     const sendGetRequest = async (date) => {
-        let system = 2;
+        let system = 1;
         try {
             const resp = await axios.get(
                 `${baseUrl}/systems/${system}/reservations/`,
                 {params: {fromDate: date, toDate: date},
-                    headers: authHeader()});
-            let newData = []
-            resp.data.forEach(reservation => {
-                const dateFromRequest = concatReservationDetails(reservation)
-            })
+                    headers: authHeader()})
+
+            for (let i = 0; i < resp.data.length; i++) {
+                await concatReservationDetails(resp.data[i])
+            }
             setData(resp.data)
             console.log(resp.data);
         } catch (err) {
@@ -125,16 +152,14 @@ const Table = () => {
 
     return (
         <div>
-            <Calendar
-                numberOfMonths={4}
-                disableMonthPicker
-                disableYearPicker
-                value={date}
-                onChange={setDate}
-            />
+            <div className={styles.datePickerPart}>
+                <div className={styles.datePickerPartRight}>
+                    <DatePicker getDate={getDate}/>
+                </div>
+            </div>
             <div className={styles.undercalendar}>
                 <div className={styles.datedisplay}>
-                    <p className={styles.datedisplay}>
+                    <p>
                         {date?.format("dddd MMMM D, YYYY")}
                     </p>
                 </div>
@@ -142,9 +167,6 @@ const Table = () => {
 
                     <p className={' '.concat(styles.pdescr)}>
                         RESERVATIONS: {data.length}
-                    </p>
-                    <p className={' '.concat(styles.pdescr)}>
-                        RESERVED CAPACITY: {}1
                     </p>
                 </div>
             </div>
@@ -215,7 +237,7 @@ const Table = () => {
                                         <td colSpan="2" className={styles.toggleInfo}>
                                             PHONE NUMBER: <br/>{reservation.phone}</td>
                                         <td colSpan="3" className={styles.toggleInfo}>SOURCES: <br/>{reservation.sources}</td>
-                                        <td colSpan="2" className={styles.toggleInfo}>E-MAIL: <br/>{reservation.userEmail}</td>
+                                        <td colSpan="2" className={styles.toggleInfo}>E-MAIL: <br/><a className={styles.mailHref} href={"mailto:" + reservation.userEmail}>{reservation.userEmail}</a></td>
                                         <td colSpan="1" className={styles.toggleInfo}>DATE OF RESERVATION: <br/>{reservation.created}</td>
                                         <td> </td>
                                     </tr>
