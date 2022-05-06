@@ -181,7 +181,7 @@ public class SystemInitializerImpl implements SystemInitializer {
         for (int i = 0; i < sourceRecords.size(); i++) {
             Source source = new Source();
             source.setActive(true);
-            //source.setAddress(addresses.get(i));
+            source.setAddress(addresses.get(i));
             source.setName(sourceRecords.get(i)[1]);
             source.setDescription(sourceRecords.get(i)[0]);
             sources.add(source);
