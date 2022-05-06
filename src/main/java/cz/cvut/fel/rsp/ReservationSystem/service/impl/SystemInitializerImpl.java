@@ -1,9 +1,13 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
 import com.github.javafaker.Faker;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
+import cz.cvut.fel.rsp.ReservationSystem.dao.AddressRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
@@ -29,6 +33,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -58,6 +66,8 @@ public class SystemInitializerImpl implements SystemInitializer {
 
     private final UserRepository userRepository; // TODO change for user service later
 
+    private final AddressRepository addressRepository;
+
     private final Environment environment;
 
     private final Random random = new Random();
@@ -72,17 +82,118 @@ public class SystemInitializerImpl implements SystemInitializer {
             return;
         }
 
-        User admin = generateAdmin();
-        List<User> systemOwners = generateUsers(10, UserType.ROLE_SYSTEM_OWNER);
-        List<User> users = generateUsers(50, UserType.ROLE_REGULAR_USER);
-        List<User> employees = generateUsers(20, UserType.ROLE_SYSTEM_EMPLOYEE);
-        List<ReservationSystem> reservationSystems = generateReservationSystems(systemOwners);
-        List<Source> sources = generateSources(reservationSystems);
-        List<Event> events = generateEvents(sources);
-        generateReservations(users, events);
+        List<String[]> userRecords = readCsvData("src/main/resources/generatorCSVs/users.csv");
+        List<String[]> systemRecords = readCsvData("src/main/resources/generatorCSVs/reservation_systems.csv");
+        List<String[]> addressRecords = readCsvData("src/main/resources/generatorCSVs/addresses.csv");
+        List<String[]> sourceRecords = readCsvData("src/main/resources/generatorCSVs/sources.csv");
+        List<String[]> seatEventRecords = readCsvData("src/main/resources/generatorCSVs/seatEvents.csv");
+        List<String[]> customTimeEventRecords = readCsvData("src/main/resources/generatorCSVs/customTimeEvents.csv");
+        List<String[]> intervalEventRecords = readCsvData("src/main/resources/generatorCSVs/intervalEvents.csv");
 
-        //Event seatEvent = generateSeatEvent(source);
+        List<User> users = generateUsers(userRecords);
+        List<ReservationSystem> systems = generateReservationSystems(systemRecords, users);
+        List<Address> addresses = generateAddresses(addressRecords);
+        List<Source> sources = generateSources(sourceRecords, addresses, systems);
+
+        List<Event> events = generateEvents(sources);
+        //generateReservations(users, events);
     }
+
+    private List<String[]> readCsvData(String path) {
+        log.info("Reading CSV data from " + path);
+        List<String[]> csvData;
+        try (
+                Reader reader = Files.newBufferedReader(Paths.get(path));
+                CSVReader csvReader = new CSVReader(reader);
+        ) {
+            csvData = csvReader.readAll();
+        } catch (IOException | CsvException e) {
+            throw new RuntimeException(e);
+        }
+        return csvData;
+    }
+
+    private List<User> generateUsers(List<String[]> userRecords) {
+        log.info("Generating users");
+        List<User> users = new ArrayList<>();
+        for (String[] userData : userRecords) {
+            User user = new User();
+            user.setFirstName(userData[1]);
+            user.setLastName(userData[2]);
+            user.setUsername(userData[4]);
+            switch (userData[5]) {
+                case "ROLE_ADMIN":
+                    user.setUserType(UserType.ROLE_ADMIN);
+                    break;
+                case "ROLE_SYSTEM_OWNER":
+                    user.setUserType(UserType.ROLE_SYSTEM_OWNER);
+                    break;
+                case "ROLE_SYSTEM_EMPLOYEE":
+                    user.setUserType(UserType.ROLE_SYSTEM_EMPLOYEE);
+                    break;
+                default:
+                    user.setUserType(UserType.ROLE_REGULAR_USER);
+                    break;
+            }
+            user.setEmail(userData[0]);
+            user.setPassword(encoder.encode(userData[3]));
+            userRepository.save(user);
+            users.add(user);
+        }
+        return users;
+    }
+
+    private List<ReservationSystem> generateReservationSystems(List<String[]> systemRecords, List<User> users) {
+        log.info("Generating reservation systems.");
+        int counter = 0;
+        List<ReservationSystem> systems = new ArrayList<>();
+        for (User user : users) {
+            if (user.getUserType() == UserType.ROLE_SYSTEM_OWNER) {
+                ReservationSystem reservationSystem = new ReservationSystem();
+                reservationSystem.setName(systemRecords.get(counter++)[0]);
+                reservationSystemService.createReservationSystem(user, reservationSystem);
+                systems.add(reservationSystem);
+            }
+        }
+        return systems;
+    }
+
+    private List<Address> generateAddresses(List<String[]> addressRecords) {
+        log.info("Generating addresses");
+        List<Address> addresses = new ArrayList<>();
+        for (String[] addressData : addressRecords) {
+            Address address = new Address();
+            address.setCity(addressData[0]);
+            address.setStreet(addressData[3]);
+            address.setHouseNumber(addressData[1]);
+            address.setPostalCode(addressData[2]);
+            addressRepository.save(address);
+            addresses.add(address);
+        }
+        return addresses;
+    }
+
+    private List<Source> generateSources(List<String[]> sourceRecords, List<Address> addresses, List<ReservationSystem> systems) {
+        log.info("Generating sources");
+        List<Source> sources = new ArrayList<>();
+        int[] values = {3, 1, 4, 4, 3, 4, 4, 2, 3, 2};
+        int counter = 0;
+        for (int i = 0; i < sourceRecords.size(); i++) {
+            Source source = new Source();
+            source.setActive(true);
+            //source.setAddress(addresses.get(i));
+            source.setName(sourceRecords.get(i)[1]);
+            source.setDescription(sourceRecords.get(i)[0]);
+            sources.add(source);
+        }
+        for (int i = 0; i < values.length; i++) {
+            for (int j = 0; j < values[i]; j++) {
+                sourceService.createSource(sources.get(counter++), systems.get(i));
+            }
+        }
+        return sources;
+    }
+
     // TODO
     private void generateReservations(List<User> users, List<Event> events) {
         log.info("Generating reservations.");
@@ -111,8 +222,7 @@ public class SystemInitializerImpl implements SystemInitializer {
                 switch (systemType) {
                     case 1:
                         SeatEvent seatEvent = new SeatEvent();
-                        seatEvent.setName("Event " + counter.toString());
-                        counter++;
+                        seatEvent.setName("Event " + counter++);
                         seatEvent.setStartDate(dateRange.get(random.nextInt(dateRange.size())));
                         seatEvent.setDay(seatEvent.getStartDate().getDayOfWeek());
                         seatEvent.setRepetition(Repetition.NONE);
@@ -156,8 +266,8 @@ public class SystemInitializerImpl implements SystemInitializer {
     }
 
     private List<LocalDate> generateDates() {
-        LocalDate start = LocalDate.of(2022, 4, 4);
-        LocalDate end = LocalDate.of(2022, 5, 8);
+        LocalDate start = LocalDate.of(2022, 5, 1);
+        LocalDate end = LocalDate.of(2022, 5, 31);
         int days = (int) start.until(end, ChronoUnit.DAYS);
         return Stream.iterate(start, d -> d.plusDays(1)).limit(days).collect(Collectors.toList());
     }
@@ -194,56 +304,5 @@ public class SystemInitializerImpl implements SystemInitializer {
             }
         }
         return sources;
-    }
-
-    private List<ReservationSystem> generateReservationSystems(List<User> systemOwners) {
-        log.info("Generating " + systemOwners.size() + " reservation system.");
-        Faker faker = new Faker();
-        List<ReservationSystem> systems = new ArrayList<>();
-        for (User systemOwner : systemOwners) {
-            ReservationSystem reservationSystem = new ReservationSystem();
-            reservationSystem.setName(faker.company().name());
-            reservationSystemService.createReservationSystem(systemOwner, reservationSystem);
-            systems.add(reservationSystem);
-        }
-        return systems;
-    }
-
-    private List<User> generateUsers(int amount, UserType userType) {
-        log.info("Generating " + amount + " " + userType.toString());
-        Faker faker = new Faker();
-        List<User> users = new ArrayList<>();
-        for (int i = 0; i < amount; i++) {
-            User user = new User();
-            user.setFirstName(faker.name().firstName());
-            user.setLastName(faker.name().lastName());
-            user.setUsername(user.getFirstName().toLowerCase() + i + "." + user.getLastName().toLowerCase());
-            if (userType == UserType.ROLE_SYSTEM_OWNER)
-                user.setEmail(user.getFirstName() + i + "@owner.com");
-            else if (userType == UserType.ROLE_SYSTEM_EMPLOYEE)
-                user.setEmail(user.getFirstName() + i + "@employee.com");
-            else
-                user.setEmail(user.getFirstName() + i + "@user.com");
-            user.setUserType(userType);
-            user.setPassword(encoder.encode("123456"));
-            userRepository.save(user);
-            users.add(user);
-        }
-        return users;
-    }
-
-    private User generateAdmin() {
-        User user = new User();
-        String admin = "admin";
-        user.setEmail("admin@admin.com");
-        user.setUsername(admin);
-        user.setFirstName(admin);
-        user.setLastName(admin);
-        user.setUserType(UserType.ROLE_ADMIN);
-        user.setPassword(encoder.encode("123456"));
-
-        userRepository.save(user);
-
-        return user;
     }
 }
