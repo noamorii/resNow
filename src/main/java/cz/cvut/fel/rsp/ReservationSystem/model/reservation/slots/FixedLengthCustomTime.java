@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots;
 
 import com.sun.istack.NotNull;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SlotDTO;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,10 @@ public class FixedLengthCustomTime extends CustomTime{
         return "FixedLengthCustomTime{" +
                 "fixedLength=" + fixedLength +
                 '}';
+    }
+
+    @Override
+    public SlotDTO toDTO() {
+        return new SlotDTO(this);
     }
 }

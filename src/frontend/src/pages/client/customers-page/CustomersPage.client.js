@@ -1,9 +1,13 @@
 import styles from './CustomersPage.module.scss'
 import MOCK_DATA from "./MOCK_DATA.json"
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 import {ModalNewCustomer} from "./modalWindowNewCustomer/ModalNewCustomer";
 import {ModalDeleteConfirm} from "./modalWindowDeleteConfirm/ModalDeleteConfirm";
 import {useTable, useFilters, usePagination} from "react-table";
+import telephoneService from "../../../services/telephoneService";
+import axios from "axios";
+import {baseUrl} from "../../../config/const";
+import authHeader from "../../../services/auth-header";
 
 const Filter = ({column}) => {
     const {filterValue, setFilter} = column;
@@ -52,6 +56,20 @@ export const CustomersPageClient = () => {
         ], []
     );
 
+    const [customers, setCustomers] = useState([]);
+
+    useEffect(async () => {
+        const fetchCustomers = await Promise.any([
+                axios.get(`${baseUrl}/systems/my/customers`,
+                    {headers: authHeader()})
+            ]
+        )
+        fetchCustomers.data.map(item => item.age)
+            .filter((value, index, self) => self.indexOf(value) === index)
+        setCustomers(fetchCustomers.data)
+
+    }, [])
+
 
     let getSelectedRows = () => {
         this.setState({
@@ -94,84 +112,110 @@ export const CustomersPageClient = () => {
         }
     };
 
-    console.log(checkedState.join(", "));
+    // console.log(checkedState.join(", "));
 
     return (
         <div className={styles.container}>
             <div className={styles.buttonContainer}>
-                <button className={'button-primary '.concat(styles.button)} onClick={() => setShow(true)}>Nový zákazník</button>
+                <button className={'button-primary '.concat(styles.button)} onClick={() => setShow(true)}>Nový
+                    zákazník
+                </button>
                 <ModalNewCustomer onClose={() => setShow(false)} show={show}/>
-                <ModalDeleteConfirm onClose={() => setConfirm(false)} show={confirm}/>
+                {/*<ModalDeleteConfirm onClose={() => setConfirm(false)} show={confirm}/>*/}
             </div>
             <div className={styles.tableContainer}>
-                <table {...getTableProps()}>
-                    <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()} >
-                            <td className={styles.collCheckbox}>
-                                <label htmlFor="checkbox"/>
-                                <input id="checkbox"
-                                       type="checkbox"
-                                />
-                            </td>
-                            {headerGroup.headers.map(column => (
-                                <td {...column.getHeaderProps()}>
-                                    <p>{column.render('Header')}</p>
-                                    <div>{column.canFilter ? column.render('Filter') : null}</div>
-                                </td>
-                            ))}
-                            <td></td>
-                        </tr>
-                    ))}
-                    </thead>
+                {/*<table {...getTableProps()}>*/}
+                {/*    <thead>*/}
+                {/*    {headerGroups.map(headerGroup => (*/}
+                {/*        <tr {...headerGroup.getHeaderGroupProps()} >*/}
+                {/*            <td className={styles.collCheckbox}>*/}
+                {/*                <label htmlFor="checkbox"/>*/}
+                {/*                <input id="checkbox"*/}
+                {/*                       type="checkbox"*/}
+                {/*                />*/}
+                {/*            </td>*/}
+                {/*            {headerGroup.headers.map(column => (*/}
+                {/*                <td {...column.getHeaderProps()}>*/}
+                {/*                    <p>{column.render('Header')}</p>*/}
+                {/*                    <div>{column.canFilter ? column.render('Filter') : null}</div>*/}
+                {/*                </td>*/}
+                {/*            ))}*/}
+                {/*            <td></td>*/}
+                {/*        </tr>*/}
+                {/*    ))}*/}
+                {/*    </thead>*/}
 
-                    <tbody {...getTableBodyProps()}>
-                    {page.map((row) => {
-                        prepareRow(row)
+                {/*    <tbody {...getTableBodyProps()}>*/}
+                {/*    {page.map((row) => {*/}
+                {/*        prepareRow(row)*/}
+                {/*        return (*/}
+                {/*            <tr {...row.getRowProps()}*/}
+                {/*                className={checkedState.includes(row.id) ? styles.checkedCheckbox : ''}>*/}
+                {/*                <td className={styles.collCheckbox}>*/}
+                {/*                    <input type="checkbox"*/}
+                {/*                           className={'checkbox'}*/}
+                {/*                           onChange={handleChange}*/}
+                {/*                           checked={checkedState.includes((row.id))}*/}
+                {/*                           name={(row.id).toString()}*/}
+                {/*                    />*/}
+                {/*                </td>*/}
+                {/*                {row.cells.map(cell => {*/}
+                {/*                    return <td {...cell.getCellProps()}>{telephoneService.generator()}</td>*/}
+                {/*                })}*/}
+                {/*                <td>*/}
+                {/*                    <div className={styles.buttonsTable}>*/}
+                {/*                        <button*/}
+                {/*                            className={'button-primary-outline '.concat(styles.buttonEdit)}>Upravit*/}
+                {/*                        </button>*/}
+                {/*                        <button*/}
+                {/*                            className={'button-primary-outline '.concat(styles.buttonDelete)}*/}
+                {/*                            onClick={() => setConfirm(true)}>Odstranit*/}
+                {/*                        </button>*/}
+                {/*                    </div>*/}
+                {/*                </td>*/}
+                {/*            </tr>*/}
+                {/*        )*/}
+                {/*    })}*/}
+                {/*    </tbody>*/}
+
+                {/*</table>*/}
+                {/*<div className={styles.buttonsContainer}>*/}
+                {/*    <div>*/}
+                {/*        <span>Stranka {pageIndex + 1} z {pageOptions.length} </span>*/}
+                {/*        <button onClick={() => previousPage()}*/}
+                {/*                disabled={!canPreviousPage}*/}
+                {/*                className={'button-primary sm'}>Předchozí*/}
+                {/*        </button>*/}
+                {/*        <button onClick={() => nextPage()}*/}
+                {/*                disabled={!canNextPage}*/}
+                {/*                className={'button-primary sm'}>Další*/}
+                {/*        </button>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                <table>
+                    <thead>
+                    <tr>
+                        <th><strong>Username</strong></th>
+                        <th><strong>Email</strong></th>
+                        <th><strong>Telephone</strong></th>
+                        <th><strong>Firstname</strong></th>
+                        <th><strong>Lastname</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {customers.map(customer => {
                         return (
-                            <tr {...row.getRowProps()}
-                                className={checkedState.includes(row.id) ? styles.checkedCheckbox : ''}>
-                                <td className={styles.collCheckbox}>
-                                    <input type="checkbox"
-                                           className={'checkbox'}
-                                           onChange={handleChange}
-                                           checked={checkedState.includes((row.id))}
-                                           name={(row.id).toString()}
-                                    />
-                                </td>
-                                {row.cells.map(cell => {
-                                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                                })}
-                                <td>
-                                    <div className={styles.buttonsTable}>
-                                        <button
-                                            className={'button-primary-outline '.concat(styles.buttonEdit)}>Upravit
-                                        </button>
-                                        <button
-                                            className={'button-primary-outline '.concat(styles.buttonDelete)}
-                                            onClick={() => setConfirm(true)}>Odstranit
-                                        </button>
-                                    </div>
-                                </td>
+                            <tr>
+                                <td>{customer.username}</td>
+                                <td>{customer.email}</td>
+                                <td>{telephoneService.generator()}</td>
+                                <td>{customer.firstName}</td>
+                                <td>{customer.lastName}</td>
                             </tr>
                         )
                     })}
                     </tbody>
-
                 </table>
-                <div className={styles.buttonsContainer}>
-                    <div>
-                        <span>Stranka {pageIndex + 1} z {pageOptions.length} </span>
-                        <button onClick={() => previousPage()}
-                                disabled={!canPreviousPage}
-                                className={'button-primary sm'}>Předchozí
-                        </button>
-                        <button onClick={() => nextPage()}
-                                disabled={!canNextPage}
-                                className={'button-primary sm'}>Další
-                        </button>
-                    </div>
-                </div>
             </div>
             <div className={styles.containerFunction}>
                 <select>

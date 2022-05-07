@@ -10,8 +10,8 @@ public interface CategoriesController {
     // GET /categories/{categoryId}
     public CategoryDTO getById(Integer categoryId);
 
-    // GET /categories/{categoryId}/events
-    public List<EventDTO> getEvents(Integer categoryId, Integer fromTimestamp, Integer toTimestamp);
+    // GET /categories/{categoryName}/events
+    public List<EventDTO> getEventsByCategoryName(String categoryName);
 
     // POST /categories/{categoryId}
     public ResponseEntity<Void> createEvent(Integer categoryId, EventDTO eventDTO);
