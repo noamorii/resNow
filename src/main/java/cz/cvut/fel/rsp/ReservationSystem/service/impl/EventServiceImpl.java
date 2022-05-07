@@ -114,27 +114,21 @@ public class EventServiceImpl implements EventService {
 
     public List<ReservationSlot> findAllEventReservationSlotsInInterval(Event event, LocalDate from, LocalDate to) {
         List<ReservationSlot> reservationSlots = eventRepository.findAllReservationSlotsAtEvent(event);
-        List<ReservationSlot> result = new ArrayList<>();
 
-        for (ReservationSlot slot : reservationSlots)
-            if (slot.getDate().isAfter(from) && slot.getDate().isBefore(to))
-                result.add(slot);
-
-        return result;
+        return reservationSlots.stream().filter(
+                s -> (s.getDate().isEqual(from) || s.getDate().isAfter(from.minusDays(1)))
+                && (s.getDate().isEqual(to) || s.getDate().isBefore(to.plusDays(1))))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Reservation> findAllReservationsAtEventInInterval(Event event, LocalDate from, LocalDate to, boolean canceled) {
         List<Reservation> reservations = eventRepository.findAllReservationsAtEvent(event);
-        List<Reservation> result = new ArrayList<>();
 
-        for (Reservation reservation : reservations)
-            if (reservation.getReservationSlot().getDate().isAfter(from) &&
-                    reservation.getReservationSlot().getDate().isBefore(to) &&
-                        reservation.isCancelled() == canceled)
-                result.add(reservation);
-
-        return result;
+        return reservations.stream().filter(
+                r -> (r.getReservationSlot().getDate().isEqual(from) || r.getReservationSlot().getDate().isAfter(from.minusDays(1))
+                && (r.getReservationSlot().getDate().isEqual(to) || r.getReservationSlot().getDate().isBefore(to.plusDays(1))
+                && r.isCancelled() == canceled))).collect(Collectors.toList());
     }
 
     public List<Event> findAllEvents(ReservationSystem reservationSystem) {
