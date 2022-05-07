@@ -1,6 +1,5 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
-import com.github.javafaker.Faker;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import cz.cvut.fel.rsp.ReservationSystem.dao.AddressRepository;
@@ -13,38 +12,24 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
-import cz.cvut.fel.rsp.ReservationSystem.model.user.PaymentDetails;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
-import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.SystemInitializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -64,8 +49,6 @@ public class SystemInitializerImpl implements SystemInitializer {
     private final UserRepository userRepository; // TODO change for user service later
 
     private final AddressRepository addressRepository;
-
-    private final CategoryServiceImpl categoryService;
 
     private final Environment environment;
 
@@ -88,6 +71,7 @@ public class SystemInitializerImpl implements SystemInitializer {
         List<String[]> seatEventRecords = readCsvData("src/main/resources/generatorCSVs/seatEvents.csv");
         List<String[]> customTimeEventRecords = readCsvData("src/main/resources/generatorCSVs/customTimeEvents.csv");
         List<String[]> intervalEventRecords = readCsvData("src/main/resources/generatorCSVs/intervalEvents.csv");
+        List<String[]> reservationRecords = readCsvData("src/main/resources/generatorCSVs/reservations.csv");
 
         List<User> users = generateUsers(userRecords);
         List<ReservationSystem> systems = generateReservationSystems(systemRecords, users);
@@ -95,8 +79,7 @@ public class SystemInitializerImpl implements SystemInitializer {
         List<Source> sources = generateSources(sourceRecords, addresses, systems);
         List<Event> events = generateEvents(seatEventRecords, customTimeEventRecords, intervalEventRecords, sources);
 
-        //List<Event> events = generateEvents(sources);
-        //generateReservations(users, events);
+        generateReservations(reservationRecords, users, events);
     }
 
     private List<String[]> readCsvData(String path) {
@@ -237,115 +220,17 @@ public class SystemInitializerImpl implements SystemInitializer {
         return events;
     }
 
-    // TODO
-    private void generateReservations(List<User> users, List<Event> events) {
-        log.info("Generating reservations.");
-        List<Reservation> reservations = new ArrayList<>();
-        for (User user : users) {
-            int amount = random.nextInt(3);
-            for (int i = 0; i < amount; i++) {
-                Event event = events.get(0);
-                List<ReservationSlot> eventSlots = reservationSlotService.findAllFree(event);
-                if (eventSlots.size() == 0) continue;
-                reservationService.createReservation(user, eventSlots.get(random.nextInt(eventSlots.size())));
-            }
+    private void generateReservations(List<String[]> reservationRecords, List<User> users, List<Event> events) {
+        log.info("Generating reservations");
+        List<ReservationSlot> slots = new ArrayList<>();
+        for (Event event : events) {
+            slots.addAll(reservationSlotService.findAllFree(event));
         }
-    }
-
-    private List<Event> generateEvents(List<Source> sources) {
-        log.info("Generating events.");
-        List<LocalDate> dateRange = generateDates();
-        List<Event> events = new ArrayList<>();
-        Integer counter = 1;
-        for (Source source : sources) {
-            int amount = random.nextInt(6);
-            for (int i = 0; i < amount + 1; i++) {
-                int systemType = random.nextInt(3);
-                // 1 - seatEvent, 2 - intervalEvent, default - customTimeEvent
-                switch (systemType) {
-                    case 1:
-                        SeatEvent seatEvent = new SeatEvent();
-                        seatEvent.setName("Event " + counter++);
-                        seatEvent.setStartDate(dateRange.get(random.nextInt(dateRange.size())));
-                        seatEvent.setDay(seatEvent.getStartDate().getDayOfWeek());
-                        seatEvent.setRepetition(Repetition.NONE);
-                        seatEvent.setFromTime(LocalTime.of(8 + random.nextInt(4), 0));
-                        seatEvent.setToTime(LocalTime.of(16 + random.nextInt(5), 0));
-                        seatEvent.setSeatAmount(100);
-                        eventService.createEvent(seatEvent, source.getCategories().get(0));
-                        events.add(seatEvent);
-                        break;
-                    case 2:
-                        IntervalEvent intervalEvent = new IntervalEvent();
-                        intervalEvent.setName("Event" + counter.toString());
-                        counter++;
-                        intervalEvent.setStartDate(dateRange.get(random.nextInt(dateRange.size())));
-                        intervalEvent.setDay(intervalEvent.getStartDate().getDayOfWeek());
-                        intervalEvent.setRepetition(Repetition.NONE);
-                        intervalEvent.setFromTime(LocalTime.of(8 + random.nextInt(4), 0));
-                        intervalEvent.setToTime(LocalTime.of(16 + random.nextInt(5), 0));
-                        intervalEvent.setIntervalDuration(Duration.ofHours(1));
-                        intervalEvent.setTimeBetweenIntervals(Duration.ZERO);
-                        eventService.createEvent(intervalEvent, source.getCategories().get(0));
-                        events.add(intervalEvent);
-                        break;
-                    default:
-                        CustomTimeEvent customTimeEvent = new CustomTimeEvent();
-                        customTimeEvent.setName("Event" + counter.toString());
-                        counter++;
-                        customTimeEvent.setStartDate(dateRange.get(random.nextInt(dateRange.size())));
-                        customTimeEvent.setDay(customTimeEvent.getStartDate().getDayOfWeek());
-                        customTimeEvent.setRepetition(Repetition.NONE);
-                        customTimeEvent.setFromTime(LocalTime.of(8 + random.nextInt(4), 0));
-                        customTimeEvent.setToTime(LocalTime.of(16 + random.nextInt(5), 0));
-                        customTimeEvent.setMinimalReservationTime(Duration.ofMinutes(30));
-                        eventService.createEvent(customTimeEvent, source.getCategories().get(0));
-                        events.add(customTimeEvent);
-                        break;
-                }
-            }
+        for (String[] reservationData : reservationRecords) {
+            User user = users.stream().filter(u -> Objects.equals(u.getId(), Integer.valueOf(reservationData[4]))).findAny().orElse(null);
+            ReservationSlot slot = slots.stream().filter(s -> Objects.equals(s.getId(), Integer.valueOf(reservationData[3]))).findAny().orElse(null);
+            slots.remove(slot);
+            reservationService.createReservation(user, slot);
         }
-        return events;
-    }
-
-    private List<LocalDate> generateDates() {
-        LocalDate start = LocalDate.of(2022, 5, 1);
-        LocalDate end = LocalDate.of(2022, 5, 31);
-        int days = (int) start.until(end, ChronoUnit.DAYS);
-        return Stream.iterate(start, d -> d.plusDays(1)).limit(days).collect(Collectors.toList());
-    }
-
-    private Event generateSeatEvent(Source source) {
-        SeatEvent event = new SeatEvent();
-        event.setName("Freies Bier");
-        event.setDay(DayOfWeek.FRIDAY);
-        event.setRepetition(Repetition.NONE);
-        event.setFromTime(LocalTime.of(10, 0));
-        event.setToTime(LocalTime.of(20, 0));
-        event.setStartDate(LocalDate.now());
-        event.setSeatAmount(100);
-
-        eventService.createEvent(event, source.getCategories().get(0));
-
-        return event;
-    }
-
-    private List<Source> generateSources(List<ReservationSystem> reservationSystems) {
-        log.info("Generating sources.");
-        Faker faker = new Faker();
-        List<Source> sources = new ArrayList<>();
-        for (ReservationSystem system : reservationSystems) {
-            int amount = random.nextInt(5);
-            for (int i = 0; i < Math.min(2, amount); i++) {
-                Source source = new Source();
-                source.setActive(true);
-                source.setName(faker.funnyName().name());
-                String description = faker.rickAndMorty().quote();
-                source.setDescription(description.substring(0, Math.min(description.length(), 200)));
-                sourceService.createSource(source, system);
-                sources.add(source);
-            }
-        }
-        return sources;
     }
 }
