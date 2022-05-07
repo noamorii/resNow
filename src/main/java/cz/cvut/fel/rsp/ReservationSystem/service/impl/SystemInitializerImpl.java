@@ -65,10 +65,10 @@ public class SystemInitializerImpl implements SystemInitializer {
         if (Arrays.asList(environment.getActiveProfiles()).contains("testprofile")) {
             return;
         }
-//        if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
-//            log.info("prod env, skip init");
-//            return;
-//        }
+        if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
+            log.info("prod env, skip init");
+            return;
+        }
 
         List<String[]> userRecords = readCsvData("src/main/resources/generatorCSVs/users.csv");
         List<String[]> systemRecords = readCsvData("src/main/resources/generatorCSVs/reservation_systems.csv");
@@ -191,6 +191,7 @@ public class SystemInitializerImpl implements SystemInitializer {
         log.info("Generating events");
         List<Event> events = new ArrayList<>();
         for (String[] seatEventData : seatEventRecords) {
+            System.out.println(0);
             SeatEvent seatEvent = new SeatEvent();
             seatEvent.setName(seatEventData[3]);
             seatEvent.setStartDate(LocalDate.parse(seatEventData[6]));
@@ -203,6 +204,7 @@ public class SystemInitializerImpl implements SystemInitializer {
             events.add(seatEvent);
         }
         for (String[] customTimeEventData : customTimeEventRecords) {
+            System.out.println(1);
             CustomTimeEvent customTimeEvent = new CustomTimeEvent();
             customTimeEvent.setName(customTimeEventData[3]);
             customTimeEvent.setStartDate(LocalDate.parse(customTimeEventData[6]));
@@ -215,6 +217,7 @@ public class SystemInitializerImpl implements SystemInitializer {
             events.add(customTimeEvent);
         }
         for (String[] intervalEventData : intervalEventRecords) {
+            System.out.println(2);
             IntervalEvent intervalEvent = new IntervalEvent();
             intervalEvent.setName(intervalEventData[3]);
             intervalEvent.setStartDate(LocalDate.parse(intervalEventData[6]));
