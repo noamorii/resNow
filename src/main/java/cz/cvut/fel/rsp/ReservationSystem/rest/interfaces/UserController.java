@@ -19,6 +19,8 @@ public interface UserController {
 
     public ResponseEntity<?> createUser(UserDTO userDTO);
 
+    public void updateUser(String username, String password, String email);
+
     public List<ReservationDTO> getReservations(String username, LocalDate fromDate, LocalDate toDate);
 
     public UserDTO getCurrentlyLoggedInUser();
