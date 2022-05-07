@@ -22,4 +22,7 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Query(value = "SELECT e FROM Event e JOIN Source s ON e.category IN elements(s.categories)" +
             "WHERE s.reservationSystem.id = :system_Id")
     List<Event> findAllEventsInReservationSystem(@Param("system_Id") Integer systemId);
+
+    @Query(value = " SELECT e FROM Event e WHERE e.category.name = :category_name")
+    List<Event> findAllEventsByCategoryName(@Param("category_name") String categoryName);
 }

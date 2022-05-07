@@ -144,4 +144,9 @@ public class EventServiceImpl implements EventService {
     public List<Event> findAllEventsToFuture(ReservationSystem reservationSystem) {
         return eventRepository.findAllEventsInReservationSystem(reservationSystem.getId()).stream().filter(Event -> Event.getStartDate().isAfter(LocalDate.now().minusDays(1))).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Event> getEventsByCategoryName(String categoryName) {
+        return eventRepository.findAllEventsByCategoryName(categoryName);
+    }
 }

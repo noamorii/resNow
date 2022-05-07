@@ -33,4 +33,6 @@ public interface EventService {
     public List<ReservationSlot> findAllEventReservationSlotsInInterval(Event event, LocalDate from, LocalDate to);
 
     public List<Reservation> findAllReservationsAtEventInInterval(Event event, LocalDate from, LocalDate to, boolean canceled);
+
+    public List<Event> getEventsByCategoryName(String categoryName);
 }
