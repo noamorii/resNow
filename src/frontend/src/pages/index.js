@@ -9,10 +9,8 @@ export * from './global/login-page/LoginPage'
 //CUSTOMER
 export * from './customer/dashboard-page/DashboardPage.customer'
 export * from './customer/events-page/EventsPage.customer'
-export * from './customer/history-page/HistoryPage.customer'
 export * from './customer/profile-page/ProfilePage.customer'
 export * from './customer/reservations-page/ReservationsPage.customer'
-export * from './customer/settings-page/SettingsPage.customer'
 
 
 //CLIENT
