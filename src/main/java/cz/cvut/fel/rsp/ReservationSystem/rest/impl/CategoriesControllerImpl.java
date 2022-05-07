@@ -41,7 +41,7 @@ public class CategoriesControllerImpl implements CategoriesController {
 
     @Override
     @GetMapping(value = "/categories/{categoryName}/events", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EventDTO> getEventsByCategoryName(String categoryName) {
+    public List<EventDTO> getEventsByCategoryName(@PathVariable String categoryName) {
         return eventService.getEventsByCategoryName(categoryName).stream()
                 .map(EventDTO::new)
                 .collect(Collectors.toList());
