@@ -53,15 +53,16 @@ const Table = () => {
 
     useEffect(()=>{
         sendGetRequest(date.format("YYYY-MM-DD"))
+        console.log(axios.get(
+            `${baseUrl}/systems/my`,
+            {headers: authHeader()}))
     }, [date])
 
     const getDate = (date) => {
         setDate(date)
     }
 
-     console.log(axios.get(
-        `${baseUrl}/systems/my`,
-        {headers: authHeader()}))
+
 
 
     const sendGetRequest = async (date) => {
