@@ -7,10 +7,7 @@ import cz.cvut.fel.rsp.ReservationSystem.dao.AddressRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Address;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.*;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
@@ -68,6 +65,8 @@ public class SystemInitializerImpl implements SystemInitializer {
 
     private final AddressRepository addressRepository;
 
+    private final CategoryServiceImpl categoryService;
+
     private final Environment environment;
 
     private final Random random = new Random();
@@ -94,8 +93,9 @@ public class SystemInitializerImpl implements SystemInitializer {
         List<ReservationSystem> systems = generateReservationSystems(systemRecords, users);
         List<Address> addresses = generateAddresses(addressRecords);
         List<Source> sources = generateSources(sourceRecords, addresses, systems);
+        List<Event> events = generateEvents(seatEventRecords, customTimeEventRecords, intervalEventRecords, sources);
 
-        List<Event> events = generateEvents(sources);
+        //List<Event> events = generateEvents(sources);
         //generateReservations(users, events);
     }
 
@@ -144,7 +144,7 @@ public class SystemInitializerImpl implements SystemInitializer {
     }
 
     private List<ReservationSystem> generateReservationSystems(List<String[]> systemRecords, List<User> users) {
-        log.info("Generating reservation systems.");
+        log.info("Generating reservation systems");
         int counter = 0;
         List<ReservationSystem> systems = new ArrayList<>();
         for (User user : users) {
@@ -192,6 +192,49 @@ public class SystemInitializerImpl implements SystemInitializer {
             }
         }
         return sources;
+    }
+
+    private List<Event> generateEvents(List<String[]> seatEventRecords, List<String[]> customTimeEventRecords, List<String[]> intervalEventRecords, List<Source> sources) {
+        log.info("Generating events");
+        List<Event> events = new ArrayList<>();
+        for (String[] seatEventData : seatEventRecords) {
+            SeatEvent seatEvent = new SeatEvent();
+            seatEvent.setName(seatEventData[3]);
+            seatEvent.setStartDate(LocalDate.parse(seatEventData[6]));
+            seatEvent.setDay(seatEvent.getStartDate().getDayOfWeek());
+            seatEvent.setRepetition(Repetition.NONE);
+            seatEvent.setFromTime(LocalTime.parse(seatEventData[2]));
+            seatEvent.setToTime(LocalTime.parse(seatEventData[7]));
+            seatEvent.setSeatAmount(Integer.valueOf(seatEventData[9]));
+            eventService.createEvent(seatEvent, sources.get(Integer.parseInt(seatEventData[8]) - 1).getCategories().get(0));
+            events.add(seatEvent);
+        }
+        for (String[] customTimeEventData : customTimeEventRecords) {
+            CustomTimeEvent customTimeEvent = new CustomTimeEvent();
+            customTimeEvent.setName(customTimeEventData[3]);
+            customTimeEvent.setStartDate(LocalDate.parse(customTimeEventData[6]));
+            customTimeEvent.setDay(customTimeEvent.getStartDate().getDayOfWeek());
+            customTimeEvent.setRepetition(Repetition.NONE);
+            customTimeEvent.setFromTime(LocalTime.parse(customTimeEventData[2]));
+            customTimeEvent.setToTime(LocalTime.parse(customTimeEventData[7]));
+            customTimeEvent.setMinimalReservationTime(Duration.ofMinutes(30));
+            eventService.createEvent(customTimeEvent, sources.get(Integer.parseInt(customTimeEventData[8]) - 1).getCategories().get(0));
+            events.add(customTimeEvent);
+        }
+        for (String[] intervalEventData : intervalEventRecords) {
+            IntervalEvent intervalEvent = new IntervalEvent();
+            intervalEvent.setName(intervalEventData[3]);
+            intervalEvent.setStartDate(LocalDate.parse(intervalEventData[6]));
+            intervalEvent.setDay(intervalEvent.getStartDate().getDayOfWeek());
+            intervalEvent.setRepetition(Repetition.NONE);
+            intervalEvent.setFromTime(LocalTime.parse(intervalEventData[2]));
+            intervalEvent.setToTime(LocalTime.parse(intervalEventData[7]));
+            intervalEvent.setIntervalDuration(Duration.ofHours(1));
+            intervalEvent.setTimeBetweenIntervals(Duration.ZERO);
+            eventService.createEvent(intervalEvent, sources.get(Integer.parseInt(intervalEventData[8]) - 1).getCategories().get(0));
+            events.add(intervalEvent);
+        }
+        return events;
     }
 
     // TODO
