@@ -65,6 +65,9 @@ public class SystemInitializerImpl implements SystemInitializer {
         if (Arrays.asList(environment.getActiveProfiles()).contains("testprofile")) {
             return;
         }
+        if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
+            return;
+        }
 
         List<String[]> userRecords = readCsvData("src/main/resources/generatorCSVs/users.csv");
         List<String[]> systemRecords = readCsvData("src/main/resources/generatorCSVs/reservation_systems.csv");
