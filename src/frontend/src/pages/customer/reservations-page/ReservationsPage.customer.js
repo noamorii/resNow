@@ -16,7 +16,6 @@ export const ReservationsPageCustomer = () => {
                 {headers: authHeader()}
             ).then(response => {
                 resolve(response.data)
-                // console.log(response.data)
             }).catch(reject);
         })
     }
@@ -51,7 +50,7 @@ export const ReservationsPageCustomer = () => {
         let response = []
         await Promise.all(data.map(async (e) => {
             try {
-                let insertResponse = await fetchEvent(e.eventId)
+                let insertResponse = await fetchEvent(e.seatIdentifier)
                 response.push(insertResponse)
             } catch (error) {
                 console.log('error' + error);
@@ -70,7 +69,6 @@ export const ReservationsPageCustomer = () => {
         )
         const slots = await Promise.all([fetchSlots(reservations[0].data)])
         setSlots(slots[0])
-        // console.log(slots[0])
         const events = await Promise.all([fetchEvents(slots[0])])
         setEvents(events[0]);
     }, [])
@@ -84,7 +82,7 @@ export const ReservationsPageCustomer = () => {
                     <th>Name</th>
                     <th>From Time</th>
                     <th>To Time</th>
-                    <th>Start Date</th>
+                    <th>Date</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -96,7 +94,7 @@ export const ReservationsPageCustomer = () => {
                                 {r.name}
                             </td>
                             <td>
-                                {slots[index].date}
+                                {r.fromTime}
                             </td>
                             <td>
                                 {r.toTime}
@@ -107,7 +105,6 @@ export const ReservationsPageCustomer = () => {
                         </tr>
                     )
                 })}
-
                 </tbody>
             </table>
         </div>
