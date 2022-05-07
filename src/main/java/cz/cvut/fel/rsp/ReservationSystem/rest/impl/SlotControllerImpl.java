@@ -30,7 +30,7 @@ public class SlotControllerImpl implements SlotController {
     @Override
     @GetMapping(value = "/slots/{slot_id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SlotDTO getSlotById(@PathVariable Integer slot_id) {
-        return new SlotDTO(reservationSlotService.find(slot_id));
+        return reservationSlotService.find(slot_id).toDTO();
     }
 
     @Override
