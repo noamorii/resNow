@@ -141,6 +141,13 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findAllEventsInReservationSystem(reservationSystem.getId());
     }
 
+    public List<Event> findAllEvents(ReservationSystem reservationSystem, LocalDate fromDate, LocalDate toDate) {
+        return eventRepository.findAllEventsInReservationSystem(reservationSystem.getId())
+                .stream()
+                .filter(event -> ((event.getStartDate().isEqual(fromDate) || event.getStartDate().isAfter(fromDate)) && (event.getStartDate().isEqual(toDate) || event.getStartDate().isBefore(toDate))))
+                .collect(Collectors.toList());
+    }
+
     public List<Event> findAllEventsToFuture(ReservationSystem reservationSystem) {
         return eventRepository.findAllEventsInReservationSystem(reservationSystem.getId()).stream().filter(Event -> Event.getStartDate().isAfter(LocalDate.now().minusDays(1))).collect(Collectors.toList());
     }
