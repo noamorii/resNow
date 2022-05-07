@@ -27,6 +27,8 @@ public class SlotDTO {
     public SlotDTO(Seat seat) {
         mapCommon(seat);
         this.seatIdentifier = seat.getSeatIdentifier();
+        this.startTime = seat.getEvent().getFromTime();
+        this.endTime = seat.getEvent().getToTime();
     }
 
     public SlotDTO(Interval interval) {
