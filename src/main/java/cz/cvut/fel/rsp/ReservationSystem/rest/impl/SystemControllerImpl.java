@@ -107,9 +107,9 @@ public class SystemControllerImpl implements SystemController {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
         List<Reservation> reservations = reservationService.findAllReservations(reservationSystem);
         List<UserDTO> users = new ArrayList<>();
-        for (Reservation reservation: reservations) {
+        for (Reservation reservation : reservations) {
             User userik = reservation.getUser();
-            if (!users.contains(userik)){
+            if (!users.contains(userik)) {
                 users.add(new UserDTO(userik));
             }
         }
@@ -141,7 +141,7 @@ public class SystemControllerImpl implements SystemController {
     @GetMapping(value = "/systems/{systemId}/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllReservationsFromTo(@PathVariable Integer systemId,
                                                          @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                         @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate toDate) {
+                                                         @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
         List<Reservation> reservations = reservationService.findAllReservations(reservationSystem, fromDate, toDate);
         return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
@@ -149,8 +149,8 @@ public class SystemControllerImpl implements SystemController {
 
     @GetMapping(value = "/systems/{systemId}/events", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EventDTO> getAllEventsFromTo(@PathVariable Integer systemId,
-                                                   @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                   @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate toDate) {
+                                             @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                             @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
         List<Event> events = eventService.findAllEvents(reservationSystem);
         return events.stream().map(EventDTO::new).collect(Collectors.toList());
@@ -160,17 +160,17 @@ public class SystemControllerImpl implements SystemController {
     public List<EventDTO> getAllEventsToFuture() {
         List<ReservationSystem> systems = reservationSystemService.findAll();
         List<Event> events = new ArrayList<>();
-        for (ReservationSystem system: systems) {
-             events.addAll(eventService.findAllEventsToFuture(system));
+        for (ReservationSystem system : systems) {
+            events.addAll(eventService.findAllEventsToFuture(system));
         }
         return events.stream().map(EventDTO::new).collect(Collectors.toList());
     }
 
-    private ReservationSystem mapReservationSystem(ReservationSystemDTO reservationSystemDTO){
+    private ReservationSystem mapReservationSystem(ReservationSystemDTO reservationSystemDTO) {
         ReservationSystem reservationSystem = new ReservationSystem();
         reservationSystem.setName(reservationSystemDTO.getName());
 
-        if (reservationSystemDTO.getManagers() != null){
+        if (reservationSystemDTO.getManagers() != null) {
             reservationSystem.setManagers(reservationSystemDTO.getManagers().stream()
                     .map(userService::findByUsername)
                     .collect(Collectors.toList()));
