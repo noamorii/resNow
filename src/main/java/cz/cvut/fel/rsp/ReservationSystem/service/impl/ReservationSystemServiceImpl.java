@@ -30,7 +30,7 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
 
     @Override
     public void createReservationSystem(User user, ReservationSystem reservationSystem) {
-        if (user.getUserType() != UserType.ROLE_SYSTEM_OWNER){
+        if (user.getUserType() != UserType.ROLE_SYSTEM_OWNER) {
             throw new ReservationSystemException("User creating a system must have a system owner account.");
         }
         addManager(user, reservationSystem);
@@ -42,17 +42,17 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
     @Override
     public void addManager(User user, ReservationSystem reservationSystem) {
         List<User> managers = reservationSystem.getManagers();
-        if (Objects.isNull(managers)){
+        if (Objects.isNull(managers)) {
             managers = new ArrayList<>();
             reservationSystem.setManagers(managers);
         }
 
-        if (managers.contains(user)){
+        if (managers.contains(user) && user.getManages().contains(reservationSystem)) {
             throw new ReservationSystemException("User already manages system " + reservationSystem.getName());
         }
 
         List<ReservationSystem> userManages = user.getManages();
-        if (Objects.isNull(userManages)){
+        if (Objects.isNull(userManages)) {
             userManages = new ArrayList<>();
             user.setManages(userManages);
         }
@@ -74,7 +74,7 @@ public class ReservationSystemServiceImpl implements ReservationSystemService {
     }
 
     @Override
-    public List<Source> getSources(ReservationSystem reservationSystem){
+    public List<Source> getSources(ReservationSystem reservationSystem) {
         return sourceRepository.findAllSourcesOfReservationSystem(reservationSystem);
     }
 }

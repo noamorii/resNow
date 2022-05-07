@@ -44,7 +44,7 @@ public class ReservationsControllerImpl implements ReservationsController {
         return new ReservationDTO(reservationService.find(reservationId));
     }
 
-    @PreAuthorize("hasAnyRole('SYSTEM_EMPLOYEE')")
+    @PreAuthorize("hasAnyRole('SYSTEM_EMPLOYEE', 'SYSTEM_OWNER')")
     @GetMapping(value = "/reservations/today", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllToday() {
         LocalDate localDate = LocalDate.now();
@@ -72,8 +72,8 @@ public class ReservationsControllerImpl implements ReservationsController {
     }
 
     @Override
-    @GetMapping(value = "/reservations/{reservationId}")
-    public ResponseEntity<Void> cancel(@PathVariable Integer reservationId, @RequestParam boolean cancel) {
+    @DeleteMapping(value = "/reservations/{reservationId}")
+    public ResponseEntity<Void> cancel(@PathVariable Integer reservationId) {
         Reservation reservation = reservationService.find(reservationId);
         reservationService.cancelReservation(reservation);
         log.info("Canceled reservation {}.", reservation.getId());

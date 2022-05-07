@@ -34,9 +34,10 @@ public class Reservation extends AbstractEntity {
 
     private String additionalInfo;
 
-    public Reservation(ReservationDTO reservation) { //not sure
+    public Reservation(ReservationDTO reservation, User user) {
         this.cancelled = reservation.isCancelled();
         this.additionalInfo = reservation.getAdditionalInfo();
+        this.user = user;
     }
 
     @Override
