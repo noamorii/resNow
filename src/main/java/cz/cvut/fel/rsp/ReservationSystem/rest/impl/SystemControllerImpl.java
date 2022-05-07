@@ -152,7 +152,7 @@ public class SystemControllerImpl implements SystemController {
                                                    @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                    @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate toDate) {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
-        List<Event> events = eventService.findAllEvents(reservationSystem);
+        List<Event> events = eventService.findAllEvents(reservationSystem, fromDate, toDate);
         return events.stream().map(EventDTO::new).collect(Collectors.toList());
     }
 
