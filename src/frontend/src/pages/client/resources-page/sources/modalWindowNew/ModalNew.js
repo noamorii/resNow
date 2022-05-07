@@ -1,13 +1,12 @@
 import styles from './ModalNew.module.scss'
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {useMemo, useState} from "react";
-// import MOCK_DATA from "../MOCK_DATA.json"
-// import Select from "react-select/base";
+import MOCK_DATA from "../MOCK_DATA.json"
+import Select, {PlaceOption, ServiceOption} from "../sourcesSelect/SourcesSelect";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const ModalNew = (props) => {
-    // const data = useMemo(() => MOCK_DATA, [])
     const [title, setTitle] = useState('')
 
     if (!props.show) return (
@@ -41,26 +40,27 @@ export const ModalNew = (props) => {
                         <input id="title" className={'input-primary search sh'} placeholder={'Název'} required
                                value={title} onChange={(e) => {handleTitle(e)}}/>
                         <label htmlFor="place">Místo</label>
-                        <select className={styles.selectContainer}>
-                            <option selected>-</option>
-                            <option value="place1">place1</option>
-                            <option value="place2">place2</option>
-                            <option value="place3">place3</option>
-                        </select >
+                        <Select
+                            id={'places'}
+                            components={{PlaceOption}}
+                        />
+                        {/*<select className={styles.selectContainer}>*/}
+                        {/*    <option selected>-</option>*/}
+                        {/*    <option value="place1">place1</option>*/}
+                        {/*    <option value="place2">place2</option>*/}
+                        {/*    <option value="place3">place3</option>*/}
+                        {/*</select >*/}
                         <label htmlFor="service">Služba</label>
-                        <select className={styles.selectContainer}>
-                            <option selected>-</option>
-                            <option value="service1">service1</option>
-                            <option value="service2">service2</option>
-                            <option value="service3">service3</option>
-                        </select>
-                        <label htmlFor="employee">Zaměstnanec</label>
-                        <select className={styles.selectContainer}>
-                            <option selected>-</option>
-                            <option value="employee1">employee1</option>
-                            <option value="employee2">employee2</option>
-                            <option value="employee3">employee3</option>
-                        </select>
+                        <Select
+                            id={'services'}
+                            components={{ServiceOption}}
+                        />
+                        {/*<select className={styles.selectContainer}>*/}
+                        {/*    <option selected>-</option>*/}
+                        {/*    <option value="service1">service1</option>*/}
+                        {/*    <option value="service2">service2</option>*/}
+                        {/*    <option value="service3">service3</option>*/}
+                        {/*</select>*/}
                         <div className={styles.buttons}>
                             <button className={'button-primary-outline ' .concat(styles.buttonSave)} type="submit">Uložit</button>
                             <button className={'button-primary-outline ' .concat(styles.buttonCancel)} onClick={props.onClose}>Storno</button>
@@ -72,3 +72,4 @@ export const ModalNew = (props) => {
         </div>
     )
 }
+

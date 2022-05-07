@@ -7,7 +7,7 @@ import styles from "../Sources.module.scss";
 export const Table = ({columns, data}) => {
     const [confirm, setConfirm] = useState(false)
     const [edit, setEdit] = useState(false)
-
+    const [checkedState, setCheckedState] = useState([])
     const {
         getTableProps,
         getTableBodyProps,
@@ -23,12 +23,24 @@ export const Table = ({columns, data}) => {
     } = useTable({
             columns,
             data,
+            initialState: {
+                pageSize: 7
+            },
         },
         useFilters,
         usePagination
     )
 
     const {pageIndex} = state
+
+    const handleChange = (e) => {
+        const {checked, name} = e.target
+        if (checked) {
+            setCheckedState((oldState) => [...oldState, name])
+        } else {
+            setCheckedState((oldState) => oldState.filter((row) => row !== name))
+        }
+    }
 
     return (
         <>
@@ -39,7 +51,10 @@ export const Table = ({columns, data}) => {
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         <td className={styles.collCheckbox}>
-                            <input type="checkbox" />
+                            <input type="checkbox"
+                                   className={'checkbox'}
+                                   onChange={}
+                            />
                         </td>
                         {headerGroup.headers.map(column => (
                             <td {...column.getHeaderProps()}>
@@ -57,7 +72,12 @@ export const Table = ({columns, data}) => {
                     return (
                         <tr className={styles.tRow} {...row.getRowProps()}>
                             <td className={styles.collCheckbox}>
-                                <input type="checkbox" />
+                                <input type="checkbox"
+                                       className={'checkbox'}
+                                       onChange={handleChange}
+                                       checked={checkedState.includes(row.id)}
+                                       name={(row.id).toString()}
+                                />
                             </td>
                             {row.cells.map(cell => {
                                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
