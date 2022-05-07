@@ -52,6 +52,22 @@ public class SourceServiceImpl implements SourceService {
 
     @Override
     @Transactional
+    public void createSource(Source source, ReservationSystem reservationSystem, String name) {
+        source.setReservationSystem(reservationSystem);
+
+        Category initialCategory = new Category();
+        initialCategory.setName(name);
+        initialCategory.setSources(new ArrayList<>(Collections.singletonList(source)));
+        initialCategory.setEvents(new ArrayList<>());
+        categoryRepository.save(initialCategory);
+
+        source.setCategories(new ArrayList<>(Collections.singletonList(initialCategory)));
+
+        sourceRepository.save(source);
+    }
+
+    @Override
+    @Transactional
     public void removeAddress(Source source) {
         if (source.getAddress()!=null){
             source.setAddress(null);
