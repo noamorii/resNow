@@ -8,7 +8,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface ReservationService{
+public interface ReservationService {
 
     void createReservation(User user, ReservationSlot reservationSlot);
 
@@ -16,13 +16,15 @@ public interface ReservationService{
 
     void cancelReservation(Reservation reservation);
 
-   List<Reservation> findAllReservations(User user);
+    List<Reservation> findAllReservations(User user);
+
+    List<Reservation> findMyAllReservations(User user);
 
     public List<Reservation> findAllReservations(User user, LocalDate fromDate, LocalDate toDate);
 
-   List<Reservation> findAllUnpaidReservations(User user);
+    List<Reservation> findAllUnpaidReservations(User user);
 
-   List<Reservation> findAllReservations(ReservationSystem reservationSystem);
+    List<Reservation> findAllReservations(ReservationSystem reservationSystem);
 
-   List<Reservation> findAllReservations(ReservationSystem reservationSystem, LocalDate from, LocalDate to);
+    List<Reservation> findAllReservations(ReservationSystem reservationSystem, LocalDate from, LocalDate to);
 }

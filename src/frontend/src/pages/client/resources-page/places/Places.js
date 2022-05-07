@@ -12,12 +12,12 @@ export const Places = () => {
 
             {
                 Header: "Název",
-                accessor:"title",
+                accessor: "title",
                 Filter: Filter
             },
             {
                 Header: "Popis",
-                accessor:"description",
+                accessor: "description",
                 Filter: Filter
             },
         ],
@@ -74,7 +74,7 @@ const Table = ({columns, data}) => {
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         <td className={styles.collCheckbox}>
-                            <input type="checkbox" />
+                            <input type="checkbox"/>
                         </td>
                         {headerGroup.headers.map(column => (
                             <td className={styles.td} {...column.getHeaderProps()}>
@@ -92,15 +92,18 @@ const Table = ({columns, data}) => {
                     return (
                         <tr className={styles.tRow} {...row.getRowProps()}>
                             <td className={styles.collCheckbox}>
-                                <input type="checkbox" />
+                                <input type="checkbox"/>
                             </td>
                             {row.cells.map(cell => {
                                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                             })}
                             <td>
                                 <div className={styles.buttonCell}>
-                                    <button className={'button-primary-outline ' .concat(styles.buttonEdit)}>Upravit</button>
-                                    <button className={'button-primary-outline ' .concat(styles.buttonDelete)}>Odstranit</button>
+                                    <button className={'button-primary-outline '.concat(styles.buttonEdit)}>Upravit
+                                    </button>
+                                    <button
+                                        className={'button-primary-outline '.concat(styles.buttonDelete)}>Odstranit
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -111,8 +114,11 @@ const Table = ({columns, data}) => {
             <div className={styles.buttonsContainer}>
                 <div>
                     <span>Page {pageIndex + 1} of {pageOptions.length} </span>
-                    <button onClick={() => previousPage()} disabled={!canPreviousPage} className={'button-primary sm'}>Předchozí</button>
-                    <button onClick={() => nextPage()} disabled={!canNextPage} className={'button-primary sm'}>Další</button>
+                    <button onClick={() => previousPage()} disabled={!canPreviousPage}
+                            className={'button-primary sm'}>Předchozí
+                    </button>
+                    <button onClick={() => nextPage()} disabled={!canNextPage} className={'button-primary sm'}>Další
+                    </button>
                 </div>
             </div>
         </>
@@ -124,7 +130,8 @@ const Filter = ({column}) => {
 
     return (
         <span>
-            <input value={filterValue} onChange={(e) => setFilter(e.target.value)} className={'input-primary search sh sm'} placeholder={'Hledaný text…'}/>
+            <input value={filterValue} onChange={(e) => setFilter(e.target.value)}
+                   className={'input-primary search sh sm'} placeholder={'Hledaný text…'}/>
         </span>
     )
 }
