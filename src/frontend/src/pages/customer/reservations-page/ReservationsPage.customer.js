@@ -15,7 +15,8 @@ export const ReservationsPageCustomer = () => {
                 `${baseUrl}/slots/${e}`,
                 {headers: authHeader()}
             ).then(response => {
-                resolve(response.data.id)
+                resolve(response.data)
+                // console.log(response.data)
             }).catch(reject);
         })
     }
@@ -50,7 +51,7 @@ export const ReservationsPageCustomer = () => {
         let response = []
         await Promise.all(data.map(async (e) => {
             try {
-                let insertResponse = await fetchEvent(e)
+                let insertResponse = await fetchEvent(e.eventId)
                 response.push(insertResponse)
             } catch (error) {
                 console.log('error' + error);
@@ -68,13 +69,16 @@ export const ReservationsPageCustomer = () => {
             ]
         )
         const slots = await Promise.all([fetchSlots(reservations[0].data)])
+        setSlots(slots[0])
+        // console.log(slots[0])
         const events = await Promise.all([fetchEvents(slots[0])])
         setEvents(events[0]);
     }, [])
 
     return (
         <div className={styles.container}>
-            <table>
+            <h2>My reservations</h2>
+            <table className={styles.table}>
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -84,15 +88,26 @@ export const ReservationsPageCustomer = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {event.map((r) => {
+
+                {event.map((r, index) => {
                     return (
-                        <div>
-                            {r.name}
-                        </div>
-
-
+                        <tr>
+                            <td>
+                                {r.name}
+                            </td>
+                            <td>
+                                {slots[index].date}
+                            </td>
+                            <td>
+                                {r.toTime}
+                            </td>
+                            <td>
+                                {r.startDate}
+                            </td>
+                        </tr>
                     )
                 })}
+
                 </tbody>
             </table>
         </div>
