@@ -39,7 +39,7 @@ public class EventsControllerImpl implements EventsController {
         Event event = eventService.find(event_id);
         List<ReservationSlot> reservationSlots = eventService.findAllEventReservationSlotsInInterval(event, fromDate, toDate);
         return reservationSlots.stream()
-                .map(SlotDTO::new)
+                .map(ReservationSlot::toDTO)
                 .collect(Collectors.toList());
     }
 

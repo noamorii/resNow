@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots;
 
 import com.sun.istack.NotNull;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SlotDTO;
 import cz.cvut.fel.rsp.ReservationSystem.service.interfaces.ReservationService;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,4 +53,6 @@ public abstract class ReservationSlot implements Serializable {
                 ", event=" + event +
                 '}';
     }
+
+    public abstract SlotDTO toDTO();
 }
