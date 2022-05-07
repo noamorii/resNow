@@ -164,6 +164,8 @@ public class SystemInitializerImpl implements SystemInitializer {
         log.info("Generating sources");
         List<Source> sources = new ArrayList<>();
         int[] values = {3, 1, 4, 4, 3, 4, 4, 2, 3, 2};
+        int[] categories = {2, 3, 3, 0, 4, 2, 3, 2, 1, 4, 2, 3, 1, 3, 0, 4, 3, 2, 1, 3, 4, 3, 4, 3, 0, 4, 4, 2, 1, 4};
+        String[] categoryNames = {"Pubs", "Theatre", "Restaurants", "Sport", "Other"};
         int counter = 0;
         for (int i = 0; i < sourceRecords.size(); i++) {
             Source source = new Source();
@@ -175,7 +177,7 @@ public class SystemInitializerImpl implements SystemInitializer {
         }
         for (int i = 0; i < values.length; i++) {
             for (int j = 0; j < values[i]; j++) {
-                sourceService.createSource(sources.get(counter++), systems.get(i));
+                sourceService.createSource(sources.get(counter++), systems.get(i), categoryNames[categories[i]]);
             }
         }
         return sources;
