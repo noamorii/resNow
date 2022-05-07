@@ -66,6 +66,7 @@ public class SystemInitializerImpl implements SystemInitializer {
             return;
         }
         if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
+            log.info("prod env, skip init");
             return;
         }
 
