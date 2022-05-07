@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/v1")
@@ -39,9 +40,11 @@ public class CategoriesControllerImpl implements CategoriesController {
     }
 
     @Override
-    public List<EventDTO> getEvents(Integer categoryId, Integer fromTimestamp, Integer toTimestamp) {
-        //TODO: skipped on @belkapre's request
-        return new ArrayList<>();
+    @GetMapping(value = "/categories/{categoryName}/events", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EventDTO> getEventsByCategoryName(String categoryName) {
+        return eventService.getEventsByCategoryName(categoryName).stream()
+                .map(EventDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
