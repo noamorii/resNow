@@ -116,6 +116,24 @@ public class SystemControllerImpl implements SystemController {
         return users;
     }
 
+    @GetMapping(value = "/systems/my/customers", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserDTO> getCustomers() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+
+        List<Reservation> reservations = reservationService.findAllReservations(reservationSystem);
+        List<UserDTO> users = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            User userik = reservation.getUser();
+            if (!users.contains(userik)) {
+                users.add(new UserDTO(userik));
+            }
+        }
+        return users;
+    }
+
     @Override
     @PostMapping(value = "/systems/{systemId}/feedback")
     public ResponseEntity<Void> createFeedback(@PathVariable Integer systemId, @RequestBody Feedback feedback) {
