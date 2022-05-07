@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import cz.cvut.fel.rsp.ReservationSystem.dao.AddressRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.UserRepository;
+import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.UserType;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.*;
@@ -30,6 +31,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -46,13 +48,13 @@ public class SystemInitializerImpl implements SystemInitializer {
 
     private final EventServiceImpl eventService;
 
+    private final FeedbackServiceImpl feedbackService;
+
     private final UserRepository userRepository; // TODO change for user service later
 
     private final AddressRepository addressRepository;
 
     private final Environment environment;
-
-    private final Random random = new Random();
 
     @Autowired(required = false) // Required = false because of tests
     PasswordEncoder encoder;
@@ -72,6 +74,7 @@ public class SystemInitializerImpl implements SystemInitializer {
         List<String[]> customTimeEventRecords = readCsvData("src/main/resources/generatorCSVs/customTimeEvents.csv");
         List<String[]> intervalEventRecords = readCsvData("src/main/resources/generatorCSVs/intervalEvents.csv");
         List<String[]> reservationRecords = readCsvData("src/main/resources/generatorCSVs/reservations.csv");
+        List<String[]> feedbackRecords = readCsvData("src/main/resources/generatorCSVs/feedbacks.csv");
 
         List<User> users = generateUsers(userRecords);
         List<ReservationSystem> systems = generateReservationSystems(systemRecords, users);
@@ -80,6 +83,7 @@ public class SystemInitializerImpl implements SystemInitializer {
         List<Event> events = generateEvents(seatEventRecords, customTimeEventRecords, intervalEventRecords, sources);
 
         generateReservations(reservationRecords, users, events);
+        generateFeedbacks(feedbackRecords, systems);
     }
 
     private List<String[]> readCsvData(String path) {
@@ -231,6 +235,20 @@ public class SystemInitializerImpl implements SystemInitializer {
             ReservationSlot slot = slots.stream().filter(s -> Objects.equals(s.getId(), Integer.valueOf(reservationData[3]))).findAny().orElse(null);
             slots.remove(slot);
             reservationService.createReservation(user, slot);
+        }
+    }
+
+    private void generateFeedbacks(List<String[]> feedbackRecords, List<ReservationSystem> systems) {
+        log.info("Generating feedbacks");
+        for (ReservationSystem system : systems) {
+            List<String[]> systemFeedbacks = feedbackRecords.stream().filter(f -> Integer.valueOf(f[0]).equals(system.getId())).collect(Collectors.toList());
+            List<Feedback> feedbacks = new ArrayList<>();
+            for (String[] feedbackData : systemFeedbacks) {
+                Feedback feedback = new Feedback();
+                feedback.setMessage(feedbackData[2]);
+                feedbacks.add(feedback);
+            }
+            feedbackService.createFeedbacks(feedbacks, system);
         }
     }
 }
