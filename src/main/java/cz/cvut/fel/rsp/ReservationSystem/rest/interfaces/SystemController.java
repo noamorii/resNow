@@ -30,7 +30,7 @@ public interface SystemController {
     public ResponseEntity<Void> createFeedback(Integer systemId, Feedback feedback);
 
     // POST /systems/{system_id}/sources
-    public ResponseEntity<Void> createSource(Integer systemId, SourceDTO sourceDTO);
+    public ResponseEntity<Void> createSource(SourceDTO sourceDTO);
 
     // GET /systems/{system_id}/reservations?fromDate=2022-01-01&toDate=2022-02-02
     // Kdyz budou chtit today, tak tam daji dnesni datum
