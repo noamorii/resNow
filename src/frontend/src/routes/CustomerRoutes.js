@@ -18,6 +18,7 @@ export const CustomerRoutes = () => {
                 <Route exact path="/terminy" element={<EventsPageCustomer/>}/>
                 <Route exact path="/rezervace" element={<ReservationsPageCustomer/>}/>
                 <Route exact path="/profil" element={<ProfilePageCustomer/>}/>
+                <Route exact path="/historie" element={<HistoryPageCustomer/>}/>
             </Routes>
         </React.Fragment>
     )

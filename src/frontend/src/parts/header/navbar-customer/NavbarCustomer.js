@@ -32,6 +32,8 @@ export const NavbarCustomer = () => {
                 <Link to={'terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Eventy</Link>
                 <Link to={'rezervace'}
                    className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</Link>
+                <Link to={'historie'}
+                   className={splitLocation[1] === "historie" ? styles.active : ""}>Historie</Link>
             </div>
             <div className={styles.rightSideMenu}>
                 <div className={styles.iconContainer}>
