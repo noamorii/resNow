@@ -23,8 +23,8 @@ public interface SystemController {
     // GET /systems/{system_id}/sources
     public List<SourceDTO> getSources(Integer systemId);
 
-    // GET /systems/{system_id}/feedback
-    public List<Feedback> getFeedback(Integer systemId);
+    // GET /systems/feedback
+    public List<Feedback> getFeedback();
 
     // POST /systems/{system_id}/feedback
     public ResponseEntity<Void> createFeedback(Integer systemId, Feedback feedback);

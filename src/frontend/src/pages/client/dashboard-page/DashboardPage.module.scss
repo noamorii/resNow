@@ -1,6 +1,26 @@
 .container {
     display: flex;
-    flex-direction: column;
+    width: 100%;
+
+
+    .feedbackContainer {
+        border: 1px solid rgba(0, 0, 0, 0.23);
+        box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
+        border-radius: 15px;
+        width: 30%;
+        margin: 2vh;
+        display: flex;
+        flex-direction: column;
+        padding: 2vh;
+        box-sizing: border-box;
+        height: 80vh;
+        overflow: auto;
+
+        h2 {
+            padding: 0;
+            margin: 0;
+        }
+    }
 
     padding: 2%;
 
@@ -22,7 +42,7 @@
             margin: 2vh;
 
             height: 30vh;
-            width: 10%;
+            width: 20%;
 
             p {
                 font-size: 1.7rem;
@@ -51,7 +71,7 @@
             align-items: center;
             justify-content: space-between;
             height: 45vh;
-            width: 74%;
+            width: 100%;
 
             border: 1px solid rgba(0, 0, 0, 0.23);
             box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
@@ -101,7 +121,16 @@
 }
 
 .chart {
-    width: 75%;
+    width: 82%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.flexRow {
+    display: flex;
+
+}
+
+.left {
+    width: 65%;
 }

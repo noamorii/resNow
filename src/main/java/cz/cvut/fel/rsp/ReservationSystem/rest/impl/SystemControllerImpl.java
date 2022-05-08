@@ -95,11 +95,14 @@ public class SystemControllerImpl implements SystemController {
     }
 
     @Override
-    @GetMapping(value = "/systems/{systemId}/feedback", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Feedback> getFeedback(@PathVariable Integer systemId) {
-        List<Feedback> feedbackList = reservationSystemService.find(systemId).getFeedback();
+    @GetMapping(value = "/systems/my/feedback", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Feedback> getFeedback() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
 
-        return Objects.isNull(feedbackList) ? new ArrayList<>() : feedbackList;
+        return reservationSystem.getFeedback();
     }
 
     @GetMapping(value = "/systems/{systemId}/customers", produces = MediaType.APPLICATION_JSON_VALUE)
