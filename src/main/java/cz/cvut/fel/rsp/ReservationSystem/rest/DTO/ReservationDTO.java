@@ -18,7 +18,8 @@ import javax.persistence.OneToOne;
 public class ReservationDTO {
     private Integer reservationId;
 
-    private Integer userId;
+//    private Integer userId;
+//Nepotrebujete jelikoz mate current usera
 
     private String username;
 
@@ -33,7 +34,7 @@ public class ReservationDTO {
 
     public ReservationDTO(Reservation reservation) {
         this.reservationId = reservation.getId();
-        this.userId = reservation.getUser().getId();
+//        this.userId = reservation.getUser().getId();
         this.username = reservation.getUser().getUsername();
         this.paymentId = reservation.getPayment() != null ? reservation.getPayment().getId() : null;
         this.reservationSlotId = reservation.getReservationSlot().getId();
