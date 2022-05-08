@@ -1,10 +1,8 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.impl;
 
+import cz.cvut.fel.rsp.ReservationSystem.dao.AddressRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.*;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.*;
@@ -45,6 +43,8 @@ public class SystemControllerImpl implements SystemController {
     private final EventServiceImpl eventService;
 
     private final UserServiceImpl userService;
+
+    private final AddressRepository addressRepository;
 
     @Override
     @GetMapping(value = "/systems", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -134,6 +134,21 @@ public class SystemControllerImpl implements SystemController {
         return users;
     }
 
+    @GetMapping(value = "/systems/my/sources", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SourceDTO> getSources() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+
+        List<SourceDTO> sourceDTOS = new ArrayList<>();
+        for (Source source : reservationSystemService.getSources(reservationSystem)) {
+            sourceDTOS.add(new SourceDTO(source));
+        }
+
+        return sourceDTOS;
+    }
+
     @Override
     @PostMapping(value = "/systems/{systemId}/feedback")
     public ResponseEntity<Void> createFeedback(@PathVariable Integer systemId, @RequestBody Feedback feedback) {
@@ -145,12 +160,27 @@ public class SystemControllerImpl implements SystemController {
     }
 
     @Override
-    @PostMapping(value = "/systems/{systemId}/sources")
-    public ResponseEntity<Void> createSource(@PathVariable Integer systemId, @RequestBody SourceDTO sourceDTO) {
-        ReservationSystem reservationSystem = reservationSystemService.find(systemId);
-        Source source = new Source(sourceDTO);
+    @PostMapping(value = "/systems/my/sources")
+    public ResponseEntity<Void> createSource(@RequestBody SourceDTO sourceDTO) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+
+        Address address = new Address();
+        address.setCity(sourceDTO.getAddress().getCity());
+        address.setStreet(sourceDTO.getAddress().getStreet());
+        address.setHouseNumber(sourceDTO.getAddress().getHouseNumber());
+        address.setPostalCode(sourceDTO.getAddress().getPostalCode());
+        addressRepository.save(address);
+
+        Source source = new Source();
+        source.setName(sourceDTO.getName());
+        source.setDescription(sourceDTO.getDescription());
+        source.setActive(true);
+        source.setAddress(address);
         sourceService.createSource(source, reservationSystem);
-        log.info("Created source {} for system with id {}.", source, systemId);
+        log.info("Created source {} for system with id {}.", source, reservationSystem);
         final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/sources/{sourceId}", source.getId());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
