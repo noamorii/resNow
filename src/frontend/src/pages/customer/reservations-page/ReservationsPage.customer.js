@@ -3,11 +3,16 @@ import {useEffect, useState} from "react";
 import {baseUrl} from "../../../config/const";
 import axios from "axios";
 import authHeader from "../../../services/auth-header";
+import {Modal} from "./Modal";
 
 
 export const ReservationsPageCustomer = () => {
     const [event, setEvents] = useState([]);
     const [slots, setSlots] = useState([]);
+
+    const [open, setOpen] = useState(false);
+    const [system, setSystem] = useState([]);
+    const [data, setData] = useState('');
 
     const fetchSlot = async (e) => {
         return new Promise((resolve, reject) => {
@@ -59,6 +64,30 @@ export const ReservationsPageCustomer = () => {
         return response
     }
 
+    const fetchId = (id) => {
+        return new Promise((resolve, reject) => {
+            axios.get(
+                `${baseUrl}/category/${id}`,
+                {headers: authHeader()}
+            ).then(response => {
+                resolve(response.data)
+            }).catch(reject);
+        })
+    }
+
+    const fetchIds = async (data) => {
+        let response = []
+        await Promise.all(data.map(async (e) => {
+            try {
+                let insertResponse = await fetchId(e.categoryId)
+                response.push(insertResponse)
+            } catch (error) {
+                console.log('error' + error);
+            }
+        }))
+        return response
+    }
+
     useEffect(async () => {
         const reservations = await Promise.all([
                 axios.get(
@@ -71,10 +100,13 @@ export const ReservationsPageCustomer = () => {
         setSlots(slots[0])
         const events = await Promise.all([fetchEvents(slots[0])])
         setEvents(events[0]);
+        const ids = await Promise.all([fetchIds(events[0])])
+        setSystem(ids[0])
     }, [])
 
     return (
         <div className={styles.container}>
+            {open ? <Modal onClose={() => setOpen(false)} system={data}/> : null}
             <h2>My reservations</h2>
             <table className={styles.table}>
                 <thead>
@@ -83,6 +115,7 @@ export const ReservationsPageCustomer = () => {
                     <th>From Time</th>
                     <th>To Time</th>
                     <th>Date</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -101,6 +134,13 @@ export const ReservationsPageCustomer = () => {
                             </td>
                             <td>
                                 {r.startDate}
+                            </td>
+                            <td>
+                                {new Date(r.startDate) < new Date() ?
+                                    <button className={'button-primary'} onClick={() => {
+                                        setOpen(true)
+                                        setData(system[0])
+                                    }}>Add feedback</button> : null}
                             </td>
                         </tr>
                     )
