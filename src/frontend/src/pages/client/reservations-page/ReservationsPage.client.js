@@ -5,6 +5,7 @@ import axios from "axios";
 import {baseUrl} from "../../../config/const";
 import ModalReservationDetails from "./modalWindowReservationDetails/ModalReservationDetails"
 import authHeader from "../../../services/auth-header";
+import ModalCreateReservation from "./modalWindowCreateReservation/ModalCreateReservation";
 
 const TopButtons = () => {
 
@@ -14,7 +15,6 @@ const TopButtons = () => {
             <button className={'button-primary '.concat(styles.topbutton)}>Filter</button>
             <button className={'button-primary '.concat(styles.topbutton)}>Statistics</button>
             <button className={'button-primary '.concat(styles.topbutton)}>Export reservations</button>
-            <button className={'button-primary '.concat(styles.topbutton)}>New reservation</button>
         </div>
     )
 }
@@ -45,29 +45,23 @@ const Table = () => {
     const [data, setData] = useState([]);
     const [detailsShown, setDetailsShown] = useState([]);
     const [openModal, setOpenModal] = useState(false);
-
-    const onChange = (e) => {
-        sendGetRequest(date.format("YYYY-MM-DD"))
-        toggleShown(data[0].reservationId)
-    }
+    const [openModalCreateReservation, setOpenModalCreateReservation] = useState(false);
 
     useEffect(()=>{
-        sendGetRequest(date.format("YYYY-MM-DD"))
-        console.log(axios.get(
-            `${baseUrl}/systems/my`,
-            {headers: authHeader()}))
+        sendGetEvents(date.format("YYYY-MM-DD"))
     }, [date])
 
     const getDate = (date) => {
         setDate(date)
     }
 
-
-
-
-    const sendGetRequest = async (date) => {
-        let system = 1;
+    const sendGetEvents = async (date) => {
         try {
+            const resp0 = await axios.get(
+                `${baseUrl}/systems/my`,
+                {headers: authHeader()})
+            let system = resp0.data.id
+
             const resp = await axios.get(
                 `${baseUrl}/systems/${system}/reservations/`,
                 {params: {fromDate: date, toDate: date},
@@ -77,7 +71,7 @@ const Table = () => {
                 await concatReservationDetails(resp.data[i])
             }
             setData(resp.data)
-            console.log(resp.data);
+            //console.log(resp.data);
         } catch (err) {
             // Handle Error Here
             console.error(err);
@@ -172,6 +166,7 @@ const Table = () => {
                 </div>
             </div>
             {openModal && <ModalReservationDetails closeModal={setOpenModal}/>}
+            {openModalCreateReservation && <ModalCreateReservation closeModal={setOpenModalCreateReservation}/>}
             <div className={styles.tableContainer}>
                 <table>
                     <thead>
@@ -202,7 +197,9 @@ const Table = () => {
                         <td className={styles.collWide}>
                             <p>DATE</p>
                         </td>
-                        <td className={styles.collMid}> </td>
+                        <td className={styles.collMid}>
+                            <button className={'button-primary'} onClick={() => setOpenModalCreateReservation(true)}>New reservation</button>
+                        </td>
                     </tr>
                     </thead>
                     <tbody>

@@ -1,0 +1,63 @@
+.modalWindow {
+  height: 90vh;
+  padding-top: 12vh;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.contentHeader {
+  padding-top: 3vh;
+  text-align: left;
+  margin-left: 14vh;
+
+  h1 {
+    font-size: 5vh;
+    font-weight: 600;
+  }
+}
+
+.contentBody {
+  background: #FFFFFF;
+  box-shadow: 22px 17px 58px -11px rgba(0, 0, 0, 0.13);
+  border-radius: 4vh;
+
+  width: 100vh;
+  //margin-top: 7vh;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5vh;
+
+  display: block;
+  justify-content: space-around;
+
+  .description {
+    width: 50vh;
+
+    h3 {
+      margin-right: 2vh;
+      margin-left: 2vh
+    }
+
+    p {
+      color: #42474D;
+      font-weight: 400;
+      font-size: 2vh;
+      margin-right: 2vh;
+      margin-left: 2vh;
+    }
+  }
+}
+
+.datePart {
+  display: flex;
+  align-items: center;
+}
+.popisDate{
+  padding-right: 20px;
+}
+
+
