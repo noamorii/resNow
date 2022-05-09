@@ -191,7 +191,6 @@ public class SystemInitializerImpl implements SystemInitializer {
         log.info("Generating events");
         List<Event> events = new ArrayList<>();
         for (String[] seatEventData : seatEventRecords) {
-            System.out.println(0);
             SeatEvent seatEvent = new SeatEvent();
             seatEvent.setName(seatEventData[3]);
             seatEvent.setStartDate(LocalDate.parse(seatEventData[6]));
@@ -204,7 +203,6 @@ public class SystemInitializerImpl implements SystemInitializer {
             events.add(seatEvent);
         }
         for (String[] customTimeEventData : customTimeEventRecords) {
-            System.out.println(1);
             CustomTimeEvent customTimeEvent = new CustomTimeEvent();
             customTimeEvent.setName(customTimeEventData[3]);
             customTimeEvent.setStartDate(LocalDate.parse(customTimeEventData[6]));
@@ -217,7 +215,6 @@ public class SystemInitializerImpl implements SystemInitializer {
             events.add(customTimeEvent);
         }
         for (String[] intervalEventData : intervalEventRecords) {
-            System.out.println(2);
             IntervalEvent intervalEvent = new IntervalEvent();
             intervalEvent.setName(intervalEventData[3]);
             intervalEvent.setStartDate(LocalDate.parse(intervalEventData[6]));
@@ -250,11 +247,11 @@ public class SystemInitializerImpl implements SystemInitializer {
     private void generateFeedbacks(List<String[]> feedbackRecords, List<ReservationSystem> systems) {
         log.info("Generating feedbacks");
         for (ReservationSystem system : systems) {
-            List<String[]> systemFeedbacks = feedbackRecords.stream().filter(f -> Integer.valueOf(f[0]).equals(system.getId())).collect(Collectors.toList());
+            List<String[]> systemFeedbacks = feedbackRecords.stream().filter(f -> Integer.valueOf(f[1]).equals(system.getId())).collect(Collectors.toList());
             List<Feedback> feedbacks = new ArrayList<>();
             for (String[] feedbackData : systemFeedbacks) {
                 Feedback feedback = new Feedback();
-                feedback.setMessage(feedbackData[2]);
+                feedback.setMessage(feedbackData[0]);
                 feedbacks.add(feedback);
             }
             feedbackService.createFeedbacks(feedbacks, system);

@@ -1,10 +1,14 @@
 import styles from './Places.module.scss'
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 import {useTable, useFilters, usePagination} from "react-table";
 import MOCK_DATA from "./MOCK_DATA.json"
 import {ModalNew} from "../sources/modalWindowNew/ModalNew";
 import {ModalDeleteConfirm} from "../../customers-page/modalWindowDeleteConfirm/ModalDeleteConfirm";
 import {ModalEdit} from "../sources/modalWindowEdit/ModalEdit";
+import axios from "axios";
+import {baseUrl} from "../../../../config/const";
+import authHeader from "../../../../services/auth-header";
+import {Modal} from "./Modal";
 
 export const Places = () => {
     const data = useMemo(() => MOCK_DATA, [])
@@ -24,20 +28,53 @@ export const Places = () => {
         []
     )
 
+    const [open, setOpen] = useState(false);
+    const [resources, setResources] = useState([]);
+
+    useEffect(async () => {
+        const fetchSources = await Promise.any([
+                axios.get(
+                    `${baseUrl}/systems/my/sources`,
+                    {headers: authHeader()})
+            ]
+        )
+
+        console.log(fetchSources.data)
+        setResources(fetchSources.data)
+
+    }, [])
+
     return (
         <div className={styles.body}>
             <div className={styles.buttonContainer}>
-                <button className={'button-primary '.concat(styles.button)}>Nové místo</button>
+                {/*<button className={'button-primary '.concat(styles.button)} onClick={() => setOpen(true)}>Nové místo*/}
+                {/*</button>*/}
             </div>
+            {open ? <Modal onClose={() => setOpen(false)}/> : null}
             <div className={styles.table}>
-                <Table columns={columns} data={data}/>
-            </div>
-            <div className={styles.selectContainer}>
-                <select className={styles.select}>
-                    <option selected>-</option>
-                    <option value="Remove">Odstranit</option>
-                </select>
-                <button className={'button-primary sm '}>Aplikovat</button>
+                {/*<Table columns={columns} data={data}/>*/}
+                <table>
+                    <thead>
+                    <tr>
+                        <th><strong>City</strong></th>
+                        <th><strong>Street</strong></th>
+                        <th><strong>House Number</strong></th>
+                        <th><strong>Postal Code</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {resources.map(resource => {
+                        return (
+                            <tr>
+                                <td>{resource.address.city}</td>
+                                <td>{resource.address.street}</td>
+                                <td>{resource.address.houseNumber}</td>
+                                <td>{resource.address.postalCode}</td>
+                            </tr>
+                        )
+                    })}
+                    </tbody>
+                </table>
             </div>
         </div>
     )

@@ -1,10 +1,8 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.impl;
 
+import cz.cvut.fel.rsp.ReservationSystem.dao.AddressRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.Feedback;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.ReservationSystem;
-import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.*;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.user.User;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.*;
@@ -45,6 +43,8 @@ public class SystemControllerImpl implements SystemController {
     private final EventServiceImpl eventService;
 
     private final UserServiceImpl userService;
+
+    private final AddressRepository addressRepository;
 
     @Override
     @GetMapping(value = "/systems", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,11 +95,14 @@ public class SystemControllerImpl implements SystemController {
     }
 
     @Override
-    @GetMapping(value = "/systems/{systemId}/feedback", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Feedback> getFeedback(@PathVariable Integer systemId) {
-        List<Feedback> feedbackList = reservationSystemService.find(systemId).getFeedback();
+    @GetMapping(value = "/systems/my/feedback", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Feedback> getFeedback() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
 
-        return Objects.isNull(feedbackList) ? new ArrayList<>() : feedbackList;
+        return reservationSystem.getFeedback();
     }
 
     @GetMapping(value = "/systems/{systemId}/customers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -116,6 +119,39 @@ public class SystemControllerImpl implements SystemController {
         return users;
     }
 
+    @GetMapping(value = "/systems/my/customers", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserDTO> getCustomers() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+
+        List<Reservation> reservations = reservationService.findAllReservations(reservationSystem);
+        List<UserDTO> users = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            User userik = reservation.getUser();
+            if (!users.contains(userik)) {
+                users.add(new UserDTO(userik));
+            }
+        }
+        return users;
+    }
+
+    @GetMapping(value = "/systems/my/sources", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SourceDTO> getSources() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+
+        List<SourceDTO> sourceDTOS = new ArrayList<>();
+        for (Source source : reservationSystemService.getSources(reservationSystem)) {
+            sourceDTOS.add(new SourceDTO(source));
+        }
+
+        return sourceDTOS;
+    }
+
     @Override
     @PostMapping(value = "/systems/{systemId}/feedback")
     public ResponseEntity<Void> createFeedback(@PathVariable Integer systemId, @RequestBody Feedback feedback) {
@@ -127,12 +163,27 @@ public class SystemControllerImpl implements SystemController {
     }
 
     @Override
-    @PostMapping(value = "/systems/{systemId}/sources")
-    public ResponseEntity<Void> createSource(@PathVariable Integer systemId, @RequestBody SourceDTO sourceDTO) {
-        ReservationSystem reservationSystem = reservationSystemService.find(systemId);
-        Source source = new Source(sourceDTO);
+    @PostMapping(value = "/systems/my/sources")
+    public ResponseEntity<Void> createSource(@RequestBody SourceDTO sourceDTO) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+
+        Address address = new Address();
+        address.setCity(sourceDTO.getAddress().getCity());
+        address.setStreet(sourceDTO.getAddress().getStreet());
+        address.setHouseNumber(sourceDTO.getAddress().getHouseNumber());
+        address.setPostalCode(sourceDTO.getAddress().getPostalCode());
+        addressRepository.save(address);
+
+        Source source = new Source();
+        source.setName(sourceDTO.getName());
+        source.setDescription(sourceDTO.getDescription());
+        source.setActive(true);
+        source.setAddress(address);
         sourceService.createSource(source, reservationSystem);
-        log.info("Created source {} for system with id {}.", source, systemId);
+        log.info("Created source {} for system with id {}.", source, reservationSystem);
         final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/sources/{sourceId}", source.getId());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
@@ -147,12 +198,56 @@ public class SystemControllerImpl implements SystemController {
         return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
     }
 
+    @GetMapping(value = "/systems/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ReservationDTO> getAllReservations() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+        List<Reservation> reservations = reservationService.findAllReservations(reservationSystem);
+        return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/systems/reservations/today", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ReservationDTO> getAllReservationsToday(@RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+        List<Reservation> reservations = reservationService.findAllReservations(reservationSystem, date, date);
+        return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
+    }
+
     @GetMapping(value = "/systems/{systemId}/events", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EventDTO> getAllEventsFromTo(@PathVariable Integer systemId,
                                              @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                              @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
         List<Event> events = eventService.findAllEvents(reservationSystem, fromDate, toDate);
+        return events.stream().map(EventDTO::new).collect(Collectors.toList());
+    }
+
+
+    @GetMapping(value = "/systems/my/events", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EventDTO> getAllMyEventsFromTo(
+            @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+        List<Event> events = eventService.findAllEvents(reservationSystem, fromDate, toDate);
+        return events.stream().map(EventDTO::new).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/systems/my/all/events", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EventDTO> getAllMyEvents() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+        List<Event> events = eventService.findAllEvents(reservationSystem);
         return events.stream().map(EventDTO::new).collect(Collectors.toList());
     }
 

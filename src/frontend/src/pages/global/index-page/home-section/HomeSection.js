@@ -5,7 +5,7 @@ import dashboard_img from "../../../../assets/IndexPage/Dashboard.png";
 
 import styles from './HomeSection.module.scss';
 
-export const HomeSection = () => {
+export const HomeSection = (props) => {
 
     useEffect(() => {
         document.getElementById('home').addEventListener('mousemove', e => {
@@ -26,12 +26,29 @@ export const HomeSection = () => {
                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
                     the industry's standard dummy text ever since the 1500s, when an.</p>
                 <div>
-                    <Link to={'/register'}>
-                        <button type={"button"} className={'button-primary lg bx-sh'}>Try now!</button>
-                    </Link>
-                    <Link to={'/login'}>
-                        <button type={"button"} className={'button-primary-outline lg bx-sh'}>Login</button>
-                    </Link>
+                    {props.user ? (
+                            <>
+                                <Link to={'/app/dashboard'}>
+                                    <button type={"button"} className={'button-primary  xlg bx-sh'}>
+                                        Let's jump back in!
+                                    </button>
+                                </Link>
+                            </>
+                        )
+                        :
+                        <>
+                            <Link to={'/login'}>
+                                <button type={"button"} className={'button-primary-outline lg bx-sh'}>
+                                    Login
+                                </button>
+                            </Link>
+                            <Link to={'/register'}>
+                                <button type={"button"} className={'button-primary  lg bx-sh'}>
+                                    Register
+                                </button>
+                            </Link>
+                        </>
+                    }
                 </div>
             </div>
             <img src={filter_img} alt={'db'} data-speed={'-2'}/>

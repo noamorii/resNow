@@ -38,7 +38,6 @@ export const NavbarClient = () => {
             <div className={styles.rightSideMenu}>
                 <div className={styles.iconContainer}>
                     <Link to={'profil'}><img src={profileSVG} alt={'icon'}/></Link>
-                    <Link to={'notifikace'}><img src={notifySVG} alt={'icon'}/></Link>
                     <Link to={'#'} onClick={()=>logout()}><img src={logoutSVG} alt={'icon'}/></Link>
                 </div>
                 <div className={styles.searchContainer}>
