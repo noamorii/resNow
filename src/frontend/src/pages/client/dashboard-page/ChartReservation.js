@@ -43,7 +43,7 @@ export const ChartReservation = () => {
             const now = new Date();
             for (let d = getLastWeeksDate(); d <= now; d.setDate(d.getDate() + 1)) {
                 const newDay = new Date(d);
-                labels.push(newDay.getDate() + " " + newDay.getMonth());
+                labels.push(newDay.getDate() + " " + Number(newDay.getMonth() + 1));
             }
             return labels;
         }
@@ -53,9 +53,9 @@ export const ChartReservation = () => {
             let month = "";
             let date = "";
             if (today.getMonth() < 10) {
-                month = "0" + today.getMonth();
+                month = "0" + Number(today.getMonth() + 1);
             } else {
-                month = today.getMonth();
+                month = Number(today.getMonth() + 1);
             }
             if (today.getDate() < 10) {
                 date = "0" + today.getDate();
@@ -63,6 +63,7 @@ export const ChartReservation = () => {
                 date = today.getDate();
             }
             const day = year + "-" + month + "-" + date;
+            console.log(day)
             return day;
         }
 

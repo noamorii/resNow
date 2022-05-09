@@ -146,12 +146,12 @@ export const DashboardPageClient = () => {
             let month = "";
             let date = "";
             if (today.getMonth() < 10) {
-                month = "0" + today.getMonth();
+                month = "0" + Number(today.getMonth() + 1);
             } else {
                 month = today.getMonth();
             }
             if (today.getDate() < 10) {
-                date = "0" + today.getDate();
+                date = "0" + Number(today.getMonth() + 1);
             } else {
                 date = today.getDate();
             }
