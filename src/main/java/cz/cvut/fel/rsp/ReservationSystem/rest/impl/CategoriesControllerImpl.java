@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.impl;
 
+import cz.cvut.fel.rsp.ReservationSystem.dao.SourceRepository;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
@@ -12,6 +13,7 @@ import cz.cvut.fel.rsp.ReservationSystem.rest.interfaces.CategoriesController;
 import cz.cvut.fel.rsp.ReservationSystem.rest.util.RestUtil;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.CategoryServiceImpl;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.EventServiceImpl;
+import cz.cvut.fel.rsp.ReservationSystem.service.impl.SourceServiceImpl;
 import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,8 @@ import java.util.stream.Collectors;
 public class CategoriesControllerImpl implements CategoriesController {
 
     private final CategoryServiceImpl categoryService;
+    private final SourceServiceImpl sourceService;
+    private final SourceRepository sourceRepository;
 
     private final EventServiceImpl eventService;
 
@@ -58,9 +62,12 @@ public class CategoriesControllerImpl implements CategoriesController {
     }
 
     @Override
-    @PostMapping(value = "/categories/{categoryId}/events")
-    public ResponseEntity<Void> createEvent(@PathVariable Integer categoryId, @RequestBody EventDTO eventDTO) {
-        Category category = categoryService.find(eventDTO.getCategoryId());
+    @PostMapping(value = "/categories/{sourceId}/events")
+    public ResponseEntity<Void> createEvent(@PathVariable Integer sourceId, @RequestBody EventDTO eventDTO) {
+        Category category = new Category();
+        Source source = sourceService.find(sourceId);
+        category.setName("Other");
+        category.addSource(source);
         Event event;
         if (eventDTO.getSeatAmount() != null)
             event = new SeatEvent(eventDTO);
@@ -69,7 +76,9 @@ public class CategoriesControllerImpl implements CategoriesController {
         else
             event = new IntervalEvent(eventDTO);
         eventService.createEvent(event, category);
-        log.info("Created Event {} for category with id {}", event, categoryId);
+        source.addCategory(category);
+        sourceRepository.save(source);
+        log.info("Created Event {} for category with id {}", event, category.getId());
         final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("events/{eventId}", event.getId());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }

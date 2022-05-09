@@ -16,15 +16,24 @@ class EventUtils {
         return axios.get(`${baseUrl}/systems/my/events`, {
             headers: authHeader(),
             params: {
-                fromDate:currentDay,
-                toDate:lastDay
+                fromDate: currentDay,
+                toDate: lastDay
             }
         });
     }
 
     //patch for update selected event [name, timeFrom, timeTo, ...]
     updateEvent(id, name, timeFrom, timeTo) {
-        return axios.put('${baseUrl}/endpoint', {name, timeFrom, timeTo}, {
+        return axios.put('${baseUrl}/endpoint', {
+            "name": "test",
+            "fromTime": "12:00:00",
+            "toTime": "14:00:00",
+            "startDate": "2022-05-14",
+            // "repeatUntil": "2022-05-15",
+            // "day": 3,
+            // "repetition": "NONE",
+            // "categoryId": "1",
+        }, {
             headers: authHeader()
         })
             .then(response => {
@@ -34,10 +43,22 @@ class EventUtils {
 
     //put for new event [name, timeFrom, timeTo, ...]
     newEvent(name, timeFrom, timeTo) {
-        return axios.put(`${baseUrl}/category/4/events`, {name, timeFrom, timeTo}, {
+        return axios.post(`${baseUrl}/categories/4/events`, {
+            "name": "test eventu",
+            "fromTime": "18:00:00",
+            "toTime": "22:00:00",
+            "startDate": "2022-05-17",
+            "repeatUntil": "2022-05-19",
+            "day": 3,
+            "repetition": "NONE",
+            "categoryId": "0",
+            "timeBetweenIntervals": 3600,
+            "intervalDuration": 3600,
+        }, {
             headers: authHeader()
         })
             .then(response => {
+                console.log(response)
                 console.log("Event created")
             })
     }

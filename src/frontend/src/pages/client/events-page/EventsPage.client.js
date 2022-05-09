@@ -56,15 +56,6 @@ export const EventsPageClient = () => {
             {hidden && <NewEventModal closeModal={handleHidden}/>}
             {show && <EventModal closeModal={handleClose}/>}
             <section className={styles.sectionBody}>
-                <nav className={styles.sideBar}>
-                    <p>Sidebar</p>
-                    <button className={'button-primary-outline'}>Foo</button>
-                    <button className={'button-primary-outline'}>Foo</button>
-                    <button className={'button-primary-outline'}>Foo</button>
-                    <button className={'button-primary-outline'}>Foo</button>
-                    <button className={'button-primary-outline'}>Foo</button>
-                    <button className={'button-primary-outline'}>Foo</button>
-                </nav>
                 <div className={styles.calendarBody}>
                     <div className={styles.bodySide}>
                         <FullCalendar

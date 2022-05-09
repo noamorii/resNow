@@ -16,8 +16,8 @@ class EventUtils {
         return axios.get(`${baseUrl}/events/78/slots`, {
             headers: authHeader(),
             params: {
-                fromTimestamp:currentDay,
-                toTimestamp:lastDay
+                fromTimestamp: currentDay,
+                toTimestamp: lastDay
             }
         });
     }

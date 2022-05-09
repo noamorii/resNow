@@ -8,10 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Source extends AbstractEntity {
     @NotNull
     private String name;
@@ -32,13 +35,18 @@ public class Source extends AbstractEntity {
 
     @NotNull
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();
 
     public Source(SourceDTO sourceDTO) {
         this.name = sourceDTO.getName();
-        this.description = sourceDTO.getDescription();;
+        this.description = sourceDTO.getDescription();
+        ;
         this.address = sourceDTO.getAddress();
         this.isActive = sourceDTO.isActive();
+    }
+
+    public void addCategory(Category category) {
+        categories.add(category);
     }
 
     @Override

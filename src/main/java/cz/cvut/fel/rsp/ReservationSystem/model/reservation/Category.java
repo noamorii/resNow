@@ -9,22 +9,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Category extends AbstractEntity {
     @NotNull
     private String name;
 
     @ManyToMany
     @NotNull
-    private List<Source> sources;
+    private List<Source> sources = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")
     private List<Event> events;
 
-    public Category (CategoryDTO dto) {
+    public Category(CategoryDTO dto) {
         this.name = dto.getName();
     }
 
@@ -35,5 +38,9 @@ public class Category extends AbstractEntity {
                 ", sources=" + sources +
                 ", events=" + events +
                 '}';
+    }
+
+    public void addSource(Source source) {
+        sources.add(source);
     }
 }

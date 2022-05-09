@@ -11,6 +11,7 @@ function timestampToDatetimeInputString(timestamp) {
 function _getTimeZoneOffsetInMs() {
     return new Date().getTimezoneOffset() * -60 * 1000;
 }
+
 //TODO
 //getters for activities
 //send to rest new event
@@ -24,7 +25,11 @@ function Modal({closeModal}) {
         repeatUntil: ""
     });
 
-    return(
+    const handle = () => {
+        eventUtils.newEvent("test", "2022-05-09", "2022-05-11")
+    }
+
+    return (
         <div className={styles.modalBackground}>
             <div className={styles.modalContent}>
                 <div className={styles.modalBody}>
@@ -121,7 +126,7 @@ function Modal({closeModal}) {
                 </div>
                 <div className={styles.modalFooter}>
                     <button className={'button-primary-outline'} onClick={() => closeModal(false)}>Cancel</button>
-                    <button className={'button-primary-outline'}>Continue</button>
+                    <button className={'button-primary-outline'} onClick={handle}>Continue</button>
                 </div>
             </div>
         </div>
