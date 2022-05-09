@@ -56,7 +56,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/users/me")
-    public UserDTO getCurrentlyLoggedInUser(){
+    public UserDTO getCurrentlyLoggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
@@ -67,8 +67,16 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/users/{username}")
-    public UserDTO getByUsername(String username) {
+    public UserDTO getByUsername(@PathVariable String username) {
         User user = userService.findByUsername(username);
+        UserDTO userDTO = new UserDTO(user);
+        return userDTO;
+    }
+
+    @Override
+    @GetMapping("/users/id/{id}")
+    public UserDTO getById(@PathVariable Integer id) {
+        User user = userService.findById(id);
         UserDTO userDTO = new UserDTO(user);
         return userDTO;
     }
@@ -110,9 +118,24 @@ public class UserControllerImpl implements UserController {
     @PostMapping("/users")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
         User user = new User(userDTO);
+        user.setPassword(encoder.encode(userDTO.getPassword()));
         userService.createUser(user);
         log.info("New user created {}", user);
         final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/users/{username}", user.getUsername());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/updateProfile")
+    public void updateUser(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password, @RequestParam(name = "email") String email) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+
+        user.setEmail(email);
+        user.setUsername(username);
+        user.setPassword(encoder.encode(password));
+
+        userService.createUser(user);
+        log.info("updated user: {}", user);
     }
 }

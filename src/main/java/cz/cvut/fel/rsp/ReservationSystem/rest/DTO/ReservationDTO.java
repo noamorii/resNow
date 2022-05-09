@@ -16,7 +16,12 @@ import javax.persistence.OneToOne;
 @Setter
 @NoArgsConstructor
 public class ReservationDTO {
-    private Integer userId;
+    private Integer reservationId;
+
+//    private Integer userId;
+//Nepotrebujete jelikoz mate current usera
+
+    private String username;
 
     private Integer paymentId; // null if not paid
 
@@ -26,8 +31,11 @@ public class ReservationDTO {
 
     private String additionalInfo;
 
+
     public ReservationDTO(Reservation reservation) {
-        this.userId = reservation.getUser().getId();
+        this.reservationId = reservation.getId();
+//        this.userId = reservation.getUser().getId();
+        this.username = reservation.getUser().getUsername();
         this.paymentId = reservation.getPayment() != null ? reservation.getPayment().getId() : null;
         this.reservationSlotId = reservation.getReservationSlot().getId();
         this.cancelled = reservation.isCancelled();

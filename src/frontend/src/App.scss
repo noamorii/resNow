@@ -118,6 +118,10 @@ body {
     &.correct {
         outline: 0.4vh solid #17c428;
     }
+
+    &.fl{
+        width: initial;
+    }
 }
 
 .fc {

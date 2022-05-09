@@ -13,9 +13,13 @@ import java.util.List;
 public interface UserController {
     public UserDTO getByUsername(String username);
 
+    public UserDTO getById(Integer id);
+
     public ResponseEntity<?> authenticate(CredentialsDTO credentialsDTO);
 
     public ResponseEntity<?> createUser(UserDTO userDTO);
+
+    public void updateUser(String username, String password, String email);
 
     public List<ReservationDTO> getReservations(String username, LocalDate fromDate, LocalDate toDate);
 

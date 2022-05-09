@@ -11,7 +11,7 @@
 
     .content {
         width: 50%;
-        height: 70vh;
+        height: 54vh;
         background-color: white;
         border: 2px solid rgba(0, 0, 0, 0.22);
         box-sizing: border-box;
@@ -23,106 +23,17 @@
 
         padding: 4vh;
 
-        .header {
-            flex-basis: 10%;
-
-            font-size: 3vh;
-            border-bottom: 2px solid rgba(0, 0, 0, 0.22);
-        }
 
         .form {
             display: flex;
-            flex-basis: 90%;
-            flex-direction: row;
-
-            div {
-                flex-basis: 50%;
-                margin: 1vh;
-            }
-
-            label, input, textarea {
-                display: block;
-                margin: 1vh auto;
-            }
-
-            label {
-                margin-top: 3vh;
-                margin-left: 4%;
-            }
-
-            input, textarea {
-                width: 90%;
-                height: 3vh;
-            }
-
-            .description {
-                height: 15vh;
-            }
-
-            .checkboxContainer {
-                margin-top: 3vh;
-                display: flex;
-                flex-direction: row;
-
-                label{
-                    margin: auto 1vh;
-                }
-
-                .checkbox {
-                    width: 20px;
-                    margin: 0;
-                }
-            }
-
-            .errorMessage {
-                margin: 0;
-                padding: 0;
-                height: 0;
-                font-size: 70%;
-                color: #DD5544;
-                text-align: center;
-            }
-
-            .successInput {
-                border: 2px solid #00955B;
-            }
-
-            .buttons {
-                margin-top: -1vh;
-                display: flex;
-                flex-direction: row;
-                align-items: flex-end;
-                float: right;
-                height: 60%;
-
-                button {
-                    margin: 5px;
-                    width: 10vh;
-
-                    cursor: pointer;
-                    color: #FFFFFF;
-                }
-
-                .buttonSave {
-                    border-color: #00955B;
-                    background:  #00955B;
-                }
-
-                .buttonSave:hover {
-                    background: #028351;
-                    color: #FFFFFF;
-                }
-
-                .buttonCancel {
-                    border-color: #DD5544;
-                    background:  #DD5544;
-                }
-
-                .buttonCancel:hover {
-                    background: #af4436;
-                    color: #FFFFFF;
-                }
-            }
+            gap: 2vh;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
         }
     }
+}
+
+.errorMessage{
+    color: red;
 }

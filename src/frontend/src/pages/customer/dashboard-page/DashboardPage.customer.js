@@ -4,6 +4,7 @@ import tennis from './tennis.png'
 import star from './img.png'
 import prof from './profile.png'
 import {Link, useLocation} from "react-router-dom";
+import TelephoneService from "../../../services/telephoneService";
 
 
 export const DashboardPageCustomer = () =>{
@@ -30,7 +31,7 @@ export const DashboardPageCustomer = () =>{
 
             <div className={styles.upcomingSections}>
                 <p className={styles.title}>Your upcoming reservations</p>
-                <div className={styles.block}>
+                <div className={styles.block} >
                     <img src = {photo}/>
                     <p className={styles.name}>Beauty salon BEAUTYBAR</p>
                     <p>Praha, Vodickova 2</p>

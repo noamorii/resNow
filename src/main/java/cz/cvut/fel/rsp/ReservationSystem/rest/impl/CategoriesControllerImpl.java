@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.impl;
 
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Source;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.CustomTimeEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
@@ -11,6 +12,7 @@ import cz.cvut.fel.rsp.ReservationSystem.rest.interfaces.CategoriesController;
 import cz.cvut.fel.rsp.ReservationSystem.rest.util.RestUtil;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.CategoryServiceImpl;
 import cz.cvut.fel.rsp.ReservationSystem.service.impl.EventServiceImpl;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/v1")
@@ -38,10 +41,20 @@ public class CategoriesControllerImpl implements CategoriesController {
         return new CategoryDTO(categoryService.find(categoryId));
     }
 
+    @GetMapping(value = "/category/{categoryId}")
+    public int getSources(@PathVariable Integer categoryId) {
+        for (Source source : categoryService.find(categoryId).getSources()) {
+            return (source.getReservationSystem().getId());
+        }
+        return 0;
+    }
+
     @Override
-    public List<EventDTO> getEvents(Integer categoryId, Integer fromTimestamp, Integer toTimestamp) {
-        //TODO: skipped on @belkapre's request
-        return new ArrayList<>();
+    @GetMapping(value = "/categories/{categoryName}/events", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EventDTO> getEventsByCategoryName(@PathVariable String categoryName) {
+        return eventService.getEventsByCategoryName(categoryName).stream()
+                .map(EventDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
