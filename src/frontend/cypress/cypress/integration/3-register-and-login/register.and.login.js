@@ -2,7 +2,7 @@ describe('register and login', () => {
 
     it('Register new user and login him into app', () => {
         cy.visit('https://reservenow.herokuapp.com/')
-        cy.get('#home div a .button-primary').should('have.text', 'Try now!')
+        cy.get('#home div a .button-primary').should('have.text', 'Register')
         cy.get('#home div a .button-primary').click()
 
 
