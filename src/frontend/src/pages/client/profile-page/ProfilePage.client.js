@@ -19,6 +19,28 @@ const FormUser = () => {
 
     useEffect(() => {
         console.log(user)
+
+
+        axios.post(
+            `${baseUrl}/rest/v1/slots`,
+            {
+                "username": "Billi23.Reynolds",
+                "paymentId": 0,
+                "reservationSlotId": 2,
+                "additionalInfo": "test"
+            },
+            {
+                headers: authHeader(),
+                params: {
+                    "username": "Billi23.Reynolds",
+                    "paymentId": 0,
+                    "reservationSlotId": 2,
+                    "additionalInfo": "test"
+                }
+            }
+        ).then(r => {
+            console.log(r)
+        })
     }, [])
 
 
