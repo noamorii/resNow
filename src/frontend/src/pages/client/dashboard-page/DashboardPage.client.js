@@ -99,16 +99,11 @@ export const DashboardPageClient = () => {
     const [show, setShow] = useState(false);
 
     const [feedbacks, setFeedbacks] = useState([]);
+    const [customers, setCustomers] = useState(0);
+    const [resources, setResources] = useState(0);
+    const [reservations, setReservations] = useState(0);
 
     useEffect(async () => {
-        fetchTodayReservation()
-        fetchAllReservation()
-        fetchAllEvents()
-        fetchAllPlace()
-        fetchAllCustomer()
-        fetchAllEmployee()
-
-
         const fetchFeedbacks = await Promise.any([
                 axios.get(
                     `${baseUrl}/systems/my/feedback`,
@@ -118,45 +113,73 @@ export const DashboardPageClient = () => {
         )
         setFeedbacks(fetchFeedbacks.data)
 
+        const fetchCustomers = await Promise.any([
+                axios.get(`${baseUrl}/systems/my/customers`,
+                    {headers: authHeader()})
+            ]
+        )
+        fetchCustomers.data.map(item => item.age)
+            .filter((value, index, self) => self.indexOf(value) === index)
+        setCustomers(fetchCustomers.data.length)
+
+        const fetchSources = await Promise.any([
+                axios.get(
+                    `${baseUrl}/systems/my/sources`,
+                    {headers: authHeader()})
+            ]
+        )
+        setResources(fetchSources.data.length)
+
+        const fetchReservations = await Promise.any(
+            [
+                axios.get(
+                    `${baseUrl}/systems/reservations`,
+                    {headers: authHeader()}
+                )
+            ]
+        )
+        setReservations(fetchReservations.data.length)
+
+        const today = () => {
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = "";
+            let date = "";
+            if (today.getMonth() < 10) {
+                month = "0" + today.getMonth();
+            } else {
+                month = today.getMonth();
+            }
+            if (today.getDate() < 10) {
+                date = "0" + today.getDate();
+            } else {
+                date = today.getDate();
+            }
+            const day = year + "-" + month + "-" + date;
+            return day;
+        }
+
+        const fetchToday = await Promise.any(
+            [
+                axios.get(
+                    `${baseUrl}/systems/reservations/today`,
+                    {
+                        headers: authHeader(),
+                        params: {"fromDate": today()}
+                    }
+                )
+            ]
+        )
+        setTodayReservation(fetchToday.data.length)
+
+        const fetchEvents = await Promise.any([
+            axios.get(`${baseUrl}/systems/my/all/events`,
+                {headers: authHeader()}
+            )
+        ])
+        setAllEvents(fetchEvents.data.length)
 
     }, [])
-
-    const fetchTodayReservation = () => {
-        axios.get(
-            `${baseUrl}/reservations/today`,
-            {headers: authHeader()}
-        ).then(r => {
-            setTodayReservation(r.data.length)
-            setAllReservation(r.data.length)
-        }, e => {
-            console.log(e)
-        })
-    }
-
-    const fetchAllReservation = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllReservation(res.data))
-        setAllReservation(265)
-    }
-
-    const fetchAllEvents = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllEvents(res.data))
-        setAllEvents(3)
-    }
-
-    const fetchAllPlace = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllPlace(res.data))
-        setAllPlace(4)
-    }
-
-    const fetchAllCustomer = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllCustomers(res.data))
-        setAllCustomers(25)
-    }
-
-    const fetchAllEmployee = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllEmployee(res.data))
-        setAllEmployee(10);
-    }
 
 
     return (
@@ -166,15 +189,15 @@ export const DashboardPageClient = () => {
                     <div className={styles.cards}>
                         <img src={journals} alt={'icon'}/>
                         <p>{todayReservation}</p>
-                        <button className={'button-primary '.concat(styles.button)} onClick={() => setShow(true)}>Dnešní
-                            rezervace
+                        <button className={'button-primary '.concat(styles.button)} onClick={() => setShow(true)}><Link
+                            to={'/app/rezervace'}>Dnešní rezervace</Link>
                         </button>
-                        <Modal onClose={() => setShow(false)} show={show} data={dataWithoutLabel}/>
+                        {/*<Modal onClose={() => setShow(false)} show={show} data={dataWithoutLabel}/>*/}
 
                     </div>
                     <div className={styles.cards}>
                         <img src={journalMedical} alt={'icon'}/>
-                        <p>{allReservation}</p>
+                        <p>{reservations}</p>
                         <button className={'button-primary '.concat(styles.button)}><Link
                             to={'/app/rezervace'}>Rezervace</Link>
                         </button>
@@ -188,14 +211,14 @@ export const DashboardPageClient = () => {
                     </div>
                     <div className={styles.cards}>
                         <img src={pin} alt={'icon'}/>
-                        <p>{allPlace}</p>
+                        <p>{resources}</p>
                         <button className={'button-primary '.concat(styles.button)}><Link
                             to={'/app/zdroje'}>Místa</Link>
                         </button>
                     </div>
                     <div className={styles.cards}>
                         <img src={person} alt={'icon'}/>
-                        <p>{allCustomers}</p>
+                        <p>{customers}</p>
                         <button className={'button-primary '.concat(styles.button)}><Link
                             to={'/app/zakaznici'}>Zákazníci</Link>
                         </button>
@@ -212,8 +235,8 @@ export const DashboardPageClient = () => {
                     Feedbacks
                 </h2>
                 <ul>
-                    {feedbacks.map(f=>{
-                        return(
+                    {feedbacks.map(f => {
+                        return (
                             <li>{f.message}<br/></li>
                         )
                     })}

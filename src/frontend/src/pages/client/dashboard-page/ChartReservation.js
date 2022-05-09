@@ -15,6 +15,7 @@ import {
 import {Line} from 'react-chartjs-2';
 import axios from "axios";
 import {baseUrl} from "../../../config/const";
+import authHeader from "../../../services/auth-header";
 
 ChartJS.register(
     CategoryScale,
@@ -47,12 +48,36 @@ export const ChartReservation = () => {
             return labels;
         }
 
+        const day = (today) => {
+            const year = today.getFullYear();
+            let month = "";
+            let date = "";
+            if (today.getMonth() < 10) {
+                month = "0" + today.getMonth();
+            } else {
+                month = today.getMonth();
+            }
+            if (today.getDate() < 10) {
+                date = "0" + today.getDate();
+            } else {
+                date = today.getDate();
+            }
+            const day = year + "-" + month + "-" + date;
+            return day;
+        }
+
 
         const getNewReservation = async (e) => {
             return new Promise((resolve, reject) => {
-                axios.get(`${baseUrl}/systems/1`)//TODO FETCH REAL DATA
+                axios.get(
+                    `${baseUrl}/systems/reservations/today`,
+                    {
+                        headers: authHeader(),
+                        params: {"fromDate": day(new Date(new Date().setDate(e[0])))}
+                    }
+                )
                     .then(response => {
-                        resolve(response.data.id)
+                        resolve(response.data.length)
                     })
                     .catch(reject);
             })
@@ -100,24 +125,17 @@ export const ChartReservation = () => {
                 labels,
                 datasets: [
                     {
-                        label: 'New Reservation',
+                        label: 'Reservations',
                         data: [],
                         borderColor: 'rgb(53, 162, 235)',
                         backgroundColor: 'rgba(53, 162, 235, 0.5)',
                     },
-                    {
-                        label: 'Canceled reservations',
-                        data: [],
-                        borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                    },
                 ]
             }
 
-            // data.datasets[0].data = await getDataNewReservations(labels);
-            data.datasets[0].data = [1, 6, 3, 7, 5, 3, 4, 6];
+            data.datasets[0].data = await getDataNewReservations(labels);
+            // data.datasets[0].data = [1, 6, 3, 7, 5, 3, 4, 6];
             // data.datasets[1].data = await getDataCanceledReservations(labels);
-            data.datasets[1].data = [4, 1, 3, 2, 4, 1, 3, 6];
 
             return data;
         }

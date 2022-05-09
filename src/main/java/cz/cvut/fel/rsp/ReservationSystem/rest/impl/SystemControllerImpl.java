@@ -198,6 +198,26 @@ public class SystemControllerImpl implements SystemController {
         return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
     }
 
+    @GetMapping(value = "/systems/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ReservationDTO> getAllReservations() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+        List<Reservation> reservations = reservationService.findAllReservations(reservationSystem);
+        return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/systems/reservations/today", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ReservationDTO> getAllReservationsToday(@RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+        List<Reservation> reservations = reservationService.findAllReservations(reservationSystem, date, date);
+        return reservations.stream().map(ReservationDTO::new).collect(Collectors.toList());
+    }
+
     @GetMapping(value = "/systems/{systemId}/events", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EventDTO> getAllEventsFromTo(@PathVariable Integer systemId,
                                              @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
@@ -218,6 +238,16 @@ public class SystemControllerImpl implements SystemController {
         User user = userService.findByUsername(userDetails.getUsername());
         ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
         List<Event> events = eventService.findAllEvents(reservationSystem, fromDate, toDate);
+        return events.stream().map(EventDTO::new).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/systems/my/all/events", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EventDTO> getAllMyEvents() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
+        List<Event> events = eventService.findAllEvents(reservationSystem);
         return events.stream().map(EventDTO::new).collect(Collectors.toList());
     }
 
