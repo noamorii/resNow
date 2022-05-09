@@ -31,4 +31,14 @@ public class Address extends AbstractEntity {
         this.houseNumber = addressDTO.getHouseNumber();
         this.postalCode = addressDTO.getHouseNumber();
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                '}';
+    }
 }

@@ -67,6 +67,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public List<Reservation> findMyAllReservations(User user) {
+        return reservationRepository.findAllUsersReservations(user.getId());
+    }
+
+    @Override
     public List<Reservation> findAllReservations(User user, LocalDate fromDate, LocalDate toDate) {
         List<Reservation> allReservations = reservationRepository.findAllUsersReservations(user);
         return this.filterReservations(allReservations, fromDate, toDate);

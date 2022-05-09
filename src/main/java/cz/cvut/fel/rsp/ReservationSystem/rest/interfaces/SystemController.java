@@ -23,14 +23,14 @@ public interface SystemController {
     // GET /systems/{system_id}/sources
     public List<SourceDTO> getSources(Integer systemId);
 
-    // GET /systems/{system_id}/feedback
-    public List<Feedback> getFeedback(Integer systemId);
+    // GET /systems/feedback
+    public List<Feedback> getFeedback();
 
     // POST /systems/{system_id}/feedback
     public ResponseEntity<Void> createFeedback(Integer systemId, Feedback feedback);
 
     // POST /systems/{system_id}/sources
-    public ResponseEntity<Void> createSource(Integer systemId, SourceDTO sourceDTO);
+    public ResponseEntity<Void> createSource(SourceDTO sourceDTO);
 
     // GET /systems/{system_id}/reservations?fromDate=2022-01-01&toDate=2022-02-02
     // Kdyz budou chtit today, tak tam daji dnesni datum

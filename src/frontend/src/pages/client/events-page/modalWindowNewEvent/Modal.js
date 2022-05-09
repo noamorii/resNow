@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from "../EventsPage.module.scss";
+import eventUtils from "../restUtils/eventUtils";
 
 
 function timestampToDatetimeInputString(timestamp) {
@@ -14,6 +15,14 @@ function _getTimeZoneOffsetInMs() {
 //getters for activities
 //send to rest new event
 function Modal({closeModal}) {
+
+    const [event, setEvent] = useState({
+        name: "",
+        fromTime: "",
+        toTime: "",
+        startDate: "",
+        repeatUntil: ""
+    });
 
     return(
         <div className={styles.modalBackground}>

@@ -44,14 +44,26 @@ public class ReservationsControllerImpl implements ReservationsController {
         return new ReservationDTO(reservationService.find(reservationId));
     }
 
-    @PreAuthorize("hasAnyRole('SYSTEM_EMPLOYEE')")
+    @PreAuthorize("hasAnyRole('REGULAR_USER')")
+    @GetMapping(value = "/my/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ReservationDTO> getMyReservations() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        List<Reservation> reservationList = reservationService.findMyAllReservations(user);
+        return reservationList.stream()
+                .map(ReservationDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @PreAuthorize("hasAnyRole('SYSTEM_EMPLOYEE', 'SYSTEM_OWNER')")
     @GetMapping(value = "/reservations/today", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getAllToday() {
         LocalDate localDate = LocalDate.now();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
-        List<Reservation>reservationList =  reservationService.findAllReservations(user,localDate);
+        List<Reservation> reservationList = reservationService.findAllReservations(user, localDate);
         return reservationList.stream()
                 .map(ReservationDTO::new)
                 .collect(Collectors.toList());
@@ -65,7 +77,7 @@ public class ReservationsControllerImpl implements ReservationsController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
-        List<Reservation>reservationList =  reservationService.findAllReservations(user,dateFrom, dateTo);
+        List<Reservation> reservationList = reservationService.findAllReservations(user, dateFrom, dateTo);
         return reservationList.stream()
                 .map(ReservationDTO::new)
                 .collect(Collectors.toList());

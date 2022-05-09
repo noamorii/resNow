@@ -35,9 +35,9 @@ export const ResourcesPageClient = () => {
                 </button>
                 <button type={'button'} className={place ? styles.active : ""} onClick={activePlace}>Místa
                 </button>
-                <button type={'button'} className={employee ? styles.active : ""}
-                        onClick={activeEmployee}>Zaměstnanci
-                </button>
+                {/*<button type={'button'} className={employee ? styles.active : ""}*/}
+                {/*        onClick={activeEmployee}>Zaměstnanci*/}
+                {/*</button>*/}
             </div>
             {source ? <Sources/> : <></>}
             {place ? <Places/> : <></>}

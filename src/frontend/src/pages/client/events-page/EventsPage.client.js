@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
 import NewEventModal from './modalWindowNewEvent/Modal';
@@ -7,48 +7,49 @@ import EventModal from './modalWindowEvent/EventModal';
 import styles from "./EventsPage.module.scss";
 import eventUtils from "./restUtils/eventUtils"
 
-const events = [
-    {
-        title:"Hello",
-        start:"2022-04-29 20:25",
-        end:"2022-04-30 20:00",
-    },
-    {
-        title:"world",
-        start:"2022-04-18 14:25",
-        end:"2022-04-18 20:00"
-    },
-    {
-        title:"!",
-        start:"2022-04-18 20:00",
-        end:"2022-04-18 21:00",
-    }
-]
-
+let testEvents = [];
 
 //TODO
-//fetch data from api
 //create data and save to db
 
 export const EventsPageClient = () => {
+
+    useEffect(() => {
+        eventUtils.getAllEvents()
+            .then(response => response.data)
+            .then(data => {
+                testEvents = data;
+                testEvents.map(s => {
+                    if(s.hasOwnProperty("name")) {
+                        s.title = s.name;
+                        delete s.name;
+                    }
+                    if(s.hasOwnProperty("startDate") && s.hasOwnProperty("fromTime")) {
+                        s.start = s.startDate + " " + s.fromTime;
+                        delete s.fromTime
+                    }
+                    if(s.hasOwnProperty("startDate") && s.hasOwnProperty("toTime")) {
+                        s.end = s.startDate + " " + s.toTime;
+                        delete s.toTime;
+                        delete s.startDate;
+                    }
+                })
+                setData(testEvents);
+                console.log(testEvents)
+            });
+    }, [])
+
     const [show, setShow] = useState(false);
     const [hidden, setHidden] = useState(false);
+    const [data, setData] = useState();
 
     const handleHidden = () => setHidden(false);
     const handleClose = () => {
         setShow(false);
         localStorage.removeItem("eventTitle");
-        localStorage.removeItem("eventFrom");
-        localStorage.removeItem("eventTo");
+        localStorage.removeItem("eventStart");
+        localStorage.removeItem("eventEnd");
     };
-    const selectedEvent = (eventTitle, eventFrom, eventTo) => {
-        if(eventTitle && eventTo && eventFrom) {
-            localStorage.setItem("eventTitle", eventTitle);
-            localStorage.setItem("eventFrom", eventFrom);
-            localStorage.setItem("eventTo", eventTo);
-        }
-        setTimeout(() => setShow(true), 200);
-    }
 
     return (
         <div>
@@ -73,7 +74,7 @@ export const EventsPageClient = () => {
                             selectable={true}
                             selectMirror={true}
                             weekends={true}
-                            events={events}
+                            events={data}
                             nowIndicator={true}
                             height={600}
                             customButtons={{
@@ -88,7 +89,12 @@ export const EventsPageClient = () => {
                                 right: 'myCustomButton today prev,next'
                             }}
                             eventClick={function (info) {
-                                selectedEvent(info.event.title, info.event.start, info.event.end)
+                                localStorage.setItem("eventTitle", info.event.title);
+                                localStorage.setItem("eventStart", info.event.start.toString());
+                                localStorage.setItem("eventEnd", info.event.end.toString());
+                                setTimeout(() => {
+                                    setShow(true)
+                                }, 200);
                             }}
                         />
                     </div>

@@ -4,7 +4,6 @@ import journalMedical from './../../../assets/svg/journal-medical.svg'
 import calendar2 from './../../../assets/svg/calendar2-event.svg'
 import pin from './../../../assets/svg/pin.svg'
 import person from './../../../assets/svg/person.svg'
-import personCircle from './../../../assets/svg/person-circle.svg'
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {baseUrl} from "../../../config/const";
@@ -14,6 +13,7 @@ import {Modal} from "./modalWindow/Modal";
 import {Link} from "react-router-dom";
 import {LocalDate, LocalDateTime} from "local-date";
 import authHeader from "../../../services/auth-header";
+import {ChartReservation} from "./ChartReservation";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -62,17 +62,17 @@ const PieChart = () => {
     return (
         <div className={styles.kolacGraph}>
             <p>
-                Rezervace dne {current.getDate()}.{current.getMonth() + 1}.{current.getFullYear()}
+                {current.getDate()}.{current.getMonth() + 1}.{current.getFullYear()}
             </p>
             <div className={styles.pie}>
                 <Pie data={data} options={{
                     maintainAspectRatio: false
                 }}/>
             </div>
-            <button type={'button'} onClick={() => setShow(true)}
-                    className={'button-primary '.concat(styles.button)}>Zobrazit více
-            </button>
-            <Modal onClose={() => setShow(false)} show={show} data={dataWithoutLabel}/>
+            {/*<button type={'button'} onClick={() => setShow(true)}*/}
+            {/*        className={'button-primary '.concat(styles.button)}>Zobrazit více*/}
+            {/*</button>*/}
+            {/*<Modal onClose={() => setShow(false)} show={show} data={dataWithoutLabel}/>*/}
         </div>
     )
 }
@@ -98,126 +98,149 @@ export const DashboardPageClient = () => {
     const [allEmployee, setAllEmployee] = useState(0);
     const [show, setShow] = useState(false);
 
-    useEffect(() => {
-        fetchTodayReservation()
-        fetchAllReservation()
-        fetchAllEvents()
-        fetchAllPlace()
-        fetchAllCustomer()
-        fetchAllEmployee()
-    }, [])
+    const [feedbacks, setFeedbacks] = useState([]);
+    const [customers, setCustomers] = useState(0);
+    const [resources, setResources] = useState(0);
+    const [reservations, setReservations] = useState(0);
 
-    const fetchTodayReservation = () => {
-
-        const localDate = getDate(2022, 4, 12);
-        console.log(localDate)
-
-        axios.post(
-            `${baseUrl}/reservations`,
-            {}, {
-                params: {
-                    "dateFrom": new LocalDate(localDate),
-                    "dateTo": new LocalDate('2022-04-16'),
-                },
-                headers: authHeader()
-            }
-        ).then(res => {
-                console.log(res);
-                setTodayReservation(res.data)
-            }
+    useEffect(async () => {
+        const fetchFeedbacks = await Promise.any([
+                axios.get(
+                    `${baseUrl}/systems/my/feedback`,
+                    {headers: authHeader()}
+                )
+            ]
         )
+        setFeedbacks(fetchFeedbacks.data)
 
-        axios.get(
-            `${baseUrl}/reservations/today`,
-            {headers: authHeader()}
-        ).then(r => {
-            console.log("date")
-        }, e => {
-            console.log(e)
-        })
-    }
+        const fetchCustomers = await Promise.any([
+                axios.get(`${baseUrl}/systems/my/customers`,
+                    {headers: authHeader()})
+            ]
+        )
+        fetchCustomers.data.map(item => item.age)
+            .filter((value, index, self) => self.indexOf(value) === index)
+        setCustomers(fetchCustomers.data.length)
 
-    const fetchAllReservation = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllReservation(res.data))
-        setAllReservation(265)
-    }
+        const fetchSources = await Promise.any([
+                axios.get(
+                    `${baseUrl}/systems/my/sources`,
+                    {headers: authHeader()})
+            ]
+        )
+        setResources(fetchSources.data.length)
 
-    const fetchAllEvents = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllEvents(res.data))
-        setAllEvents(3)
-    }
+        const fetchReservations = await Promise.any(
+            [
+                axios.get(
+                    `${baseUrl}/systems/reservations`,
+                    {headers: authHeader()}
+                )
+            ]
+        )
+        setReservations(fetchReservations.data.length)
 
-    const fetchAllPlace = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllPlace(res.data))
-        setAllPlace(4)
-    }
+        const today = () => {
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = "";
+            let date = "";
+            if (today.getMonth() < 10) {
+                month = "0" + Number(today.getMonth() + 1);
+            } else {
+                month = today.getMonth();
+            }
+            if (today.getDate() < 10) {
+                date = "0" + Number(today.getMonth() + 1);
+            } else {
+                date = today.getDate();
+            }
+            const day = year + "-" + month + "-" + date;
+            return day;
+        }
 
-    const fetchAllCustomer = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllCustomers(res.data))
-        setAllCustomers(25)
-    }
+        const fetchToday = await Promise.any(
+            [
+                axios.get(
+                    `${baseUrl}/systems/reservations/today`,
+                    {
+                        headers: authHeader(),
+                        params: {"fromDate": today()}
+                    }
+                )
+            ]
+        )
+        setTodayReservation(fetchToday.data.length)
 
-    const fetchAllEmployee = () => {
-        // axios.get(`${baseUrl}/`).then(res => setAllEmployee(res.data))
-        setAllEmployee(10);
-    }
+        const fetchEvents = await Promise.any([
+            axios.get(`${baseUrl}/systems/my/all/events`,
+                {headers: authHeader()}
+            )
+        ])
+        setAllEvents(fetchEvents.data.length)
+
+    }, [])
 
 
     return (
         <div className={styles.container}>
-            <div className={styles.topContent}>
-                <div className={styles.cards}>
-                    <img src={journals} alt={'icon'}/>
-                    <p>{todayReservation}</p>
-                    <button className={'button-primary '.concat(styles.button)} onClick={() => setShow(true)}>Dnešní
-                        rezervace
-                    </button>
-                    <Modal onClose={() => setShow(false)} show={show} data={dataWithoutLabel}/>
+            <div className={styles.left}>
+                <div className={styles.topContent}>
+                    <div className={styles.cards}>
+                        <img src={journals} alt={'icon'}/>
+                        <p>{todayReservation}</p>
+                        <button className={'button-primary '.concat(styles.button)} onClick={() => setShow(true)}><Link
+                            to={'/app/rezervace'}>Dnešní rezervace</Link>
+                        </button>
+                        {/*<Modal onClose={() => setShow(false)} show={show} data={dataWithoutLabel}/>*/}
 
+                    </div>
+                    <div className={styles.cards}>
+                        <img src={journalMedical} alt={'icon'}/>
+                        <p>{reservations}</p>
+                        <button className={'button-primary '.concat(styles.button)}><Link
+                            to={'/app/rezervace'}>Rezervace</Link>
+                        </button>
+                    </div>
+                    <div className={styles.cards}>
+                        <img src={calendar2} alt={'icon'}/>
+                        <p>{allEvents}</p>
+                        <button className={'button-primary '.concat(styles.button)}><Link
+                            to={'/app/terminy'}>Termíny</Link>
+                        </button>
+                    </div>
+                    <div className={styles.cards}>
+                        <img src={pin} alt={'icon'}/>
+                        <p>{resources}</p>
+                        <button className={'button-primary '.concat(styles.button)}><Link
+                            to={'/app/zdroje'}>Místa</Link>
+                        </button>
+                    </div>
+                    <div className={styles.cards}>
+                        <img src={person} alt={'icon'}/>
+                        <p>{customers}</p>
+                        <button className={'button-primary '.concat(styles.button)}><Link
+                            to={'/app/zakaznici'}>Zákazníci</Link>
+                        </button>
+                    </div>
                 </div>
-                <div className={styles.cards}>
-                    <img src={journalMedical} alt={'icon'}/>
-                    <p>{allReservation}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link
-                        to={'/app/rezervace'}>Rezervace</Link>
-                    </button>
-                </div>
-                <div className={styles.cards}>
-                    <img src={calendar2} alt={'icon'}/>
-                    <p>{allEvents}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/terminy'}>Termíny</Link>
-                    </button>
-                </div>
-                <div className={styles.cards}>
-                    <img src={pin} alt={'icon'}/>
-                    <p>{allPlace}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link to={'/app/zdroje'}>Místa</Link>
-                    </button>
-                </div>
-                <div className={styles.cards}>
-                    <img src={person} alt={'icon'}/>
-                    <p>{allCustomers}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link
-                        to={'/app/zakaznici'}>Zákazníci</Link>
-                    </button>
-                </div>
-                <div className={styles.cards}>
-                    <img src={personCircle} alt={'icon'}/>
-                    <p>{allEmployee}</p>
-                    <button className={'button-primary '.concat(styles.button)}><Link
-                        to={'/app/zdroje'}>Zaměstnanci</Link>
-                    </button>
+                <div className={styles.bottomContent}>
+                    <div className={styles.mainGraph}>
+                        <ChartReservation/>
+                    </div>
                 </div>
             </div>
-
-
-            <div className={styles.bottomContent}>
-                <div className={styles.mainGraph}>
-                    <p>
-                        Aktivita za poslední 4 týdny
-                    </p>
-                </div>
-                <PieChart/>
+            <div className={styles.feedbackContainer}>
+                <h2>
+                    Feedbacks
+                </h2>
+                <ul>
+                    {feedbacks.map(f => {
+                        return (
+                            <li>{f.message}<br/></li>
+                        )
+                    })}
+                </ul>
             </div>
         </div>
     )

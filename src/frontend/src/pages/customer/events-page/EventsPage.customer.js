@@ -1,45 +1,49 @@
 import styles from './EventsPage.module.scss'
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
 import NewEvent from './modalWindowNewReservation/newReserveEvent';
+import eventUtils from "../events-page/restUtils/eventUtils";
 
-const events = [
-    {
-        id: 1,
-        title:"test1",
-        start:"2022-05-01 20:25",
-        end:"2022-05-02 10:00",
-    },
-    {
-        id: 2,
-        title:"test2",
-        start:"2022-05-03 20:25",
-        end:"2022-05-04 10:00"
-    },
-    {
-        id: 3,
-        title:"test3",
-        start:"2022-05-05 20:25",
-        end:"2022-05-06 10:00",
-    }
-]
+let testEvents = [];
+
 
 export const EventsPageCustomer = () =>{
+    useEffect(() => {
+        eventUtils.getAllSlots()
+            .then(response => response.data)
+            .then(data => {
+                testEvents = data;
+                console.log(testEvents)
+                testEvents.map(s => {
+                    if(s.hasOwnProperty("price")) {
+                        s.title = s.price;
+                        delete s.price;
+                    }
+                    if(s.hasOwnProperty("date") && s.hasOwnProperty("startTime")) {
+                        s.start = s.date + " " + s.startTime;
+                        delete s.startTime
+                    }
+                    if(s.hasOwnProperty("date") && s.hasOwnProperty("endTime")) {
+                        s.end = s.date + " " + s.endTime;
+                        delete s.endTime;
+                        delete s.date;
+                    }
+                })
+                setData(testEvents);
+                console.log(testEvents)
+            });
+    }, [])
 
     const [show, setShow] = useState(false);
+    const [data, setData] = useState();
+
     const handleClose = () => {
         setShow(false);
+        localStorage.removeItem("eventTitle");
+        localStorage.removeItem("eventStart");
+        localStorage.removeItem("eventEnd");
     };
-
-    const selectedEvent = (eventId, eventTitle, eventFrom, eventTo) => {
-        if(eventTitle && eventTo && eventFrom) {
-            localStorage.setItem("eventTitle", eventTitle);
-            localStorage.setItem("eventFrom", eventFrom);
-            localStorage.setItem("eventTo", eventTo);
-        }
-        setTimeout(() => setShow(true), 200);
-    }
 
     return (
         <div>
@@ -53,14 +57,18 @@ export const EventsPageCustomer = () =>{
                         selectable={true}
                         selectMirror={true}
                         weekends={true}
-                        events={events}
+                        events={data}
                         nowIndicator={true}
                         height={600}
                         headerToolbar={{
                             right: 'today prev,next'
                         }}
                         eventClick={function (info) {
-                            selectedEvent(info.event.id, info.event.title, info.event.start, info.event.end);
+                            localStorage.setItem("eventId", info.event.id);
+                            localStorage.setItem("eventFrom", info.event.start.toISOString());
+                            localStorage.setItem("eventTo", info.event.end.toISOString());
+                            localStorage.setItem("eventPrice", info.event.title);
+                            setTimeout(() => setShow(true), 200);
                         }}
                     />
                 </div>

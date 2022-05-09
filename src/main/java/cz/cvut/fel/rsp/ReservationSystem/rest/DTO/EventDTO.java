@@ -17,6 +17,8 @@ import java.time.LocalTime;
 @Setter
 public class EventDTO {
 
+    private Integer id;
+
     private String name;
 
     private LocalTime fromTime;
@@ -43,6 +45,7 @@ public class EventDTO {
     private Integer seatAmount;
 
     public EventDTO(Event event) {
+        this.id = event.getId();
         this.name = event.getName();
         this.fromTime = event.getFromTime();
         this.toTime = event.getToTime();
