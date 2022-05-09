@@ -54,4 +54,13 @@ public class SlotControllerImpl implements SlotController {
         final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/slots/{slot_id}/reservation", reservation.getId());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
+    @PostMapping(value = "/slots/{slot_id}/admin")
+    public ResponseEntity<Void> createReservationAdmin(@PathVariable Integer slot_id, @RequestBody ReservationDTO reservationDTO) {
+        Reservation reservation = new Reservation(reservationDTO, userService.findByUsername(reservationDTO.getUsername()));
+        reservation.setReservationSlot(reservationSlotService.find(slot_id));
+        reservationService.createReservation(reservation);
+        log.info("Created reservation {} for slot with id {}", reservation, slot_id);
+        final HttpHeaders headers = RestUtil.createLocationHeaderNewUri("/slots/{slot_id}/reservation", reservation.getId());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
 }

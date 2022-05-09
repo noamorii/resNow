@@ -17,10 +17,6 @@ const FormUser = () => {
     const [rePassword, setRePassword] = useState('');
     const [error, setError] = useState('');
 
-    useEffect(() => {
-        console.log(user)
-    }, [])
-
 
     const handle = (e) => {
         if (username.trim().length === 0 || email.trim().length === 0 || oldPassword.trim().length === 0 || password.trim().length === 0 || rePassword.trim().length === 0) {
