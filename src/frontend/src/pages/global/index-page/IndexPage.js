@@ -12,7 +12,7 @@ export const IndexPage = (props) => {
         <div>
             <NabvarIndex user={props.user}/>
             <div className={styles.mainContainer}>
-                <HomeSection/>
+                <HomeSection user={props.user}/>
                 <AboutSection/>
                 <PricingSection/>
                 <ContactSection/>
