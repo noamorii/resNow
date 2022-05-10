@@ -88,6 +88,7 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
     public void generateCustomTimeSlots(CustomTimeEvent event, LocalDate date) {
         CustomTime customTimeSlot = new CustomTime();
         customTimeSlot.setEvent(event);
+        customTimeSlot.setStart(event.getFromTime());
         customTimeSlot.setDate(date);
         customTimeSlot.setEnd(event.getToTime());
         customTimeSlot.setPrice(100); // TODO hardcoded price
