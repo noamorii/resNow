@@ -42,18 +42,58 @@ class EventUtils {
     }
 
     //put for new event [name, timeFrom, timeTo, ...]
-    newEvent(name, timeFrom, timeTo) {
+    newCustomTimeEvent(sourceId, name, timeFrom, timeTo, startDate, repeatUntil, day, repetition, minimalReservationTime) {
+        return axios.post(`${baseUrl}/categories/${sourceId}/events`, {
+            "name": "test eventu",
+            "fromTime": "10:00:00",
+            "toTime": "11:00:00",
+            "startDate": "2022-05-11",
+            "repeatUntil": "2022-05-11",
+            "day": 3,
+            "repetition": "DAILY",
+            "categoryId": "0",
+            "minimalReservationTime": 3600,
+        }, {
+            headers: authHeader()
+        })
+            .then(response => {
+                console.log(response)
+                console.log("Event created")
+            })
+    }
+
+    newSeatEvent(sourceId, name, timeFrom, timeTo, startDate, repeatUntil, day, repetition) {
+        return axios.post(`${baseUrl}/categories/${4}/events`, {
+            "name": "test eventu",
+            "fromTime": "09:00:00",
+            "toTime": "11:00:00",
+            "startDate": "2022-05-13",
+            "repeatUntil": "2022-05-14",
+            "day": 3,
+            "repetition": "DAILY",
+            "categoryId": "0",
+            "seatAmount": 3,
+        }, {
+            headers: authHeader()
+        })
+            .then(response => {
+                console.log(response)
+                console.log("Event created")
+            })
+    }
+
+    newIntervalEvent(sourceId, name, timeFrom, timeTo, startDate, repeatUntil, day, repetition) {
         return axios.post(`${baseUrl}/categories/4/events`, {
             "name": "test eventu",
-            "fromTime": "18:00:00",
-            "toTime": "22:00:00",
-            "startDate": "2022-05-17",
-            "repeatUntil": "2022-05-19",
-            "day": 3,
-            "repetition": "NONE",
+            "fromTime": "10:00:00",
+            "toTime": "11:00:00",
+            "startDate": "2022-05-11",
+            "repeatUntil": "2022-05-30",
+            "day": 6,
+            "repetition": "DAILY",
             "categoryId": "0",
-            "timeBetweenIntervals": 3600,
-            "intervalDuration": 3600,
+            "timeBetweenIntervals": 60,
+            "intervalDuration": 60,
         }, {
             headers: authHeader()
         })
@@ -64,4 +104,4 @@ class EventUtils {
     }
 }
 
-export default new EventUtils();
+export default  new EventUtils();
