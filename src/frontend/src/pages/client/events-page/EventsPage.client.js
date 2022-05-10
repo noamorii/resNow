@@ -6,6 +6,9 @@ import EventModal from './modalWindowEvent/EventModal';
 
 import styles from "./EventsPage.module.scss";
 import eventUtils from "./restUtils/eventUtils"
+import axios from "axios";
+import {baseUrl} from "../../../config/const";
+import authHeader from "../../../services/auth-header";
 
 let testEvents = [];
 

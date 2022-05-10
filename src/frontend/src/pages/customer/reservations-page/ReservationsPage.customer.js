@@ -39,7 +39,7 @@ export const ReservationsPageCustomer = () => {
         return response
     }
 
-    const fetchEvent = (id) => {
+    const fetchEvent = async (id) => {
         return new Promise((resolve, reject) => {
             axios.get(
                 `${baseUrl}/events/${id}`,
@@ -64,7 +64,7 @@ export const ReservationsPageCustomer = () => {
         return response
     }
 
-    const fetchId = (id) => {
+    const fetchId = async (id) => {
         return new Promise((resolve, reject) => {
             axios.get(
                 `${baseUrl}/category/${id}`,
