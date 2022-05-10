@@ -142,7 +142,7 @@ public class SystemControllerImpl implements SystemController {
             }
         }
         for (User userTmp : users){
-            result.add(new UserDTO(userTmp));
+                result.add(new UserDTO(userTmp));
         }
         return result;
     }

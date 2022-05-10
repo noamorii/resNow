@@ -1,38 +1,245 @@
-.topbutton{
-  display: inline-block;
-  text-align: center;
-  width: initial;
-  margin: 0.5vh;
+.topbutton {
+    display: inline-block;
+    text-align: center;
+    width: initial;
+    margin: 0.5vh;
 }
 
-.topbuttons{
-  padding-top: 2vh;
-  display: flex;
-  align-items: flex-end;
+.topbuttons {
+    padding-top: 2vh;
+    display: flex;
+    align-items: flex-end;
 }
 
 .caldescr {
-  display: flex;
- }
+    display: flex;
+}
 
 .pdescr {
-  padding-right: 3vh;
+    padding-right: 3vh;
 }
 
 .datedisplay {
-  padding-left: 15px;
-  width: 300px;
+    padding-left: 15px;
+    width: 300px;
 }
 
-.container{
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+}
+
+.heading {
+    padding-right: 20vh;
+}
+
+.undercalendar {
+    display: flex;
+    justify-content: center;
+}
+
+//---------------------------
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+
+    .buttonContainer {
+        margin: 0 0 0 auto;
+
+        .button {
+            min-width: 150px;
+            width: 10%;
+            height: 4.5vh;
+            margin-bottom: 1.3vh;
+            cursor: pointer;
+        }
+    }
+
+    .tableContainer {
+        display: flex;
+        flex-direction: column;
+
+        margin: 2vh auto;
+        width: 90%;
+
+        border: 1px solid rgba(0, 0, 0, 0.23);
+        box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
+        border-radius: 1.5vh;
+
+        flex-basis: 90%;
+
+        table {
+            width: 99%;
+
+            table-layout: fixed;
+            margin: 4px;
+
+            border: 2px solid white;
+            border-collapse: collapse;
+
+            th {
+                font-weight: 400;
+            }
+
+            thead {
+                border-bottom: 2px solid black;
+            }
+
+            .headRow {
+                border-top: 2px solid black;
+                border-left: 10px solid #7EA1FF;
+                border-right: 23px solid #7EA1FF;
+
+                &:last-child {
+                    border-bottom: 4px solid #7EA1FF;
+                }
+            }
+
+            td, th {
+                //border:1px solid rgba(0, 0, 0, 0.23);
+                border-right: 1px solid rgba(0, 0, 0, 0.23);
+                border-left: 1px solid rgba(0, 0, 0, 0.23);
+                //border-top: 2px solid black;
+                height: 8vh;
+                text-align: center;
+
+                p {
+                    margin: 1vh;
+                }
+
+                .buttonsTable {
+
+                    button {
+                        cursor: pointer;
+                        margin: 5px;
+                        width: 10vh;
+                    }
+
+                    .buttonDelete {
+                        border-color: #DD5544;
+                        color: #DD5544;
+                    }
+
+                    .buttonDelete:hover {
+                        background: #DD5544;
+                        color: #FFFFFF;
+                    }
+                }
+            }
+
+            .collCheckbox {
+                width: 4%;
+                text-align: center;
+            }
+
+            input {
+                margin-bottom: 1vh;
+                width: 80%;
+            }
+        }
+
+        .buttonsContainer {
+            width: 100%;
+
+            div {
+                float: right;
+                padding: 1vh;
+
+                button {
+                    cursor: pointer;
+                    min-width: 100px;
+                    margin: 5px;
+                }
+            }
+        }
+    }
+
+    .containerFunction {
+        display: flex;
+        flex-direction: row;
+        width: 80%;
+        margin: 2vh;
+
+        button {
+            margin: 0 1vh;
+            min-width: 100px;
+            cursor: pointer;
+        }
+    }
+}
+
+.collNarrow {
+    width: 5%;
+}
+
+.collMid {
+    width: 10%;
+}
+
+.collWide {
+    width: 15%;
+}
+
+.collState {
+    width: 12vh;
+}
+
+.headRow {
+    background-color: #7EA1FF;
+}
+
+button {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.cal {
+    background-color: red;
+}
+
+.datePickerPart {
+    display: flex;
+    justify-content: center;
+
+    .datePickerPartLeft {
+        margin-left: 25vh;
+    }
+
+    .datePickerPartRight {
+        justify-content: center;
+    }
+}
+
+.mailHref {
+    color: #1a252f;
+    text-decoration: none;
+}
+
+form {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 2vh;
+  background-color: #e3eeff;
+  border-radius: 2vh;
+  padding: 2%;
+
+
+
+  label {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      margin-top: 1vh;
+    }
+  }
 }
-.heading {
-  padding-right: 20vh;
-}
-.undercalendar{
-  display: flex;
+
+.error{
+  color: red;
 }
