@@ -1,6 +1,6 @@
 import styles from './ModalNewCustomer.module.scss'
 import {ArcElement, Chart as ChartJS, Legend, Tooltip} from 'chart.js';
-import {getIn, useFormik} from 'formik';
+// import {getIn, useFormik} from 'formik';
 import {useState} from "react";
 import logo from "../../../../assets/resnow.png";
 import ReactTooltip from "react-tooltip";

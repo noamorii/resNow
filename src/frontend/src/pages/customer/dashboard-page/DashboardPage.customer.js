@@ -1,5 +1,10 @@
 import styles from './DashboardPage.module.scss'
-import photo from './photo.jpg'
+import photoOther from './event-backgrounds/photo.jpg'
+import photoPub from './event-backgrounds/pub.jpeg'
+import photoTheater from './event-backgrounds/theatre.jpeg'
+import photoRestaurant from './event-backgrounds/restaurant.jpeg'
+import photoSport from './event-backgrounds/sport.jpeg'
+import photo from './event-backgrounds/photo.jpg'
 import star from './img.png'
 import {Link, useLocation} from "react-router-dom";
 import axios from "axios";
@@ -141,6 +146,30 @@ export const DashboardPageCustomer = () => {
             return response
         }
 
+        const fetchCategoryIDs = async (data) => {
+            let response = []
+            await Promise.all(data.map(async (e) => {
+                try {
+                    // let insertResponse = await fetchCategoryId(e.categoryId)
+                    // response.push(insertResponse)
+                } catch (error) {
+                    console.log('error' + error);
+                }
+            }))
+            return response
+        }
+
+        const fetchEventCategoryName = (id) => {
+            return new Promise((resolve, reject) => {
+                axios.get(
+                    `${baseUrl}/categories/${id}`,
+                    {headers: authHeader()}
+                ).then(response => {
+                    resolve(response.data)
+                }).catch(reject);
+            })
+        }
+
         const fetchId = (id) => {
             return new Promise((resolve, reject) => {
                 axios.get(
@@ -188,6 +217,17 @@ export const DashboardPageCustomer = () => {
         const events = await Promise.all([fetchEvents(slots[0])])
         const ids = await Promise.all([fetchIds(events[0])])
         setSystem(ids[0])
+
+        const eventType = await Promise.any([
+
+
+
+            axios.get(`${baseUrl}/users/${user.username}/reservations`,
+                {params: {fromDate: "2022-05-01", toDate: "2022-05-30"}, headers: authHeader()})
+        ])
+
+
+
         const fetchAddressUpComing = await Promise.any([
             fetchAddressUp(ids[0])
         ])
