@@ -300,7 +300,6 @@ export const DashboardPageCustomer = () => {
     if (reservations === undefined) {
         return (
             <div className={styles.loading}>
-                <h3>Loaduju</h3>
                 <div className={styles.logoContainer} onMouseOver={animateLogo}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="25vh" zoomAndPan="magnify"
                          viewBox="0 0 375 374.999991" height="25vh" preserveAspectRatio="xMidYMid meet" version="1.0">
