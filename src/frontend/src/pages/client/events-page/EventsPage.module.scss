@@ -104,7 +104,29 @@
 }
 
 .modalBody {
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 2vh;
+        background-color: #e3eeff;
+        border-radius: 2vh;
+        padding: 2%;
 
+
+
+        label {
+            display: flex;
+            flex-direction: column;
+
+            input {
+                margin-top: 1vh;
+            }
+        }
+    }
+
+    .error{
+        color: red;
+    }
 }
 
 .modalFooter {
