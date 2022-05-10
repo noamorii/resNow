@@ -30,7 +30,8 @@ export const ReservationsPageCustomer = () => {
         let response = []
         await Promise.all(data.map(async (e) => {
             try {
-                let insertResponse = await fetchSlot(e.reservationId)
+                let insertResponse = await fetchSlot(e.reservationSlotId)
+                console.log(insertResponse)
                 response.push(insertResponse)
             } catch (error) {
                 console.log('error' + error);
@@ -55,7 +56,7 @@ export const ReservationsPageCustomer = () => {
         let response = []
         await Promise.all(data.map(async (e) => {
             try {
-                let insertResponse = await fetchEvent(e.seatIdentifier)
+                let insertResponse = await fetchEvent(e.eventId)
                 response.push(insertResponse)
             } catch (error) {
                 console.log('error' + error);
@@ -96,6 +97,7 @@ export const ReservationsPageCustomer = () => {
                 )
             ]
         )
+        console.log(reservations[0].data)
         const slots = await Promise.all([fetchSlots(reservations[0].data)])
         setSlots(slots[0])
         const events = await Promise.all([fetchEvents(slots[0])])
