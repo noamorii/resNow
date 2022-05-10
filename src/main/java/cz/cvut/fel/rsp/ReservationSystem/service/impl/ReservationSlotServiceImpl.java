@@ -43,7 +43,7 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
         LocalDate currentDate = event.getStartDate();
         LocalDate endDate = event.getRepeatUntil();
 
-        while (repetition.equals(Repetition.NONE) || !currentDate.isAfter(endDate)){
+        while (repetition.equals(Repetition.NONE) || !currentDate.isAfter(endDate)) {
             // Calls one of the methods, that generate the timeslots on one day. E. g. generateIntervalTimeSlots
             event.visit(this, currentDate);
 
@@ -59,7 +59,7 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
         Duration timeBetween = event.getTimeBetweenIntervals();
         LocalTime currentTime = event.getFromTime();
 
-        while (currentTime.isBefore(event.getToTime())){
+        while (currentTime.isBefore(event.getToTime())) {
             Interval interval = new Interval();
             interval.setDate(date);
             interval.setEvent(event);
@@ -74,7 +74,7 @@ public class ReservationSlotServiceImpl implements ReservationSlotService {
     @Override
     public void generateSeatSlots(SeatEvent event, LocalDate date) {
         int seatAmount = event.getSeatAmount();
-        for (int i = 0; i < seatAmount; i++){
+        for (int i = 0; i < seatAmount; i++) {
             Seat seat = new Seat();
             seat.setPrice(100); // TODO hardcoded price
             seat.setDate(date);

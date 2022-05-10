@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.ReservationSystem.service.impl;
 
+import cz.cvut.fel.rsp.ReservationSystem.dao.CategoryRepository;
 import cz.cvut.fel.rsp.ReservationSystem.dao.EventRepository;
 import cz.cvut.fel.rsp.ReservationSystem.exception.EventException;
 import cz.cvut.fel.rsp.ReservationSystem.model.enums.Repetition;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
+    private final CategoryRepository categoryRepository;
 
     private final ReservationSlotServiceImpl reservationSlotService;
 
@@ -43,6 +45,7 @@ public class EventServiceImpl implements EventService {
         }
 
         eventRepository.save(event);
+        categoryRepository.save(category);
         reservationSlotService.generateTimeSlots(event);
     }
 

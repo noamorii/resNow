@@ -6,6 +6,7 @@ import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.IntervalEvent;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.SeatEvent;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.DayOfWeek;
@@ -15,10 +16,10 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class EventDTO {
 
     private Integer id;
-
     private String name;
 
     private LocalTime fromTime;
@@ -44,8 +45,7 @@ public class EventDTO {
 
     private Integer seatAmount;
 
-    public EventDTO(Event event) {
-        this.id = event.getId();
+    public EventDTO(SeatEvent event) {
         this.name = event.getName();
         this.fromTime = event.getFromTime();
         this.toTime = event.getToTime();
@@ -55,16 +55,54 @@ public class EventDTO {
         this.day = event.getDay();
         this.categoryId = event.getCategory().getId();
 
-        if (event instanceof CustomTimeEvent)
-            this.minimalReservationTime = ((CustomTimeEvent) event).getMinimalReservationTime();
+        this.seatAmount = event.getSeatAmount();
+    }
 
-        else if (event instanceof IntervalEvent) {
+    public EventDTO(CustomTimeEvent event) {
+        this.name = event.getName();
+        this.fromTime = event.getFromTime();
+        this.toTime = event.getToTime();
+        this.startDate = event.getStartDate();
+        this.repeatUntil = event.getRepeatUntil();
+        this.repetition = event.getRepetition();
+        this.day = event.getDay();
+        this.categoryId = event.getCategory().getId();
+
+        this.minimalReservationTime = event.getMinimalReservationTime();
+    }
+
+    public EventDTO(IntervalEvent event) {
+        this.name = event.getName();
+        this.fromTime = event.getFromTime();
+        this.toTime = event.getToTime();
+        this.startDate = event.getStartDate();
+        this.repeatUntil = event.getRepeatUntil();
+        this.repetition = event.getRepetition();
+        this.day = event.getDay();
+        this.categoryId = event.getCategory().getId();
+
+        this.timeBetweenIntervals = event.getTimeBetweenIntervals();
+        this.intervalDuration = event.getIntervalDuration();
+    }
+
+    public EventDTO(Event event) {
+        this.name = event.getName();
+        this.fromTime = event.getFromTime();
+        this.toTime = event.getToTime();
+        this.startDate = event.getStartDate();
+        this.repeatUntil = event.getRepeatUntil();
+        this.repetition = event.getRepetition();
+        this.day = event.getDay();
+        this.categoryId = event.getCategory().getId();
+
+
+        if (event instanceof CustomTimeEvent) {
+            this.minimalReservationTime = ((CustomTimeEvent) event).getMinimalReservationTime();
+        } else if (event instanceof IntervalEvent) {
             IntervalEvent interval = ((IntervalEvent) event);
             this.timeBetweenIntervals = interval.getTimeBetweenIntervals();
             this.intervalDuration = interval.getIntervalDuration();
-        }
-
-        else if (event instanceof SeatEvent)
+        } else if (event instanceof SeatEvent)
             this.seatAmount = ((SeatEvent) event).getSeatAmount();
     }
 }

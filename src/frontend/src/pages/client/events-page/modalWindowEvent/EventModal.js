@@ -1,33 +1,13 @@
 import React from 'react';
 import styles from "../EventsPage.module.scss";
 
-let dateFrom = "";
-let dateTo = "";
-let title = localStorage.getItem("eventTitle");
-
-if(localStorage.getItem("eventFrom") !== null && localStorage.getItem("eventTo") !== null) {
-    for(let i  = 0; i < localStorage.getItem("eventFrom").length; i++) {
-        if(localStorage.getItem("eventFrom").charAt(i) !== 'G') {
-            dateFrom += localStorage.getItem("eventFrom").charAt(i);
-        } else {
-            break;
-        }
-    }
-
-    for(let j  = 0; j < localStorage.getItem("eventTo").length; j++) {
-        if(localStorage.getItem("eventTo").charAt(j) !== 'G') {
-            dateTo += localStorage.getItem("eventTo").charAt(j);
-        } else {
-            break;
-        }
-    }
-}
-
-//event button
-//works only cancel
-//TODO lefted buttons
 
 function EventModal({closeModal}) {
+
+    let title = localStorage.getItem("eventTitle");
+    let dateFrom = localStorage.getItem("eventStart").substring(0, 24);
+    let dateTo = localStorage.getItem("eventEnd").substring(0, 24);
+
     return (
         <div className={styles.eventModalBackground}>
             <div className={styles.eventContent}>
