@@ -105,6 +105,12 @@ public class SystemControllerImpl implements SystemController {
         return reservationSystem.getFeedback();
     }
 
+    @GetMapping(value = "/systems/{systemId}/feedback", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Feedback> getSystemFeedback(@PathVariable Integer systemId) {
+        ReservationSystem reservationSystem = reservationSystemService.find(systemId);
+        return reservationSystem.getFeedback();
+    }
+
     @GetMapping(value = "/systems/{systemId}/customers", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDTO> getCustomers(@PathVariable Integer systemId) {
         ReservationSystem reservationSystem = reservationSystemService.find(systemId);
