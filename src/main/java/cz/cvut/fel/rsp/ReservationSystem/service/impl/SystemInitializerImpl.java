@@ -65,6 +65,10 @@ public class SystemInitializerImpl implements SystemInitializer {
         if (Arrays.asList(environment.getActiveProfiles()).contains("testprofile")) {
             return;
         }
+        if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
+            log.info("prod env, skip init");
+            return;
+        }
 
         List<String[]> userRecords = readCsvData("src/main/resources/generatorCSVs/users.csv");
         List<String[]> systemRecords = readCsvData("src/main/resources/generatorCSVs/reservation_systems.csv");
@@ -243,11 +247,11 @@ public class SystemInitializerImpl implements SystemInitializer {
     private void generateFeedbacks(List<String[]> feedbackRecords, List<ReservationSystem> systems) {
         log.info("Generating feedbacks");
         for (ReservationSystem system : systems) {
-            List<String[]> systemFeedbacks = feedbackRecords.stream().filter(f -> Integer.valueOf(f[0]).equals(system.getId())).collect(Collectors.toList());
+            List<String[]> systemFeedbacks = feedbackRecords.stream().filter(f -> Integer.valueOf(f[1]).equals(system.getId())).collect(Collectors.toList());
             List<Feedback> feedbacks = new ArrayList<>();
             for (String[] feedbackData : systemFeedbacks) {
                 Feedback feedback = new Feedback();
-                feedback.setMessage(feedbackData[2]);
+                feedback.setMessage(feedbackData[0]);
                 feedbacks.add(feedback);
             }
             feedbackService.createFeedbacks(feedbacks, system);

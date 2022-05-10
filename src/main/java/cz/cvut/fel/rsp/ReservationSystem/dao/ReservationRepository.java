@@ -15,11 +15,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query(value = "select p from Reservation p where p.user = ?1")
     List<Reservation> findAllUsersReservations(User user);
 
+    @Query(value = "select p from Reservation p where p.user.id = :user_id")
+    List<Reservation> findAllUsersReservations(@Param("user_id") int user_id);
+
     @Query(value = "SELECT r FROM Reservation r WHERE r.id = :reservation_id")
     Reservation findReservationById(@Param("reservation_id") Integer reservationId);
 
     @Query(value = "SELECT r FROM Reservation r WHERE r.user.id = :user_id AND r.payment IS NULL")
-    List<Reservation> findAllUsersUnpaidReservations(@Param("user_id")Integer userId);
+    List<Reservation> findAllUsersUnpaidReservations(@Param("user_id") Integer userId);
 
     @Query(value = "SELECT r FROM Reservation r where r.reservationSlot.id = :reservationSlot_id AND r.cancelled = false")
     Reservation findNotCancelledReservationForReservationSlot(@Param("reservationSlot_id") Integer slotId);

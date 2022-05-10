@@ -1,30 +1,30 @@
-Source 1 for reservation system with id 1,Source1
-Source 2 for reservation system with id 1,Source2
-Source 3 for reservation system with id 1,Source3
-Source 1 for reservation system with id 2,Source4
-Source 1 for reservation system with id 3,Source5
-Source 2 for reservation system with id 3,Source6
-Source 3 for reservation system with id 3,Source7
-Source 4 for reservation system with id 3,Source8
-Source 1 for reservation system with id 4,Source9
-Source 2 for reservation system with id 4,Source10
-Source 3 for reservation system with id 4,Source11
-Source 4 for reservation system with id 4,Source12
-Source 1 for reservation system with id 5,Source13
-Source 2 for reservation system with id 5,Source14
-Source 3 for reservation system with id 5,Source15
-Source 1 for reservation system with id 6,Source16
-Source 2 for reservation system with id 6,Source17
-Source 3 for reservation system with id 6,Source18
-Source 4 for reservation system with id 6,Source19
-Source 1 for reservation system with id 7,Source20
-Source 2 for reservation system with id 7,Source21
-Source 3 for reservation system with id 7,Source22
-Source 4 for reservation system with id 7,Source23
-Source 1 for reservation system with id 8,Source24
-Source 2 for reservation system with id 8,Source25
-Source 1 for reservation system with id 9,Source26
-Source 2 for reservation system with id 9,Source27
-Source 3 for reservation system with id 9,Source28
-Source 1 for reservation system with id 10,Source29
-Source 2 for reservation system with id 10,Source30
+Source 1 for reservation system with id 1,Restaurace
+Source 2 for reservation system with id 1,Sportoviste
+Source 3 for reservation system with id 1,Sportoviste
+Source 1 for reservation system with id 2,Hospoda
+Source 1 for reservation system with id 3,Prostor vykonavani sluzeb
+Source 2 for reservation system with id 3,Restaurace
+Source 3 for reservation system with id 3,Sportoviste
+Source 4 for reservation system with id 3,Restaurace
+Source 1 for reservation system with id 4,Divadelni kino sal
+Source 2 for reservation system with id 4,Prostor vykonavani sluzeb
+Source 3 for reservation system with id 4,Restaurace
+Source 4 for reservation system with id 4,Sportoviste
+Source 1 for reservation system with id 5,Divadelni kino sal
+Source 2 for reservation system with id 5,Sportoviste
+Source 3 for reservation system with id 5,Hospoda
+Source 1 for reservation system with id 6,Prostor vykonavani sluzeb
+Source 2 for reservation system with id 6,Sportoviste
+Source 3 for reservation system with id 6,Restaurace
+Source 4 for reservation system with id 6,Divadelni kino sal
+Source 1 for reservation system with id 7,Sportoviste
+Source 2 for reservation system with id 7,Prostor vykonavani sluzeb
+Source 3 for reservation system with id 7,Sportoviste
+Source 4 for reservation system with id 7,Prostor vykonavani sluzeb
+Source 1 for reservation system with id 8,Sportoviste
+Source 2 for reservation system with id 8,Hospoda
+Source 1 for reservation system with id 9,Prostor vykonavani sluzeb
+Source 2 for reservation system with id 9,Prostor vykonavani sluzeb
+Source 3 for reservation system with id 9,Restaurace
+Source 1 for reservation system with id 10,Divadelni kino sal
+Source 2 for reservation system with id 10,Prostor vykonavani sluzeb
