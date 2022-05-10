@@ -6,7 +6,8 @@ import {baseUrl} from "../../../../config/const";
 import authHeader from "../../../../services/auth-header";
 
 
-function Modal({ closeModal }) {
+function Modal({ closeModal, onExit }) {
+
     const [date, setDate] = useState(new DateObject());
 
     const [events, setEvents] = useState([]);
@@ -15,7 +16,7 @@ function Modal({ closeModal }) {
     const [currEvent, setEvent] = useState(events[0]);
     const [currUser, setUser] = useState(null);
     const [timeslots, setTimeslots] = useState([]);
-    const [currTS, setCurrTS] = useState([]);
+    const [currTS, setCurrTS] = useState(null);
     const [description, setDescription] = useState("no desc");
     const [customers, setCustomers] = useState([]);
 
@@ -27,17 +28,11 @@ function Modal({ closeModal }) {
     const [showError, setShowError] = useState(false);
 
     useEffect(()=>{
-        sendGetRequest(date.format("YYYY-MM-DD"))
+        setUser(null)
+        setCurrTS(null)
+        sendGetRequest(date.format("YYYY-MM-DD"));
+        getCustomers();
     }, [date])
-
-
-    useEffect(()=>{
-        if ((firstUseEffect === true) && (currEvent !== undefined)){
-            getTS(currEvent.id, date.format("YYYY-MM-DD"))
-        } else {
-            setFirstUF(true)
-        }
-    }, [currEvent])
 
 
     const sendGetRequest = async (date) => {
@@ -48,48 +43,34 @@ function Modal({ closeModal }) {
                 {headers: authHeader()})
             let system = resp0.data.id;
 
-            const respSources = await axios.get(
-                `${baseUrl}/systems/${system}/sources/`,
-                {headers: authHeader()})
-            setSources(respSources.data)
-            setSource(respSources.data[0].name)
-
             const respEvents = await axios.get(
                 `${baseUrl}/systems/${system}/events/`,
                 {params: {fromDate: date, toDate: date},
                     headers: authHeader()})
             setEvents(respEvents.data)
             setEvent(respEvents.data[0])
-
-            const respCustomers = await axios.get(
-                `${baseUrl}/systems/my/customers/`,
-                {headers: authHeader()})
-            let tmp = []
-            for (let i = 0; i < respCustomers.data.length; i++) {
-                tmp.push(respCustomers.data[i].username)
-            }
-            setCustomers(tmp)
-
+            console.log(respEvents.data[0].id)
+            getTS(respEvents.data[0].id, date)
+            console.log(respEvents.data)
         } catch (err) {
             // Handle Error Here
-            //console.error(err);
+            console.error(err);
             console.log("Didnt find any Events for given date")
+            setTimeslots([])
             setShowError(true)
         }
     };
 
-    const getUser = async (username) => {
-        try {
-            const resp = await axios.get(
-                `${baseUrl}/users/${username}`,
-                {headers: authHeader()})
-            setUser(resp.data.username)
-            //console.log(resp.data.username)
+    const getCustomers = async () => {
+        const respCustomers = await axios.get(
+            `${baseUrl}/systems/my/customers/`,
+            {headers: authHeader()})
 
-        } catch (err) {
-            // Handle Error Here
-            console.error(err);
+        let tmp = []
+        for (let i = 0; i < respCustomers.data.length; i++) {
+            tmp.push(respCustomers.data[i].username)
         }
+        setCustomers(tmp)
     }
 
     const getTS = async (event, date) => {
@@ -99,29 +80,42 @@ function Modal({ closeModal }) {
                 {params: {fromTimestamp: date, toTimestamp: date},
                     headers: authHeader()})
             setTimeslots(resp.data)
-            setCurrTS(resp.data[0])
+            setCurrTS(resp.data[0].id)
             //console.log(resp.data)
 
         } catch (err) {
             // Handle Error Here
-            //console.error(err);
-            console.log("No user found")
+            console.error(err);
         }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        getUser(e.target.username.value)
-        console.log("-----")
-        console.log(e.target.description.value)
-        console.log(currUser)
-        console.log(currTS.id)
-        console.log("-----")
-        createReservationDTO(e.target.description.value, currTS.id, currUser)
+        if (currUser === null){
+            alert("NO USER CHOSEN")
+            return
+        }
+        if (currTS === null){
+            alert("NO TIMESLOT CHOSEN")
+            return
+        }
+
         try {
             axios.post(
-                `${baseUrl}/slots/${currTS.id}`,
-                {resDTO, headers: authHeader()})
+                `${baseUrl}/slots/${currTS}/admin/`,
+                {
+                    "paymentId": 0,
+                    "reservationId": counter,
+                    "additionalInfo": e.target.description.value,
+                    "reservationSlotId": currTS,
+                    "username": currUser
+                    },
+                {
+                    headers: authHeader()
+                })
+            alert("Reservation Created!:)")
+            closeModal(false)
+            onExit()
 
         } catch (err) {
             // Handle Error Here
@@ -131,23 +125,11 @@ function Modal({ closeModal }) {
 
     }
 
-    function createReservationDTO(description, slotId, username){
-        let tmp = {
-            "paymentId": 0,
-            "reservationId": counter
-        }
-        counter += 1;
-        tmp["additionalInfo"] = description;
-        tmp["cancelled"] = false;
-        tmp["reservationSlotId"] = slotId;
-        tmp["username"] = username;
-        setResDTO(tmp)
-    }
-
     function makeButtonCustomer(data) {
         return (
             <button
-                style={styles.customerBtn}
+                key={data}
+                className={styles.customerBtn}
                 type="button"
                 value={data}
                 onClick={clickedCustomer}>
@@ -160,9 +142,6 @@ function Modal({ closeModal }) {
         setUser(e.target.value)
         console.log(e.target.value)
     }
-
-
-    const changeCurrTS = () => {}
 
     const changeTS = (e) => {
         setCurrTS(e.target.value)
@@ -193,7 +172,7 @@ function Modal({ closeModal }) {
                     }
 
                     <h3>Choose TimeSlot/Seat</h3>
-                    {timeslots !== [undefined] &&
+                    {timeslots !== [] &&
                         <select onChange={changeTS}>{
                             timeslots.map((ts) => {
                                 if(ts.hasOwnProperty('seatIdentifier'))
@@ -201,14 +180,13 @@ function Modal({ closeModal }) {
                                 else return <option value={ts.id} key={ts.id}>EndTime: {ts.endTime}</option>
                             })
                         })
-
                         }</select>
                     }
 
                     <div className={styles.userDetails}>
+
+                        <label htmlFor="username"><b>Choose customer:</b></label>
                         {customers.map(makeButtonCustomer, this)}
-                        <label htmlFor="username">Username:</label>
-                        <input id="username" name="username" className={'input-primary search sh sm'} placeholder={'Find user'} type="text"/>
                     </div>
 
                     <textarea id="description" name="description" rows="5" >Add additional description</textarea>
@@ -217,10 +195,11 @@ function Modal({ closeModal }) {
                         <p>SUBMIT</p>
                     </button>
                 </form>
-
-                <button className={'button-primary '.concat(styles.modalButton)} onClick={() => closeModal(false)}>
-                    <p>CANCEL</p>
-                </button>
+                <div className={styles.cancelButton}>
+                    <button className={'button-primary '} onClick={() => closeModal(false)}>
+                        <p>CANCEL</p>
+                    </button>
+                </div>
             </div>
         </div>
     )

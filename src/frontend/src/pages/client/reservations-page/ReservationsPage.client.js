@@ -40,6 +40,7 @@ const DatePicker = ( {getDate} ) => {
 }
 
 const Table = () => {
+    const reload=()=>window.location.reload();
     const [date, setDate] = useState(new DateObject())
 
     const [data, setData] = useState([]);
@@ -95,6 +96,9 @@ const Table = () => {
             )
             reservation["date"] = respSlot.data.date;
             reservation["pricing"] = respSlot.data.price;
+            if (respSlot.data.hasOwnProperty('seatIdentifier')){
+                reservation["seatIdentifier"] = respSlot.data.seatIdentifier
+            }
 
             const respEvent = await axios.get(
                 `${baseUrl}/events/${respSlot.data.eventId}`,
@@ -145,6 +149,10 @@ const Table = () => {
         }
     }
 
+    const afterModalClose = () => {
+        window.location.reload();
+    }
+
     return (
         <div>
             <div className={styles.datePickerPart}>
@@ -166,7 +174,7 @@ const Table = () => {
                 </div>
             </div>
             {openModal && <ModalReservationDetails closeModal={setOpenModal}/>}
-            {openModalCreateReservation && <ModalCreateReservation closeModal={setOpenModalCreateReservation}/>}
+            {openModalCreateReservation && <ModalCreateReservation closeModal={setOpenModalCreateReservation} onExit={reload}/>}
             <div className={styles.tableContainer}>
                 <table>
                     <thead>
@@ -198,7 +206,7 @@ const Table = () => {
                             <p>DATE</p>
                         </td>
                         <td className={styles.collMid}>
-                            <button className={'button-primary'} onClick={() => setOpenModalCreateReservation(true)}>New reservation</button>
+                            <button className={'button-primary'} onClick={() => setOpenModalCreateReservation(true)}>Create Reservation</button>
                         </td>
                     </tr>
                     </thead>
@@ -232,11 +240,14 @@ const Table = () => {
                             </tr>
                                 {detailsShown.includes(reservation.reservationId) && (
                                     <tr>
-                                        <td colSpan="2" className={styles.toggleInfo}>
-                                            PHONE NUMBER: <br/>{reservation.phone}</td>
-                                        <td colSpan="3" className={styles.toggleInfo}>SOURCES: <br/>{reservation.sources}</td>
+                                        {reservation.hasOwnProperty('seatIdentifier')?
+                                            <td colSpan="2" className={styles.toggleInfo}>
+                                                SEAT: <br/>{reservation.seatIdentifier}</td>:
+                                            <td colSpan="2" className={styles.toggleInfo}>
+                                            </td>}
+                                        <td colSpan="2" className={styles.toggleInfo}>SOURCES: <br/>{reservation.sources}</td>
                                         <td colSpan="2" className={styles.toggleInfo}>E-MAIL: <br/><a className={styles.mailHref} href={"mailto:" + reservation.userEmail}>{reservation.userEmail}</a></td>
-                                        <td colSpan="1" className={styles.toggleInfo}>DATE OF RESERVATION: <br/>{reservation.created}</td>
+                                        <td colSpan="2" className={styles.toggleInfo}>DESCRIPTION: <br/>{reservation.additionalInfo}</td>
                                         <td> </td>
                                     </tr>
                                 )}

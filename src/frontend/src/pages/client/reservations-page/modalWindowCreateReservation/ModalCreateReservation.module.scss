@@ -29,7 +29,7 @@
   //margin-top: 7vh;
   margin-left: auto;
   margin-right: auto;
-  padding: 5vh;
+  padding: 3vh;
 
   display: block;
   justify-content: space-around;
@@ -58,6 +58,14 @@
 }
 .popisDate{
   padding-right: 20px;
+}
+.customerBtn:focus{
+  color: #0D6EFD;
+}
+.cancelButton{
+  margin-top: 3vh;
+  display: flex;
+  justify-content: space-around;
 }
 
 
