@@ -133,14 +133,18 @@ public class SystemControllerImpl implements SystemController {
         ReservationSystem reservationSystem = userService.findMyReservationSystem(user);
 
         List<Reservation> reservations = reservationService.findAllReservations(reservationSystem);
-        List<UserDTO> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+        List<UserDTO> result = new ArrayList<>();
         for (Reservation reservation : reservations) {
             User userik = reservation.getUser();
             if (!users.contains(userik)) {
-                users.add(new UserDTO(userik));
+                users.add(userik);
             }
         }
-        return users;
+        for (User userTmp : users){
+            result.add(new UserDTO(userTmp));
+        }
+        return result;
     }
 
     @GetMapping(value = "/systems/my/sources", produces = MediaType.APPLICATION_JSON_VALUE)
