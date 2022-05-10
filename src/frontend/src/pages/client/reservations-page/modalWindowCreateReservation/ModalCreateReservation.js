@@ -6,7 +6,7 @@ import {baseUrl} from "../../../../config/const";
 import authHeader from "../../../../services/auth-header";
 
 
-function Modal({ closeModal, onExit }) {
+function Modal({closeModal, onExit}) {
 
     const [date, setDate] = useState(new DateObject());
 
@@ -27,7 +27,7 @@ function Modal({ closeModal, onExit }) {
 
     const [showError, setShowError] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
         setUser(null)
         setCurrTS(null)
         sendGetRequest(date.format("YYYY-MM-DD"));
@@ -45,8 +45,10 @@ function Modal({ closeModal, onExit }) {
 
             const respEvents = await axios.get(
                 `${baseUrl}/systems/${system}/events/`,
-                {params: {fromDate: date, toDate: date},
-                    headers: authHeader()})
+                {
+                    params: {fromDate: date, toDate: date},
+                    headers: authHeader()
+                })
             setEvents(respEvents.data)
             setEvent(respEvents.data[0])
             console.log(respEvents.data[0].id)
@@ -77,8 +79,10 @@ function Modal({ closeModal, onExit }) {
         try {
             const resp = await axios.get(
                 `${baseUrl}/events/${event}/slots`,
-                {params: {fromTimestamp: date, toTimestamp: date},
-                    headers: authHeader()})
+                {
+                    params: {fromTimestamp: date, toTimestamp: date},
+                    headers: authHeader()
+                })
             setTimeslots(resp.data)
             setCurrTS(resp.data[0].id)
             //console.log(resp.data)
@@ -91,11 +95,11 @@ function Modal({ closeModal, onExit }) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (currUser === null){
+        if (currUser === null) {
             alert("NO USER CHOSEN")
             return
         }
-        if (currTS === null){
+        if (currTS === null) {
             alert("NO TIMESLOT CHOSEN")
             return
         }
@@ -109,7 +113,7 @@ function Modal({ closeModal, onExit }) {
                     "additionalInfo": e.target.description.value,
                     "reservationSlotId": currTS,
                     "username": currUser
-                    },
+                },
                 {
                     headers: authHeader()
                 })
@@ -148,7 +152,7 @@ function Modal({ closeModal, onExit }) {
         console.log(e.target.value)
     }
 
-    return(
+    return (
         <div className={styles.modalWindow}>
             <div className={styles.contentBody}>
                 <h1 className={styles.popisDate}>Nová rezervace:</h1>
@@ -161,8 +165,8 @@ function Modal({ closeModal, onExit }) {
                         />
                     </div>
                     {showError === false &&
-                        <select>{
-                            events.map( (event) =>
+                        <select className={'input-primary'}>{
+                            events.map((event) =>
                                 <option value={event.value} key={event.name}>{event.name}</option>)
                         }</select>}
 
@@ -173,23 +177,29 @@ function Modal({ closeModal, onExit }) {
 
                     <h3>Choose TimeSlot/Seat</h3>
                     {timeslots !== [] &&
-                        <select onChange={changeTS}>{
+                        <select onChange={changeTS} className={'input-primary'}>{
                             timeslots.map((ts) => {
-                                if(ts.hasOwnProperty('seatIdentifier'))
+                                if (ts.hasOwnProperty('seatIdentifier'))
                                     return <option value={ts.id} key={ts.id}>Seat: {ts.seatIdentifier}</option>
                                 else return <option value={ts.id} key={ts.id}>EndTime: {ts.endTime}</option>
                             })
                         })
-                        }</select>
+                            }</select>
                     }
 
-                    <div className={styles.userDetails}>
+                    <label className={styles.chooseCustomer}>
+                        <h3>Choose customer:</h3>
+                        <select className={'input-primary'} onChange={(e) => setUser(e.target.value)}>
+                            <option value={null}>None</option>
+                            {customers.map(customer => (
+                                <option value={customer}>{customer}</option>
+                            ))}
+                        </select>
+                    </label>
+                    {/*{customers.map(makeButtonCustomer, this)}*/}
 
-                        <label htmlFor="username"><b>Choose customer:</b></label>
-                        {customers.map(makeButtonCustomer, this)}
-                    </div>
 
-                    <textarea id="description" name="description" rows="5" >Add additional description</textarea>
+                    <textarea id="description" name="description" rows="5" placeholder={"Add additional description"}/>
 
                     <button type="submit" className={'button-primary '.concat(styles.modalButton)}>
                         <p>SUBMIT</p>

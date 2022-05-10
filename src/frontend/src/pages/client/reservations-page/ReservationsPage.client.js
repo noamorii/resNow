@@ -266,7 +266,6 @@ const Table = () => {
 export const ReservationsPageClient = () => {
     return(
         <div className={styles.container}>
-            <TopButtons/>
             <Table/>
         </div>
     )
