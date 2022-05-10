@@ -82,37 +82,17 @@ public class ReservationServiceImpl implements ReservationService {
         return this.filterReservations(allReservations, date, date);
     }
 
-    /**
-     * > Find all reservations that are unpaid for a given user
-     *
-     * @param user the user that is logged in
-     * @return List of all unpaid reservations for a user
-     */
     @Override
     public List<Reservation> findAllUnpaidReservations(User user) {
         return reservationRepository.findAllUsersUnpaidReservations(user.getId());
     }
 
-    /**
-     * Find all reservations for a given reservation system.
-     *
-     * @param reservationSystem The reservation system that the reservation belongs to.
-     * @return A list of all reservations for a given reservation system.
-     */
     @Override
     public List<Reservation> findAllReservations(ReservationSystem reservationSystem) {
         return reservationRepository.findAllReservationsForReservationSystem(reservationSystem.getId());
     }
 
 
-    /**
-     * Find all reservations in the given reservation system, and then filter them by the given date range.
-     *
-     * @param reservationSystem The reservation system to search for reservations in.
-     * @param from The start date of the period to search for reservations.
-     * @param to The end date of the period for which you want to find reservations.
-     * @return A list of reservations that are within the specified date range.
-     */
     @Override
     public List<Reservation> findAllReservations(ReservationSystem reservationSystem, LocalDate from, LocalDate to) {
         List<Reservation> allReservations = this.findAllReservations(reservationSystem);
