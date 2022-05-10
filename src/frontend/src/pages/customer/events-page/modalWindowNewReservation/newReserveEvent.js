@@ -33,6 +33,7 @@ function NewReserveEvent({closeModal}) {
         eventUtils.newReservation(slotId, name, info)
             .then(() => {
                 console.log("success")
+                closeModal(false)
             })
             .catch((e) => {
                 console.log(e);
@@ -41,19 +42,11 @@ function NewReserveEvent({closeModal}) {
 
     return (
         <div className={styles.modalBackground}>
-            <div className={styles.modalContent}>
-                <h1>{slotId}</h1>
+            <div className={styles.modalContentR}>
                 <div>
                     <div>
                         <p>Termín: {dateFrom} - {dateTo}</p>
                         <p>Price: {price}</p>
-                    </div>
-                    <div className={styles.modalInput}>
-                        <input type={"text"} placeholder={'Name'} id="name" value={date.name} onChange={handleChange}/>
-                        <input type={"text"} placeholder={'Surname'} id="surname" value={date.surname} onChange={handleChange}/>
-                        <input type={"email"} placeholder={'Email'} id="email" value={date.email} onChange={handleChange}/>
-                        <input type={"text"} placeholder={'Phone number'} id="phonenumber" value={date.phonenumber} onChange={handleChange}/>
-                        <input type={"text"} placeholder={'Capacity'} id="capacity" value={date.capacity} onChange={handleChange}/>
                     </div>
                 </div>
                 <div className={styles.modalButton}>

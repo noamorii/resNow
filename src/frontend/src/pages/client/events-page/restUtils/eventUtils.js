@@ -88,8 +88,7 @@ class EventUtils {
             "day": 6,
             "repetition": "DAILY",
             "categoryId": "0",
-            "timeBetweenIntervals": 60,
-            "intervalDuration": 60,
+            "minimalReservationTime": 0,
         }, {
             headers: authHeader()
         })

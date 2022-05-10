@@ -22,6 +22,7 @@ export const EventsPageClient = () => {
     const [data, setData] = useState();
 
     useEffect(() => {
+
         eventUtils.getAllEvents()
             .then(response => response.data)
             .then(data => {
