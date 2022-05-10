@@ -62,33 +62,29 @@ class EventUtils {
             })
     }
 
-    newSeatEvent(sourceId, name, timeFrom, timeTo, startDate, repeatUntil, day, repetition) {
-        return axios.post(`${baseUrl}/categories/${4}/events`, {
-            "name": "test eventu",
-            "fromTime": "09:00:00",
-            "toTime": "11:00:00",
-            "startDate": "2022-05-13",
-            "repeatUntil": "2022-05-14",
+    newSeatEvent(sourceId, name, timeFrom, timeTo, startDate, seat) {
+        return axios.post(`${baseUrl}/categories/${sourceId}/events`, {
+            "name": name,
+            "fromTime": timeFrom,
+            "toTime": timeTo,
+            "startDate": startDate,
+            "repeatUntil": startDate,
             "day": 3,
             "repetition": "DAILY",
             "categoryId": "0",
-            "seatAmount": 3,
+            "seatAmount": seat,
         }, {
             headers: authHeader()
         })
-            .then(response => {
-                console.log(response)
-                console.log("Event created")
-            })
     }
 
-    newIntervalEvent(sourceId, name, timeFrom, timeTo, startDate, repeatUntil, day, repetition) {
-        return axios.post(`${baseUrl}/categories/4/events`, {
-            "name": "test eventu",
-            "fromTime": "10:00:00",
-            "toTime": "11:00:00",
-            "startDate": "2022-05-11",
-            "repeatUntil": "2022-05-30",
+    newIntervalEvent(sourceId, name, timeFrom, timeTo, startDate) {
+        return axios.post(`${baseUrl}/categories/${sourceId}/events`, {
+            "name": name,
+            "fromTime": timeFrom,
+            "toTime": timeTo,
+            "startDate": startDate,
+            "repeatUntil": startDate,
             "day": 6,
             "repetition": "DAILY",
             "categoryId": "0",
@@ -97,11 +93,7 @@ class EventUtils {
         }, {
             headers: authHeader()
         })
-            .then(response => {
-                console.log(response)
-                console.log("Event created")
-            })
     }
 }
 
-export default  new EventUtils();
+export default new EventUtils();

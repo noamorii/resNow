@@ -32,17 +32,39 @@ export const Modal = (props) => {
     const [day, setDay] = useState('');
     const [repetition, setRepetition] = useState('NONE');
 
-    const [minimalReservationTime, setMinimalReservationTime] = useState(null);
-    const [seatAmount, setSeatAmount] = useState(null);
-    const [timeBetweenIntervals, setTimeBetweenIntervals] = useState(null);
-    const [intervalDuration, setIntervalDuration] = useState(null);
-    const [sourceId, setSourceId] = useState(null);
+    const [minimalReservationTime, setMinimalReservationTime] = useState(0);
+    const [seatAmount, setSeatAmount] = useState(1);
+    const [timeBetweenIntervals, setTimeBetweenIntervals] = useState(0);
+    const [intervalDuration, setIntervalDuration] = useState(0);
+    const [sourceId, setSourceId] = useState(0);
 
     const [eventType, setEventType] = useState(1)
 
     const [resources, setResources] = useState([]);
+    const [data, setData] = useState([]);
+
 
     useEffect(async () => {
+        const today = () => {
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = "";
+            let date = "";
+            if (today.getMonth() < 10) {
+                month = "0" + Number(today.getMonth() + 1);
+            } else {
+                month = today.getMonth();
+            }
+            if (today.getDate() < 10) {
+                date = "0" + Number(today.getMonth() + 1);
+            } else {
+                date = today.getDate();
+            }
+            const day = year + "-" + month + "-" + date;
+            return day;
+        }
+        setStartDate(today)
+
         const fetchSources = await Promise.any([
                 axios.get(
                     `${baseUrl}/systems/my/sources`,
@@ -55,88 +77,36 @@ export const Modal = (props) => {
 
 
     const handle = () => {
-        eventUtils.newIntervalEvent("test", "2022-05-09", "2022-05-11")
+        if (JSON.parse(data) === "None") {
+            console.log("Please choose a Source")
+        } else {
+            if (eventType === 1) {
+                eventUtils.newIntervalEvent(JSON.parse(data).address.id, name, fromTime, toTime, startDate).then(() => {
+                    props.closeModal()
+                    window.location.reload()
+                })
+            } else if (eventType === 2) {
+                eventUtils.newSeatEvent(JSON.parse(data).address.id, name, fromTime, toTime, startDate, seatAmount).then(() => {
+                    props.closeModal()
+                    window.location.reload()
+                })
+            }
+        }
+        // eventUtils.newIntervalEvent("test", "2022-05-09", "2022-05-11")
     }
 
-    const Int = () => {
+    const Seat = () => {
         return (
-            <>
-                <div className={styles.flex}>
-                    <label>
-                        <div>
-                            V období:
-                            <input type={"date"}
-                                   onChange={e => setStartDate(e.target.value)}/>
-                        </div>
-                    </label>
-
-                    <label>
-                        <div>
-                            od?
-                            <input type={"time"}
-                                   onChange={e => setFromTime(e.target.value)}/>
-                        </div>
-                    </label>
-
-                    <label>
-                        <div>
-                            do?
-                            <input type={"time"}
-                                   onChange={e => setToTime(e.target.value)}/>
-                        </div>
-                    </label>
-                </div>
-
-                <div className={styles.flex}>
-                    <label>
-                        <div>
-                            Velikost intervalu:
-                            <input type={"time"}
-                                   onChange={e => setIntervalDuration(e.target.value)}/>
-                        </div>
-                    </label>
-
-                    <label>
-                        <div>
-                            Minimální délka rezervace
-                            <input type={"time"}
-                                   onChange={e => setMinimalReservationTime(e.target.value)}/>
-                        </div>
-                    </label>
-                </div>
-            </>
-        )
-    }
-
-    const Custom = () => {
-        return (
-            <>
-                <div className={styles.flex}>
-                    <label>
-                        <div>
-                            V období:
-                            <input type={"date"}
-                                   onChange={e => setStartDate(e.target.value)}/>
-                        </div>
-                    </label>
-
-                    <label>
-                        <div>
-                            od?
-                            <input type={"time"}
-                                   onChange={e => setFromTime(e.target.value)}/>
-                        </div>
-                    </label>
-
-                    <label>
-                        <div>
-                            do?
-                            <input type={"time"}
-                                   onChange={e => setToTime(e.target.value)}/>
-                        </div>
-                    </label>
-                </div>
-            </>
+            <div className={styles.flex}>
+                <label>
+                    <div>
+                        Počet míst
+                        <input type={"number"}
+                               value={seatAmount}
+                               onChange={e => setSeatAmount(e.target.value)}/>
+                    </div>
+                </label>
+            </div>
         )
     }
 
@@ -148,25 +118,12 @@ export const Modal = (props) => {
                         <fieldset className={styles.eventType}>
                             <legend><h3>Vyberte typ termínu</h3></legend>
                             <div>
-                                <label htmlFor="interval">
-                                    <img src={allIn} alt={"eventType"}/>
-                                    <div>
-                                        <input type="radio" id="interval" name={"event"} value="interval"
-                                               checked={eventType === 1}
-                                               onChange={(e) => setEventType(1)}
-                                        />Intervaly
-                                    </div>
-                                </label>
-                            </div>
-
-                            <div>
-
                                 <label htmlFor="custom">
                                     <img src={lib} alt={"eventType"}/>
                                     <div>
                                         <input type="radio" id="custom" name={"event"} value="custom"
-                                               checked={eventType === 2}
-                                               onChange={(e) => setEventType(2)}
+                                               checked={eventType === 1}
+                                               onChange={(e) => setEventType(1)}
                                         />Libovolný čas
                                     </div>
                                 </label>
@@ -177,8 +134,8 @@ export const Modal = (props) => {
                                     <img src={fullSek} alt={"eventType"}/>
                                     <div>
                                         <input type="radio" id="sequence" name={"event"} value="sequence"
-                                               checked={eventType === 3}
-                                               onChange={(e) => setEventType(3)}
+                                               checked={eventType === 2}
+                                               onChange={(e) => setEventType(2)}
                                         />
                                         Seat
                                     </div>
@@ -196,16 +153,45 @@ export const Modal = (props) => {
                         </fieldset>
                         <fieldset className={styles.when}>
                             <legend><h3>Kdy?</h3></legend>
-                            {eventType === 1 ? <Int/> : null}
-                            {eventType === 2 ? <Custom/> : null}
-                            {eventType === 3 ? <Int/> : null}
+                            <div className={styles.flex}>
+                                <label>
+                                    <div>
+                                        V období:
+                                        <input type={"date"}
+                                               value={startDate}
+                                               onChange={e => setStartDate(e.target.value)}/>
+                                    </div>
+                                </label>
+
+                                <label>
+                                    <div>
+                                        od?
+                                        <input type={"time"}
+                                               value={fromTime}
+                                               onChange={e => setFromTime(e.target.value)}/>
+                                    </div>
+                                </label>
+
+                                <label>
+                                    <div>
+                                        do?
+                                        <input type={"time"}
+                                               value={toTime}
+                                               onChange={e => setToTime(e.target.value)}/>
+                                    </div>
+                                </label>
+                            </div>
+                            {eventType === 2 ? <Seat/> : null}
                         </fieldset>
                         <fieldset>
                             <legend><h3>Co?</h3></legend>
-                            <select className={'input-primary'}>
+                            <select className={'input-primary'} onChange={(e) => setData(e.target.value)}>
+                                <option value={JSON.stringify("None")}>
+                                    None
+                                </option>
                                 {resources.map(resource => {
                                     return (
-                                        <option>
+                                        <option value={JSON.stringify(resource)}>
                                             {resource.name}
                                             {resource.description}
                                         </option>

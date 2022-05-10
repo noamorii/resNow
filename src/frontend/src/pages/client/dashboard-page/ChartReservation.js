@@ -63,7 +63,6 @@ export const ChartReservation = () => {
                 date = today.getDate();
             }
             const day = year + "-" + month + "-" + date;
-            console.log(day)
             return day;
         }
 
