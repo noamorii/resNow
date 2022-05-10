@@ -39,7 +39,6 @@ export const EventsPageClient = () => {
                     }
                 })
                 setData(testEvents);
-                console.log(testEvents)
             });
     }, [])
 
