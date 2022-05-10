@@ -45,12 +45,12 @@ export const ContactSection = () => {
                     <div className={styles.formHeader}>
                         Get in touch
                     </div>
-                    <form className={styles.form} autoComplete="off">
+                    <div className={styles.form} autoComplete="off">
                         <input className={'input-primary'} placeholder={'Your name'} ></input>
                         <input className={'input-primary'} placeholder={'Your email'}></input>
                         <textarea className={'input-primary'} placeholder={'Your message'}></textarea>
                         <button className={'button-primary'}>Send</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
