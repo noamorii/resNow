@@ -1,8 +1,10 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.impl;
 
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Reservation;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.events.Event;
 import cz.cvut.fel.rsp.ReservationSystem.model.reservation.slots.ReservationSlot;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.CategoryDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.EventDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SlotDTO;
@@ -51,5 +53,12 @@ public class EventsControllerImpl implements EventsController {
         return reservations.stream()
                 .map(ReservationDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @GetMapping(value="/events/{event_id}/category")
+    public CategoryDTO getEventCategory(@PathVariable Integer event_id) {
+        Category category = eventService.find(event_id).getCategory();
+        return new CategoryDTO(category);
     }
 }

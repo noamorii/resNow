@@ -1,5 +1,7 @@
 package cz.cvut.fel.rsp.ReservationSystem.rest.interfaces;
 
+import cz.cvut.fel.rsp.ReservationSystem.model.reservation.Category;
+import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.CategoryDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.EventDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.ReservationDTO;
 import cz.cvut.fel.rsp.ReservationSystem.rest.DTO.SlotDTO;
@@ -16,4 +18,6 @@ public interface EventsController {
 
     // GET /events/{event_id}/reservations?from=""&to""
     public List<ReservationDTO> getReservations(Integer eventId, LocalDate fromTimestamp, LocalDate toTimestamp, boolean canceled);
+
+    CategoryDTO getEventCategory(Integer eventId);
 }
