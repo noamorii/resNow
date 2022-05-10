@@ -10,10 +10,8 @@ let currentDay = new Date(current.setDate(first)).toISOString().substring(0, 10)
 let lastDay = new Date(current.setDate(last)).toISOString().substring(0, 10);
 
 class EventUtils {
-    //TODO id of selected event
-    //get all slots of event [name, timeFrom, timeTo]
-    getAllSlots() {
-        return axios.get(`${baseUrl}/events/78/slots`, {
+    getAllSlots(id) {
+        return axios.get(`${baseUrl}/events/${id}/slots`, {
             headers: authHeader(),
             params: {
                 fromTimestamp: currentDay,

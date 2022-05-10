@@ -8,6 +8,7 @@ import authHeader from "../../../services/auth-header";
 import {useEffect, useState} from "react";
 import {forEach} from "react-bootstrap/ElementChildren";
 import AuthService from "../../../services/auth.service";
+import {EventsPageCustomer} from "../events-page/EventsPage.customer";
 
 const DashboardNavigation = () => {
     const location = useLocation();
@@ -41,6 +42,9 @@ export const DashboardPageCustomer = () => {
     const [event, setEvents] = useState([]);
     const [slots, setSlots] = useState([]);
     const [system, setSystem] = useState([]);
+    const [show, setShow] = useState(false);
+
+    const [data, setData] = useState(null);
 
     // const date = new Date().toISOString().split("T")[0]
 
@@ -159,13 +163,11 @@ export const DashboardPageCustomer = () => {
         const slots = await Promise.all([fetchSlots(reservations.data)])
         setSlots(slots[0])
         const events = await Promise.all([fetchEvents(slots[0])])
-        setEvents(events[0]);
         const ids = await Promise.all([fetchIds(events[0])])
         setSystem(ids[0])
         const fetchAddressUpComing = await Promise.any([
             fetchAddressUp(ids[0])
         ])
-        console.log(fetchAddressUpComing)
         setAddressesUpComing(fetchAddressUpComing.map(r => {
             return r[0].address
         }))
@@ -234,63 +236,143 @@ export const DashboardPageCustomer = () => {
         await axios.get(`${baseUrl}/users/${user.username}/reservations`,
             {params: {fromDate: "2022-05-01", toDate: "2022-05-30"}, headers: authHeader()})
             .then(resp => setReservations(resp.data))
+
+
+        const fetchSystemsEvent = async (id) => {
+            return new Promise((resolve, reject) => {
+                axios.get(`${baseUrl}/systems/${id}/events`,
+                    {params: {fromDate: "2022-05-01", toDate: "2022-05-30"}, headers: authHeader()}
+                ).then(response => {
+                    resolve(response.data)
+                }).catch(reject);
+            })
+        }
+
+        const fetchSystemsEvents = async (data) => {
+            let response = []
+            await Promise.all(data.map(async (e) => {
+                try {
+                    let insertResponse = await fetchSystemsEvent(e.id)
+                    insertResponse.system = e;
+                    response.push(insertResponse)
+                } catch (error) {
+                    console.log('error' + error);
+                }
+            }))
+            return response
+        }
+
+        const systemx = await Promise.all(
+            [axios.get(`${baseUrl}/systems`,
+                {headers: authHeader()})
+            ])
+
+        const fetchedSystemsEvents = await Promise.all([
+                fetchSystemsEvents(systemx[0].data)
+            ]
+        )
+        setEvents(fetchedSystemsEvents[0]);
     }
 
     return (
         <div className={styles.container}>
-            <DashboardNavigation/>
-            <div className={styles.upcomingSections}>
-                <p className={styles.title}>Your upcoming reservations</p>
-                <div className={styles.blocks}>
-                    {reservations.slice(0, 3).map((name, i) => (
-                        <div className={styles.block} key={i}>
-                            <img src={photo}/>
-                            <p className={styles.name}>{systems[i].name}</p>
-                            <p>{addressesUpComing[i].city}, {addressesUpComing[i].street} {addressesUpComing[i].houseNumber}</p>
-                            <div className={styles.rating}>
-                                <p>9.8</p>
-                                <img src={star}/>
-                            </div>
+            {show ? <EventsPageCustomer system={data} onClose={() => setShow(false)}/> :
+                <>
+                    <DashboardNavigation/>
+                    <div className={styles.upcomingSections}>
+                        <p className={styles.title}>Your upcoming reservations</p>
+                        <div className={styles.blocks}>
+                            {reservations.slice(0, 3).map((name, i) => (
+                                <div className={styles.block} key={i}>
+                                    <img src={photo}/>
+                                    <p>{systems[i].name}</p>
+                                    <p>{addressesUpComing[i].city}, {addressesUpComing[i].street} {addressesUpComing[i].houseNumber}</p>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-            </div>
+                    </div>
 
 
-            <div className={styles.sections}>
-                <p className={styles.title}>Recent visits</p>
-                <div className={styles.blocks}>
-                    {systems.slice(0, 3).map((system, i) => (
-                        <div className={styles.block} key={i}>
-                            <img src={photo}/>
-                            <p className={styles.name}>{system.name}</p>
-                            <p>{addresses[i].city}, {addresses[i].street} {addresses[i].houseNumber}</p>
-                            <div className={styles.rating}>
-                                <p>{feedbacks[i].length}</p>
-                                <img src={star}/>
-                            </div>
+                    <div className={styles.sections}>
+                        <p className={styles.title}>Recent visits</p>
+                        <div className={styles.blocks}>
+                            {event.slice(5, 6).map((system, i) => (
+                                    <div>
+                                        {
+                                            system.map(r => (
+                                                <div className={styles.block}>
+                                                    <img src={photo}/>
+                                                    <div className={styles.name} onClick={() => {
+                                                        setData(r.id)
+                                                        setShow(true);
+                                                    }}>
+                                                        <strong>{r.name}</strong>
+                                                    </div>
+                                                    <p>{addresses[i].city}, {addresses[i].street} {addresses[i].houseNumber}</p>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                )
+                            )}
                         </div>
-                    ))}
-                </div>
-            </div>
+                    </div>
 
 
-            <div className={styles.sections}>
-                <p className={styles.title}>The best of RESNOW</p>
-                <div className={styles.blocks}>
-                    {systems.slice(3, 9).map((system, i) => (
-                        <div className={styles.block} key={i}>
-                            <img src={photo}/>
-                            <p className={styles.name}>{system.name}</p>
-                            <p>{addresses[i].city}, {addresses[i].street} {addresses[i].houseNumber}</p>
-                            <div className={styles.rating}>
-                                <p>{feedbacks[i].length}</p>
-                                <img src={star}/>
-                            </div>
+                    <div className={styles.sections}>
+                        <p className={styles.title}>The best of RESNOW</p>
+                        <div className={styles.blocks}>
+                            {event.slice(0, 1).map((system, i) => (
+                                    <div>
+                                        {
+                                            system.map(r => (
+                                                <div className={styles.block}>
+                                                    <img src={photo}/>
+                                                    <div className={styles.name} onClick={() => {
+                                                        setData(r.id)
+                                                        setShow(true);
+                                                    }}>
+                                                        <strong>{r.name}</strong>
+                                                    </div>
+                                                    <p>{addresses[i].city}, {addresses[i].street} {addresses[i].houseNumber}</p>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                )
+                            )}
                         </div>
-                    ))}
-                </div>
-            </div>
+                    </div>
+
+                    <div className={styles.sections}>
+                        <p className={styles.title}>All Events</p>
+                        <div className={styles.blocks}>
+                            {event.map((system, i) => (
+                                    <div>
+                                        <h3>{system.system.name} {<span
+                                            className={styles.feed}>{feedbacks[i].length}
+                                            <img src={star}/></span>}</h3>
+                                        {
+                                            system.map(r => (
+                                                <div className={styles.block}>
+                                                    <img src={photo}/>
+                                                    <div className={styles.name} onClick={() => {
+                                                        setData(r.id)
+                                                        setShow(true);
+                                                    }}>
+                                                        <strong>{r.name}</strong>
+                                                    </div>
+                                                    <p>{addresses[i].city}, {addresses[i].street} {addresses[i].houseNumber}</p>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                )
+                            )}
+                        </div>
+                    </div>
+                </>
+            }
         </div>
     )
 }

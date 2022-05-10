@@ -29,7 +29,7 @@ export const NavbarCustomer = () => {
                 </Link>
                 <Link to={'dashboard'}
                    className={splitLocation[1] === "dashboard" ? styles.active : ""}>Dashboard</Link>
-                <Link to={'terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Eventy</Link>
+                {/*<Link to={'terminy'} className={splitLocation[1] === "terminy" ? styles.active : ""}>Eventy</Link>*/}
                 <Link to={'rezervace'}
                    className={splitLocation[1] === "rezervace" ? styles.active : ""}>Rezervace</Link>
             </div>
