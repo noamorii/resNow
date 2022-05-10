@@ -82,7 +82,7 @@
 
                         width: 6vh;
                         height: 6vh;
-                        top: 4.08vh;
+                        top: 4.02vh;
                         right: -6vh;
 
                         background-color: #f2f7ff;
@@ -113,7 +113,7 @@
 
                         width: 6vh;
                         height: 6vh;
-                        top: 4.08vh;
+                        top: 4.02vh;
                         left: -6vh;
 
                         background-color: #f2f7ff;
@@ -126,7 +126,7 @@
 
                         width: 6vh;
                         height: 6vh;
-                        top: 4.08vh;
+                        top: 4.02vh;
                         right: -6vh;
 
                         background-color: #f2f7ff;
@@ -169,7 +169,7 @@
 
                         width: 6vh;
                         height: 6vh;
-                        top: 4.08vh;
+                        top: 4.02vh;
                         left: -6vh;
 
                         background-color: #f2f7ff;
@@ -237,7 +237,7 @@
             line-height: 1.6;
         }
 
-        button {
+        .try {
             width: 55vh;
             height: 7vh;
             margin-bottom: 2vh;
@@ -248,9 +248,10 @@
             font-size: 1.8vh;
             font-weight: bold;
             color: #42474D;
+            background-color: #e3e3e3;
 
             &:hover {
-                background-color: #e3e3e3;
+                background-color: #ffffff;
             }
         }
     }
