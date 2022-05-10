@@ -54,14 +54,6 @@ public class SourcesControllerImpl implements SourcesController {
                 .collect(Collectors.toList());
     }
 
-
-    /**
-     * It creates a new category for a source
-     *
-     * @param sourceId The id of the source to which the category belongs.
-     * @param categoryDTO This is the object that will be sent to the server.
-     * @return A ResponseEntity with the headers and the status code.
-     */
     @Override
     @PostMapping(value = "/sources/{sourceId}/categories")
     public ResponseEntity<Void> createCategory(@PathVariable Integer sourceId, @RequestBody CategoryDTO categoryDTO) {
