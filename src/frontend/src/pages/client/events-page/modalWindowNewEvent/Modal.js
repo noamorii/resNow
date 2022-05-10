@@ -42,6 +42,7 @@ export const Modal = (props) => {
 
     const [resources, setResources] = useState([]);
     const [data, setData] = useState([]);
+    const [error, setError] = useState("");
 
 
     useEffect(async () => {
@@ -77,22 +78,25 @@ export const Modal = (props) => {
 
 
     const handle = () => {
-        if (JSON.parse(data) === "None") {
-            console.log("Please choose a Source")
-        } else {
-            if (eventType === 1) {
-                eventUtils.newIntervalEvent(JSON.parse(data).address.id, name, fromTime, toTime, startDate).then(() => {
-                    props.closeModal()
-                    window.location.reload()
-                })
-            } else if (eventType === 2) {
-                eventUtils.newSeatEvent(JSON.parse(data).address.id, name, fromTime, toTime, startDate, seatAmount).then(() => {
-                    props.closeModal()
-                    window.location.reload()
-                })
+        if (name.trim().length !== 0) {
+            if (JSON.parse(data) === "None") {
+                console.log("Please choose a Source")
+            } else {
+                if (eventType === 1) {
+                    eventUtils.newIntervalEvent(JSON.parse(data).address.id, name, fromTime, toTime, startDate).then(() => {
+                        props.closeModal()
+                        window.location.reload()
+                    })
+                } else if (eventType === 2) {
+                    eventUtils.newSeatEvent(JSON.parse(data).address.id, name, fromTime, toTime, startDate, seatAmount).then(() => {
+                        props.closeModal()
+                        window.location.reload()
+                    })
+                }
             }
+        } else {
+            setError("Error")
         }
-        // eventUtils.newIntervalEvent("test", "2022-05-09", "2022-05-11")
     }
 
     const Seat = () => {
@@ -147,7 +151,7 @@ export const Modal = (props) => {
                             <label>
                                 <div>
                                     <input type={"text"} className={'input-primary'} value={name}
-                                           onChange={e => setName(e.target.value)}/>
+                                           onChange={e => setName(e.target.value)} placeholder={"Hokej"}/>
                                 </div>
                             </label>
                         </fieldset>
@@ -205,6 +209,7 @@ export const Modal = (props) => {
                     <button className={'button-primary-outline'} onClick={props.closeModal}>Cancel</button>
                     <button className={'button-primary'} onClick={handle}>Continue</button>
                 </div>
+                <div className={styles.error}>{error}</div>
             </div>
         </div>
     )
