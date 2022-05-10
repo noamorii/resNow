@@ -98,7 +98,7 @@ export const PricingSection = () => {
                         <div className={styles.content}>
                             {description}
                         </div>
-                        <button type={"button"} className={styles.try}>{buttonText}</button>
+                        <button type={"button"}>{buttonText}</button>
                     </div>
                 </div>
             </div>

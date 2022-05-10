@@ -1,6 +1,5 @@
 .container {
     padding: 1.5%;
-
     .header {
         display: flex;
         align-items: center;
@@ -21,13 +20,14 @@
     }
 }
 
-.userForm {
+form {
     display: flex;
     flex-direction: column;
     gap: 2vh;
     background-color: #e3eeff;
     border-radius: 2vh;
     padding: 2%;
+
 
 
     label {
@@ -40,6 +40,6 @@
     }
 }
 
-.error {
+.error{
     color: red;
 }
