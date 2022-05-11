@@ -9,6 +9,7 @@ import React, {useEffect, useState} from "react";
 import {forEach} from "react-bootstrap/ElementChildren";
 import AuthService from "../../../services/auth.service";
 import {EventsPageCustomer} from "../events-page/EventsPage.customer";
+import {getUniqueDomId} from "@fullcalendar/react";
 
 const DashboardNavigation = () => {
     const location = useLocation();
@@ -39,10 +40,11 @@ export const DashboardPageCustomer = () => {
     let [feedbacks, setFeedbacks] = useState([]);
     let [addressesUpComing, setAddressesUpComing] = useState([]);
 
-    const [event, setEvents] = useState([]);
+    const [event, setEvents] = useState(undefined);
     const [slots, setSlots] = useState([]);
     const [system, setSystem] = useState([]);
     const [show, setShow] = useState(false);
+    const [upComing, setUpComing] = useState(undefined);
 
     const [data, setData] = useState(null);
 
@@ -77,6 +79,99 @@ export const DashboardPageCustomer = () => {
 
     const sendGetRequest = async () => {
 
+        const fetchSourceAddress = async (id) => {
+            return new Promise((resolve, reject) => {
+                axios.get(`${baseUrl}/sources/${id}/address`,
+                    {headers: authHeader()}
+                ).then(response => {
+                    resolve(response.data)
+                }).catch(reject);
+            })
+        }
+
+        const fetchCategory = async (id) => {
+            return new Promise((resolve, reject) => {
+                axios.get(`${baseUrl}/category/${id}`,
+                    {headers: authHeader()}
+                ).then(response => {
+                    resolve(response.data)
+                }).catch(reject);
+            })
+        }
+
+
+        const fetchSlotF = async (e) => {
+            return new Promise((resolve, reject) => {
+                axios.get(`${baseUrl}/slots/${e}`, {headers: authHeader()}).then(response => {
+                    resolve(response.data)
+                }).catch(reject);
+            })
+        }
+
+        const fetchSlotsF = async (data) => {
+
+            let response = []
+            await Promise.all(data.map(async (e) => {
+                try {
+                    let insertResponse = await fetchSlotF(e.reservationSlotId)
+                    response.push(insertResponse)
+                } catch (error) {
+                    console.log('error' + error);
+                }
+            }))
+            return response
+        }
+
+        const fetchEventF = async (id) => {
+            return new Promise((resolve, reject) => {
+                axios.get(`${baseUrl}/events/${id}`, {headers: authHeader()}).then(async response => {
+                    response.data.address = await fetchSourceAddress(await fetchCategory(response.data.categoryId))
+                    resolve(response.data)
+                }).catch(reject);
+            })
+        }
+
+        const fetchEventsF = async (data) => {
+
+            let response = []
+            await Promise.all(data.map(async (e) => {
+                try {
+                    let insertResponse = await fetchEventF(e.eventId)
+                    response.push(insertResponse)
+                } catch (error) {
+                    console.log('error' + error);
+                }
+            }))
+            return response
+        }
+
+        const fetchIdF = async (id) => {
+            return new Promise((resolve, reject) => {
+                axios.get(`${baseUrl}/category/${id}/system`, {headers: authHeader()}).then(response => {
+                    resolve(response.data)
+                }).catch(reject);
+            })
+        }
+
+        const fetchIdsF = async (data) => {
+            let response = []
+            await Promise.all(data.map(async (e) => {
+                try {
+                    let insertResponse = await fetchIdF(e.categoryId)
+                    response.push(insertResponse)
+                } catch (error) {
+                    console.log('error' + error);
+                }
+            }))
+            return response
+        }
+
+        const reservationsUpcoming = await Promise.all([axios.get(`${baseUrl}/my/reservations`, {headers: authHeader()})])
+        const slotsF = await Promise.all([fetchSlotsF(reservationsUpcoming[0].data)])
+        const eventsF = await Promise.all([fetchEventsF(slotsF[0])])
+        setUpComing(eventsF[0])
+        // const idsF = await Promise.all([fetchIdsF(events[0])])
+
         //Get system addresses
         //--------------------------------------------------------
         const fetchAddress = async (id) => {
@@ -89,6 +184,7 @@ export const DashboardPageCustomer = () => {
             })
         }
         // console.log(fetchAddress())
+
 
         //--------------------------------------------------------
         const fetchSlot = (e) => {
@@ -192,7 +288,9 @@ export const DashboardPageCustomer = () => {
             fetchAddressUp(ids[0])
         ])
         setAddressesUpComing(fetchAddressUpComing.map(r => {
-            return r[0].address
+            if (r[0] !== undefined) {
+                return r[0].address
+            }
         }))
 
 
@@ -216,7 +314,9 @@ export const DashboardPageCustomer = () => {
         const address = await Promise.any([fetchAddresses(system.data)])
         setAdresses(address.map(r => {
             // console.log(r[0].address)
-            return (r[0].address)
+            if (r[0] !== undefined) {
+                return (r[0].address)
+            }
         }));
 
         //Get system feedbacks
@@ -265,8 +365,16 @@ export const DashboardPageCustomer = () => {
             return new Promise((resolve, reject) => {
                 axios.get(`${baseUrl}/systems/${id}/events`,
                     {params: {fromDate: "2022-05-01", toDate: "2022-05-30"}, headers: authHeader()}
-                ).then(response => {
-                    resolve(response.data)
+                ).then(async response => {
+                    const x = await Promise.all(response.data.map(async (e) => {
+                        try {
+                            e.address = await fetchSourceAddress(await fetchCategory(e.categoryId))
+                            return e
+                        } catch (error) {
+                            console.log('error' + error);
+                        }
+                    }))
+                    resolve(x)
                 }).catch(reject);
             })
         }
@@ -277,6 +385,7 @@ export const DashboardPageCustomer = () => {
                 try {
                     let insertResponse = await fetchSystemsEvent(e.id)
                     insertResponse.system = e;
+                    insertResponse.feedback = await fetchFeedback(e.id)
                     response.push(insertResponse)
                 } catch (error) {
                     console.log('error' + error);
@@ -297,7 +406,7 @@ export const DashboardPageCustomer = () => {
         setEvents(fetchedSystemsEvents[0]);
     }
 
-    if (reservations === undefined) {
+    if (event === undefined || upComing === undefined) {
         return (
             <div className={styles.loading}>
                 <div className={styles.logoContainer} onMouseOver={animateLogo}>
@@ -386,13 +495,18 @@ export const DashboardPageCustomer = () => {
                     <div className={styles.upcomingSections}>
                         <p className={styles.title}>Your upcoming reservations</p>
                         <div className={styles.blocks}>
-                            {reservations.slice(0, 3).map((name, i) => (
-                                <div className={styles.block} key={i}>
-                                    <img src={photo}/>
-                                    <p>{systems[i].name}</p>
-                                    <p>{addressesUpComing[i].city}, {addressesUpComing[i].street} {addressesUpComing[i].houseNumber}</p>
-                                </div>
-                            ))}
+                            {upComing.map(event => {
+                                return (
+                                    <div className={styles.block}>
+                                        <img src={photo}/>
+                                        <p><strong>{event.name}</strong></p>
+                                        <p>{event.address.city}, {event.address.street} {event.address.houseNumber}</p>
+                                        <p>{event.startDate}</p>
+                                        <p><strong>from:</strong> {event.fromTime}</p>
+                                        <p><strong>to:</strong> {event.toTime}</p>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
 
@@ -412,7 +526,7 @@ export const DashboardPageCustomer = () => {
                                                     }}>
                                                         <strong>{r.name}</strong>
                                                     </div>
-                                                    <p>{addresses[i].city}, {addresses[i].street} {addresses[i].houseNumber}</p>
+                                                    <p>{r.address.city}, {r.address.street} {r.address.houseNumber}</p>
                                                 </div>
                                             ))
                                         }
@@ -454,21 +568,28 @@ export const DashboardPageCustomer = () => {
                             {event.map((system, i) => (
                                     <div>
                                         <h3>{system.system.name} {<span
-                                            className={styles.feed}>{feedbacks[i].length}
+                                            className={styles.feed}>{
+                                            (system.feedback.length)
+                                        }
                                             <img src={star}/></span>}</h3>
                                         {
-                                            system.map(r => (
-                                                <div className={styles.block}>
-                                                    <img src={photo}/>
-                                                    <div className={styles.name} onClick={() => {
-                                                        setData(r.id)
-                                                        setShow(true);
-                                                    }}>
-                                                        <strong>{r.name}</strong>
-                                                    </div>
-                                                    <p>{addresses[i].city}, {addresses[i].street} {addresses[i].houseNumber}</p>
-                                                </div>
-                                            ))
+                                            system.map(r => {
+                                                    if (new Date(r.startDate) <= new Date().setDate(14)) { //hardcoded nechci to resit
+                                                        return (
+                                                            <div className={styles.block}>
+                                                                <img src={photo}/>
+                                                                <div className={styles.name} onClick={() => {
+                                                                    setData(r.id)
+                                                                    setShow(true);
+                                                                }}>
+                                                                    <strong>{r.name}</strong>
+                                                                </div>
+                                                                <p>{r.address.city}, {r.address.street} {r.address.houseNumber}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                }
+                                            )
                                         }
                                     </div>
                                 )

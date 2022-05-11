@@ -20,6 +20,7 @@ export const Modal = (props) => {
                 {headers: authHeader()}
             ).then(() => {
                 props.onClose()
+                alert("Successful 🤌")
             })
         }
     }

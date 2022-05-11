@@ -85,11 +85,13 @@ export const Modal = (props) => {
                 if (eventType === 1) {
                     eventUtils.newIntervalEvent(JSON.parse(data).address.id, name, fromTime, toTime, startDate).then(() => {
                         props.closeModal()
+                        alert("Success 🤌")
                         window.location.reload()
                     })
                 } else if (eventType === 2) {
                     eventUtils.newSeatEvent(JSON.parse(data).address.id, name, fromTime, toTime, startDate, seatAmount).then(() => {
                         props.closeModal()
+                        alert("Success 🤌")
                         window.location.reload()
                     })
                 }

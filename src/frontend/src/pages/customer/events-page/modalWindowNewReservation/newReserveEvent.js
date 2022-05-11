@@ -34,9 +34,11 @@ function NewReserveEvent({closeModal}) {
             .then(() => {
                 console.log("success")
                 closeModal(false)
+                alert("Success 🤌")
             })
             .catch((e) => {
                 console.log(e);
+                alert("error")
             });
     }
 
