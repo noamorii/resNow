@@ -64,7 +64,7 @@ public class SourcesControllerImpl implements SourcesController {
      */
     @Override
     @PostMapping(value = "/sources/{sourceId}/categories")
-    public ResponseEntity<Void> createCategory(@PathVariable Integer sourceId, @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<Void> createCategory( Integer sourceId, @RequestBody CategoryDTO categoryDTO) {
         Category category = new Category(categoryDTO);
         categoryService.createCategory(category,sourceService.find(sourceId));
         log.info("Created category {} for source with id {}", category, sourceId);
@@ -74,7 +74,7 @@ public class SourcesControllerImpl implements SourcesController {
 
     @Override
     @GetMapping(value = "/sources/{sourceId}/address")
-    public AddressDTO getAddress(Integer sourceId) {
+    public AddressDTO getAddress(@PathVariable Integer sourceId) {
         Address address = sourceService.find(sourceId).getAddress();
 
         if (address == null) {

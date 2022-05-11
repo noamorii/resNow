@@ -48,6 +48,14 @@ public class CategoriesControllerImpl implements CategoriesController {
     @GetMapping(value = "/category/{categoryId}")
     public int getSources(@PathVariable Integer categoryId) {
         for (Source source : categoryService.find(categoryId).getSources()) {
+            return (source.getId());
+        }
+        return 0;
+    }
+
+    @GetMapping(value = "/category/{categoryId}/system")
+    public int getSystemByCategory(@PathVariable Integer categoryId) {
+        for (Source source : categoryService.find(categoryId).getSources()) {
             return (source.getReservationSystem().getId());
         }
         return 0;

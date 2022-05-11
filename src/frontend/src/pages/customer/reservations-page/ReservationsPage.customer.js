@@ -16,10 +16,7 @@ export const ReservationsPageCustomer = () => {
 
     const fetchSlot = async (e) => {
         return new Promise((resolve, reject) => {
-            axios.get(
-                `${baseUrl}/slots/${e}`,
-                {headers: authHeader()}
-            ).then(response => {
+            axios.get(`${baseUrl}/slots/${e}`, {headers: authHeader()}).then(response => {
                 resolve(response.data)
             }).catch(reject);
         })
@@ -31,7 +28,6 @@ export const ReservationsPageCustomer = () => {
         await Promise.all(data.map(async (e) => {
             try {
                 let insertResponse = await fetchSlot(e.reservationSlotId)
-                console.log(insertResponse)
                 response.push(insertResponse)
             } catch (error) {
                 console.log('error' + error);
@@ -42,10 +38,7 @@ export const ReservationsPageCustomer = () => {
 
     const fetchEvent = async (id) => {
         return new Promise((resolve, reject) => {
-            axios.get(
-                `${baseUrl}/events/${id}`,
-                {headers: authHeader()}
-            ).then(response => {
+            axios.get(`${baseUrl}/events/${id}`, {headers: authHeader()}).then(response => {
                 resolve(response.data)
             }).catch(reject);
         })
@@ -67,10 +60,7 @@ export const ReservationsPageCustomer = () => {
 
     const fetchId = async (id) => {
         return new Promise((resolve, reject) => {
-            axios.get(
-                `${baseUrl}/category/${id}`,
-                {headers: authHeader()}
-            ).then(response => {
+            axios.get(`${baseUrl}/category/${id}/system`, {headers: authHeader()}).then(response => {
                 resolve(response.data)
             }).catch(reject);
         })
@@ -90,14 +80,7 @@ export const ReservationsPageCustomer = () => {
     }
 
     useEffect(async () => {
-        const reservations = await Promise.all([
-                axios.get(
-                    `${baseUrl}/my/reservations`,
-                    {headers: authHeader()}
-                )
-            ]
-        )
-        console.log(reservations[0].data)
+        const reservations = await Promise.all([axios.get(`${baseUrl}/my/reservations`, {headers: authHeader()})])
         const slots = await Promise.all([fetchSlots(reservations[0].data)])
         setSlots(slots[0])
         const events = await Promise.all([fetchEvents(slots[0])])
@@ -106,8 +89,7 @@ export const ReservationsPageCustomer = () => {
         setSystem(ids[0])
     }, [])
 
-    return (
-        <div className={styles.container}>
+    return (<div className={styles.container}>
             {open ? <Modal onClose={() => setOpen(false)} system={data}/> : null}
             <h2>My reservations</h2>
             <table className={styles.table}>
@@ -122,9 +104,8 @@ export const ReservationsPageCustomer = () => {
                 </thead>
                 <tbody>
 
-                {event.map((r, index) => {
-                    return (
-                        <tr>
+                {event.map((r) => {
+                    return (<tr>
                             <td>
                                 {r.name}
                             </td>
@@ -138,17 +119,15 @@ export const ReservationsPageCustomer = () => {
                                 {r.startDate}
                             </td>
                             <td>
-                                {new Date(r.startDate) < new Date() ?
+                                {new Date(r.startDate).getDate() + 1 < new Date().getDate() ?
                                     <button className={'button-primary'} onClick={() => {
                                         setOpen(true)
                                         setData(system[0])
                                     }}>Add feedback</button> : null}
                             </td>
-                        </tr>
-                    )
+                        </tr>)
                 })}
                 </tbody>
             </table>
-        </div>
-    )
+        </div>)
 }
