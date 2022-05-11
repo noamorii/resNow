@@ -1,5 +1,10 @@
 import styles from './DashboardPage.module.scss'
-import photo from './photo.jpg'
+import photoOther from './event-backgrounds/photo.jpg'
+import photoTheatre from './event-backgrounds/theatre.jpeg'
+import photoRestaurant from './event-backgrounds/restaurant.jpeg'
+import photoPub from './event-backgrounds/pub.jpeg'
+import photoSport from './event-backgrounds/sport.jpeg'
+import photoDef from './event-backgrounds/rook-white.png'
 import star from './img.png'
 import {Link, useLocation} from "react-router-dom";
 import axios from "axios";
@@ -38,6 +43,7 @@ export const DashboardPageCustomer = () => {
     let [addresses, setAdresses] = useState([]);
     let [feedbacks, setFeedbacks] = useState([]);
     let [addressesUpComing, setAddressesUpComing] = useState([]);
+    let [categories, setCategory] = useState(undefined);
 
     const [event, setEvents] = useState([]);
     const [slots, setSlots] = useState([]);
@@ -214,6 +220,8 @@ export const DashboardPageCustomer = () => {
         ])
 
         const address = await Promise.any([fetchAddresses(system.data)])
+
+
         setAdresses(address.map(r => {
             // console.log(r[0].address)
             return (r[0].address)
@@ -243,6 +251,66 @@ export const DashboardPageCustomer = () => {
                     console.log('error' + error);
                 }
             }))
+            return response
+        }
+
+        const fetchCategory = async (id) => {
+            return new Promise((resolve, reject) => {
+                axios.get(`${baseUrl}/categories/${id}`,
+                    {headers: authHeader()}
+                ).then(response => {
+                        console.log(response.data.name)
+                    switch (response.data.name) {
+                        case "Pubs":
+                            resolve(photoPub)
+                            return;
+                        case "Restaurants":
+                            // console.log(photoRestaurant)
+                            resolve(photoRestaurant)
+                            return
+                        case "Sport":
+                            resolve(photoSport)
+                            return;
+                        case "Theatre":
+                            resolve(photoTheatre)
+                            return;
+                        case "Other":
+                            resolve(photoOther)
+                            return;
+
+                        default:
+                            resolve(photoDef)
+                            return;
+                    }
+                    // resolve(response.data.name)
+                    // resolve(photo)
+                }).catch(reject);
+            })
+        }
+
+        const fetchCategories = (data) => {
+            let response = new Map()
+
+             data.forEach( (e) => {
+                try {
+                    e.forEach(async (f) => {
+                        let insertResponse = await fetchCategory(f.categoryId)
+                        response.set(f.id,insertResponse)
+
+                        // // console.log(insertResponse)
+                        // response.push({[f.id]:insertResponse})
+                        // // {[f.id]:insertResponse}
+                    })
+                        // console.log(response)
+                } catch (error) {
+                    console.log('error' + error);
+                }
+                // response.push(obj)
+
+            })
+
+
+            console.log(response)
             return response
         }
 
@@ -295,9 +363,20 @@ export const DashboardPageCustomer = () => {
             ]
         )
         setEvents(fetchedSystemsEvents[0]);
+
+        const category = await Promise.all([fetchCategories(fetchedSystemsEvents[0])]);
+        setCategory(category)
+        // const categories = await Promise.all([fetchIds(fetchedSystemsEvents[0])])
+        // console.log(categories[0].get(8))
+        // setCategory(category);
+        console.log(reservations)
+        // setCategory(fetchedSystemsEvents.map(r => {
+        //     return r
+        // }))
+
     }
 
-    if (reservations === undefined) {
+    if (categories === undefined) {
         return (
             <div className={styles.loading}>
                 <h3>Loaduju</h3>
@@ -389,7 +468,7 @@ export const DashboardPageCustomer = () => {
                         <div className={styles.blocks}>
                             {reservations.slice(0, 3).map((name, i) => (
                                 <div className={styles.block} key={i}>
-                                    <img src={photo}/>
+                                    <img src={photoDef}/>
                                     <p>{systems[i].name}</p>
                                     <p>{addressesUpComing[i].city}, {addressesUpComing[i].street} {addressesUpComing[i].houseNumber}</p>
                                 </div>
@@ -406,7 +485,7 @@ export const DashboardPageCustomer = () => {
                                         {
                                             system.map(r => (
                                                 <div className={styles.block}>
-                                                    <img src={photo}/>
+                                                    <img src={categories[0].get(r.id)}/>
                                                     <div className={styles.name} onClick={() => {
                                                         setData(r.id)
                                                         setShow(true);
@@ -432,12 +511,14 @@ export const DashboardPageCustomer = () => {
                                         {
                                             system.map(r => (
                                                 <div className={styles.block}>
-                                                    <img src={photo}/>
+                                                    <img src={categories[0].get(r.id)}/>
                                                     <div className={styles.name} onClick={() => {
                                                         setData(r.id)
                                                         setShow(true);
                                                     }}>
                                                         <strong>{r.name}</strong>
+                                                        {/*<strong>fffffff</strong>*/}
+                                                        {/*<strong>{categories[0].get(r.id)}</strong>*/}
                                                     </div>
                                                     <p>{addresses[i].city}, {addresses[i].street} {addresses[i].houseNumber}</p>
                                                 </div>
@@ -460,7 +541,7 @@ export const DashboardPageCustomer = () => {
                                         {
                                             system.map(r => (
                                                 <div className={styles.block}>
-                                                    <img src={photo}/>
+                                                    <img src={categories[0].get(r.id)}/>
                                                     <div className={styles.name} onClick={() => {
                                                         setData(r.id)
                                                         setShow(true);
