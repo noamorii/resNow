@@ -574,7 +574,7 @@ export const DashboardPageCustomer = () => {
                                             <img src={star}/></span>}</h3>
                                         {
                                             system.map(r => {
-                                                    if (new Date(r.startDate) <= new Date().setDate(14)) { //hardcoded nechci to resit
+                                                    if (new Date(r.startDate) >= new Date() && new Date(r.startDate) <= new Date().setDate(14)) { //hardcoded nechci to resit
                                                         return (
                                                             <div className={styles.block}>
                                                                 <img src={photo}/>

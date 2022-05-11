@@ -38,6 +38,7 @@
 .undercalendar {
     display: flex;
     justify-content: center;
+    margin: 1%;
 }
 
 //---------------------------
@@ -62,8 +63,7 @@
         display: flex;
         flex-direction: column;
 
-        margin: 2vh auto;
-        width: 90%;
+        margin: 2%;
 
         border: 1px solid rgba(0, 0, 0, 0.23);
         box-shadow: 4px 4px 12px 1px rgba(0, 0, 0, 0.24);
@@ -78,7 +78,7 @@
             margin: 4px;
 
             border: 2px solid white;
-            border-collapse: collapse;
+            //border-collapse: collapse;
 
             th {
                 font-weight: 400;
@@ -90,24 +90,34 @@
 
             .headRow {
                 border-top: 2px solid black;
-                border-left: 10px solid #7EA1FF;
-                border-right: 23px solid #7EA1FF;
+                //border-left: 10px solid #7EA1FF;
+                //border-right: 23px solid #7EA1FF;
 
                 &:last-child {
                     border-bottom: 4px solid #7EA1FF;
                 }
             }
 
+            .border {
+                border-right: 0.5px solid rgba(0, 0, 0, 0.11);
+                border-left: 0.5px solid rgba(0, 0, 0, 0.11);
+            }
+
             td, th {
                 //border:1px solid rgba(0, 0, 0, 0.23);
-                border-right: 1px solid rgba(0, 0, 0, 0.23);
-                border-left: 1px solid rgba(0, 0, 0, 0.23);
+
                 //border-top: 2px solid black;
-                height: 8vh;
+                height: 7vh;
                 text-align: center;
 
                 p {
                     margin: 1vh;
+                }
+
+                button {
+                    cursor: pointer;
+                    margin: 1vh;
+                    width: initial;
                 }
 
                 .buttonsTable {
@@ -133,6 +143,14 @@
             .collCheckbox {
                 width: 4%;
                 text-align: center;
+
+            }
+
+            .collCheckboxOut {
+                width: 4%;
+                text-align: center;
+                outline: 1px solid #d5d5d5;
+
             }
 
             input {
@@ -171,24 +189,21 @@
     }
 }
 
-.collNarrow {
-    width: 5%;
-}
-
-.collMid {
-    width: 10%;
-}
-
-.collWide {
-    width: 15%;
-}
-
-.collState {
-    width: 12vh;
-}
+//
+//.collMid {
+//    width: 10%;
+//}
+//
+//.collWide {
+//    width: 15%;
+//}
+//
+//.collState {
+//    width: 12vh;
+//}
 
 .headRow {
-    background-color: #7EA1FF;
+    background-color: #e9eaee;
 }
 
 button {
@@ -221,27 +236,26 @@ button {
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 2vh;
-  background-color: #e3eeff;
-  border-radius: 2vh;
-  padding: 2%;
-
-
-
-  label {
     display: flex;
     flex-direction: column;
+    gap: 2vh;
+    background-color: #e3eeff;
+    border-radius: 2vh;
+    padding: 2%;
 
-    input {
-      margin-top: 1vh;
+
+    label {
+        display: flex;
+        flex-direction: column;
+
+        input {
+            margin-top: 1vh;
+        }
     }
-  }
 }
 
-.error{
-  color: red;
+.error {
+    color: red;
 }
 
 .loading {
@@ -339,13 +353,13 @@ form {
         75% {
             transform: matrix(1, 0, 0, 1, 0, 0);
         }
-        75%{
+        75% {
             transform: rotate(0);
         }
         85% {
             transform: rotate(390deg);
         }
-        100%{
+        100% {
             transform: rotate(360deg);
         }
     }
@@ -360,18 +374,51 @@ form {
         50% {
             transform: matrix(1, 0, 0, 1, 0, 15);
         }
-        75%{
+        75% {
             transform: matrix(1, 0, 0, 1, 0, 0);
         }
-        75%{
+        75% {
             transform: rotate(0);
         }
         85% {
             transform: rotate(-390deg);
         }
-        100%{
+        100% {
             transform: rotate(-360deg);
         }
     }
 
 }
+
+table {
+    border-spacing: 0 1em;
+    padding: 1%;
+    box-sizing: border-box;
+}
+
+td {
+    //border: solid 1px #000;
+}
+
+tr:first-child td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+tr:first-child td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.outline {
+    outline: 1px solid #d5d5d5;
+}
+

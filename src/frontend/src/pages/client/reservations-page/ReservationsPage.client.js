@@ -48,6 +48,7 @@ const Table = () => {
     const [openModal, setOpenModal] = useState(false);
     const [openModalCreateReservation, setOpenModalCreateReservation] = useState(false);
     const [isActiveLogo, setIsLogoActive] = useState(false);
+    const [client, setClient] = useState(null);
 
 
     useEffect(() => {
@@ -263,18 +264,19 @@ const Table = () => {
             </div>
             <div className={styles.undercalendar}>
                 <div className={styles.datedisplay}>
-                    <p>
+                    <p><strong>
                         {date?.format("dddd MMMM D, YYYY")}
+                    </strong>
                     </p>
                 </div>
                 <div className={'calendar-description '.concat(styles.caldescr)}>
 
                     <p className={' '.concat(styles.pdescr)}>
-                        RESERVATIONS: {data.length}
+                        <strong>Reservations: </strong> {data.length}
                     </p>
                 </div>
             </div>
-            {openModal && <ModalReservationDetails closeModal={setOpenModal}/>}
+            {openModal && <ModalReservationDetails onClose={() => setOpenModal(false)} data={client}/>}
             {openModalCreateReservation &&
                 <ModalCreateReservation closeModal={setOpenModalCreateReservation} onExit={reload}/>}
             <div className={styles.tableContainer}>
@@ -282,34 +284,35 @@ const Table = () => {
                     <thead>
                     <tr>
                         <td className={styles.collCheckbox}>
-                            <input type="checkbox"/>
                         </td>
-                        <td className={styles.collMid}>
-                            <p>EVENT</p>
+                        <td className={styles.border}>
+                            <p>Event</p>
                         </td>
-                        <td className={styles.collWide}>
-                            <p>RESERVATION CODE</p>
+                        <td className={styles.border}>
+                            <p>Reservation code</p>
                             <input className={'input-primary search sh sm'} placeholder={'Find names'}/>
                         </td>
-                        <td className={styles.collMid}>
-                            <p>PRICE</p>
+                        <td className={styles.border}>
+                            <p>Price</p>
                         </td>
-                        <td className={styles.collNarrow}>
-                            <p>CAP.</p>
+                        <td className={styles.border}>
+                            <p>Capacity</p>
                         </td>
-                        <td className={styles.collWide}>
-                            <p>CUSTOMER</p>
+                        <td className={styles.border}>
+                            <p>Customer</p>
                             <input className={'input-primary search sh sm'} placeholder={'Find names'}/>
                         </td>
-                        <td className={styles.collMid}>
-                            <p>STATE</p>
+                        <td className={styles.border}>
+                            <p>State</p>
                         </td>
-                        <td className={styles.collWide}>
-                            <p>DATE</p>
+                        <td className={styles.border}>
+                            <p>Date</p>
                         </td>
-                        <td className={styles.collMid}>
+                        <td>
                             <button className={'button-primary'}
-                                    onClick={() => setOpenModalCreateReservation(true)}>Create Reservation
+                                    onClick={() => {
+                                        setOpenModalCreateReservation(true)
+                                    }}>Create Reservation
                             </button>
                         </td>
                     </tr>
@@ -318,8 +321,7 @@ const Table = () => {
                     {data.map(reservation => (
                         <React.Fragment key={reservation.reservationId}>
                             <tr className={styles.headRow}>
-                                <td className={styles.collCheckbox}>
-                                    <input className={'checkbox'} type="checkbox"/>
+                                <td className={styles.collCheckboxOut}>
                                     <button onClick={() => toggleShown(reservation.reservationId)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="19" fill="none"
                                              viewBox="0 0 16 19">
@@ -328,21 +330,25 @@ const Table = () => {
                                         </svg>
                                     </button>
                                 </td>
-                                <td>{reservation.fromTime}-{reservation.toTime}</td>
-                                <td>{reservation.reservationId}</td>
-                                <td><b>{reservation.pricing} $</b></td>
-                                <td>{reservation.capacity}</td>
-                                <td>{reservation.userFirstName} {reservation.userLastName}</td>
-                                <td>{reservation.state}</td>
-                                <td>{reservation.date}</td>
-                                <td>
+                                <td className={styles.outline}>from: {reservation.fromTime}<br/>to: {reservation.toTime}
+                                </td>
+                                <td className={styles.outline}>{reservation.reservationId}</td>
+                                <td className={styles.outline}><b>{reservation.pricing} $</b></td>
+                                <td className={styles.outline}>{reservation.capacity}</td>
+                                <td className={styles.outline}>{reservation.userFirstName} {reservation.userLastName}</td>
+                                <td className={styles.outline}>{reservation.state}</td>
+                                <td className={styles.outline}>{reservation.date}</td>
+                                <td className={styles.outline}>
                                     <div className={styles.buttonsTable}>
                                         <div className={styles.detailsButton}>
                                             <button className={'button-primary-outline'}
-                                                    onClick={() => setOpenModal(true)}>Details
+                                                    onClick={() => {
+                                                        setOpenModal(true)
+                                                        setClient(reservation)
+                                                    }}>Details
                                             </button>
                                         </div>
-                                        <button className={'button-primary-outline '}>Cancel</button>
+                                        {/*<button className={'button-primary-outline '}>Cancel</button>*/}
                                     </div>
                                 </td>
                             </tr>
@@ -350,18 +356,15 @@ const Table = () => {
                                 <tr>
                                     {reservation.hasOwnProperty('seatIdentifier') ?
                                         <td colSpan="2" className={styles.toggleInfo}>
-                                            SEAT: <br/>{reservation.seatIdentifier}</td> :
+                                            <strong>Seat: </strong> {reservation.seatIdentifier}</td> :
                                         <td colSpan="2" className={styles.toggleInfo}>
                                         </td>}
-                                    <td colSpan="2" className={styles.toggleInfo}>SOURCES: <br/>{reservation.sources}
+                                    <td colSpan="3" className={styles.toggleInfo}>
+                                        <strong>Sources: </strong>{reservation.sources}
                                     </td>
-                                    <td colSpan="2" className={styles.toggleInfo}>E-MAIL: <br/><a
+                                    <td colSpan="4" className={styles.toggleInfo}><strong>E-mail: </strong><a
                                         className={styles.mailHref}
                                         href={"mailto:" + reservation.userEmail}>{reservation.userEmail}</a></td>
-                                    <td colSpan="2"
-                                        className={styles.toggleInfo}>DESCRIPTION: <br/>{reservation.additionalInfo}
-                                    </td>
-                                    <td></td>
                                 </tr>
                             )}
                         </React.Fragment>
