@@ -51,7 +51,6 @@ public class ReservationsControllerImpl implements ReservationsController {
         UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
         List<Reservation> reservationList = reservationService.findMyAllReservations(user);
-        reservationList.forEach(System.out::println);
         return reservationList.stream()
                 .map(ReservationDTO::new)
                 .collect(Collectors.toList());

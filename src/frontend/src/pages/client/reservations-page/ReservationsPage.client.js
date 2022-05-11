@@ -49,6 +49,7 @@ const Table = () => {
     const [openModalCreateReservation, setOpenModalCreateReservation] = useState(false);
     const [isActiveLogo, setIsLogoActive] = useState(false);
     const [client, setClient] = useState(null);
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
@@ -174,7 +175,7 @@ const Table = () => {
         window.location.reload();
     }
 
-    if (data === undefined) {
+    if (data === undefined || loading) {
         return (
             <div className={styles.loading}>
                 <div className={styles.logoContainer} onMouseOver={animateLogo}>
