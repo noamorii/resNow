@@ -10,9 +10,9 @@ describe('create address and source', () => {
         cy.get('div > button.button-primary').click()
 
 
-        let name = makeid(10)
+        let name = 'test0'
         let city = makeid(10)
-        let description = makeid(10)
+        let description = 'test0'
 
         cy.get('#root > div > div > div.Sources_body__0jHB4 > div.ModalNew_modal__m2hhs > div > form > label:nth-child(1) > input').type(name)
         cy.get('#root > div > div > div.Sources_body__0jHB4 > div.ModalNew_modal__m2hhs > div > form > label:nth-child(2) > input').type(description)
