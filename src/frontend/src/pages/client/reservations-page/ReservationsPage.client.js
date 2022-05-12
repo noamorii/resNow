@@ -291,7 +291,6 @@ const Table = () => {
                         </td>
                         <td className={styles.border}>
                             <p>Reservation code</p>
-                            <input className={'input-primary search sh sm'} placeholder={'Find names'}/>
                         </td>
                         <td className={styles.border}>
                             <p>Price</p>
@@ -301,7 +300,6 @@ const Table = () => {
                         </td>
                         <td className={styles.border}>
                             <p>Customer</p>
-                            <input className={'input-primary search sh sm'} placeholder={'Find names'}/>
                         </td>
                         <td className={styles.border}>
                             <p>State</p>
